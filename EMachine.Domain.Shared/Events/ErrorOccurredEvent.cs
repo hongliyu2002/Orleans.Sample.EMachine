@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using Fluxera.Guards;
-using Orleans;
+﻿using Fluxera.Guards;
 
 namespace EMachine.Domain.Shared.Events;
 
 [Immutable]
 [Serializable]
 [GenerateSerializer]
-public sealed class ErrorOccurredEvent : DomainEvent
+public abstract class ErrorOccurredEvent : DomainEvent
 {
-    public ErrorOccurredEvent()
+    protected ErrorOccurredEvent()
     {
         Message = string.Empty;
         Reasons = new List<string>();
     }
 
-    public ErrorOccurredEvent(int code, string message, Guid traceId, string operatedBy)
+    protected ErrorOccurredEvent(int code, string message, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
         Message = Guard.Against.NullOrWhiteSpace(message, nameof(message));
         Reasons = new List<string>();
     }
 
-    public ErrorOccurredEvent(int code, string message, string causedBy, Guid traceId, string operatedBy)
+    protected ErrorOccurredEvent(int code, string message, string causedBy, Guid traceId, string operatedBy)
         : this(code, message, traceId, operatedBy)
     {
         causedBy = Guard.Against.NullOrWhiteSpace(causedBy, nameof(causedBy));

@@ -1,7 +1,5 @@
-﻿using System;
-using EMachine.Domain.Shared.Events;
+﻿using EMachine.Domain.Shared.Events;
 using Fluxera.Guards;
-using Orleans;
 
 namespace EMachine.Sales.Domain.Abstractions.Events;
 

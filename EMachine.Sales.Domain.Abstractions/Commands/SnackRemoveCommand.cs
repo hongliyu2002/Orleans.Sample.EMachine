@@ -1,7 +1,4 @@
-﻿using System;
-using Orleans;
-
-namespace EMachine.Sales.Domain.Abstractions.Commands;
+﻿namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
 [Serializable]

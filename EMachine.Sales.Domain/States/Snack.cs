@@ -1,14 +1,10 @@
-﻿using System;
-using EMachine.Sales.Domain.Abstractions.Events;
+﻿using EMachine.Sales.Domain.Abstractions.Events;
 using Fluxera.Entity;
 using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
 using Fluxera.Guards;
-using JetBrains.Annotations;
-using Orleans;
 
 namespace EMachine.Sales.Domain;
 
-[PublicAPI]
 [Serializable]
 [GenerateSerializer]
 public sealed class Snack : Entity<Snack, Guid>, ISoftDeleteObject, IAuditedObject

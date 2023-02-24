@@ -1,7 +1,4 @@
-﻿using System;
-using Orleans;
-
-namespace EMachine.Sales.Domain.Abstractions.Events;
+﻿namespace EMachine.Sales.Domain.Abstractions.Events;
 
 [Immutable]
 [Serializable]

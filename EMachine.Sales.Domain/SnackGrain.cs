@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using EMachine.Domain.Shared;
-using EMachine.Domain.Shared.Events;
+﻿using EMachine.Domain.Shared;
 using EMachine.Sales.Domain.Abstractions;
 using EMachine.Sales.Domain.Abstractions.Commands;
 using EMachine.Sales.Domain.Abstractions.Events;
@@ -8,17 +6,19 @@ using EMachine.Sales.Domain.Rules;
 using FluentResults;
 using Fluxera.Guards;
 using Microsoft.Extensions.Logging;
-using Orleans;
+using Orleans.Providers;
 
 namespace EMachine.Sales.Domain;
 
+[LogConsistencyProvider(ProviderName = "EventStore")]
+[StorageProvider(ProviderName = "EventStore")]
 public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
 {
     private readonly ILogger<SnackGrain> _logger;
 
     /// <inheritdoc />
     public SnackGrain(ILogger<SnackGrain> logger)
-        : base("memory", "Sales.Snacks")
+        : base("MemoryStream", "Sales.Snacks")
     {
         _logger = Guard.Against.Null(logger);
     }
@@ -30,7 +30,7 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
         return (State.CreatedAt == null) switch
                {
                    true => SaveAndPublishAsync(new SnackInitializedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy)),
-                   false => PublishErrorAsync(new ErrorOccurredEvent(SnackErrorCodes.SnackAlreadyExist.Value, $"Snack {id} already exist.", cmd.TraceId, cmd.OperatedBy))
+                   false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackAlreadyExist.Value, $"Snack {id} already exist.", cmd.TraceId, cmd.OperatedBy))
                };
     }
 
@@ -41,7 +41,7 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
         return (State.CreatedAt != null) switch
                {
                    true => SaveAndPublishAsync(new SnackNameChangedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy)),
-                   false => PublishErrorAsync(new ErrorOccurredEvent(SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy))
+                   false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy))
                };
     }
 
@@ -54,10 +54,10 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
                    true => !State.IsDeleted switch
                            {
                                true => SaveAndPublishAsync(new SnackRemovedEvent(id, cmd.TraceId, cmd.OperatedBy)),
-                               false => PublishErrorAsync(new ErrorOccurredEvent(SnackErrorCodes.SnackHasRemoved.Value, $"Snack {id} has already removed.", cmd.TraceId,
-                                                                                 cmd.OperatedBy))
+                               false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, $"Snack {id} has already removed.", cmd.TraceId,
+                                                                                      cmd.OperatedBy))
                            },
-                   false => PublishErrorAsync(new ErrorOccurredEvent(SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy))
+                   false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy))
                };
     }
 }

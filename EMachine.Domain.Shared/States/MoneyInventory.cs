@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentResults;
+﻿using FluentResults;
 using Fluxera.Guards;
 using Fluxera.ValueObject;
-using JetBrains.Annotations;
-using Orleans;
 
 namespace EMachine.Domain.Shared;
 
-[PublicAPI]
 [Immutable]
 [Serializable]
 [GenerateSerializer]
@@ -135,8 +130,8 @@ public sealed class MoneyInventory : ValueObject<MoneyInventory>
     public Result<MoneyInventory> Allocate(decimal amount)
     {
         amount = Guard.Against.NegativeOrZero(amount);
-        var isAllocated = CanAllocate(amount, out var allocatedMoney);
-        return isAllocated ? Result.Ok(allocatedMoney) : Result.Fail(new Error("Lack of change in money inventory."));
+        var canAllocate = CanAllocate(amount, out var allocatedMoney);
+        return canAllocate ? Result.Ok(allocatedMoney) : Result.Fail(new Error("Lack of change in money inventory."));
     }
 
     private MoneyInventory AllocateCore(decimal amount)
