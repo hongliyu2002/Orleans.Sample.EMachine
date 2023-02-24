@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FlakeId" Version="1.1.0" />
+        <PackageReference Include="FluentResults" Version="3.15.2" />
+        <PackageReference Include="Fluxera.Entity" Version="7.1.1" />
+        <PackageReference Include="Fluxera.Enumeration" Version="7.1.0" />
+        <PackageReference Include="Fluxera.Extensions.Hosting.Modules.Domain.Shared" Version="7.1.2" />
+        <PackageReference Include="Fluxera.StronglyTypedId" Version="7.1.1" />
+        <PackageReference Include="Fluxera.ValueObject" Version="7.1.0" />
+        <PackageReference Include="Microsoft.Orleans.EventSourcing" Version="7.1.0" />
+        <PackageReference Include="Microsoft.Orleans.Sdk" Version="7.1.0" />
+        <PackageReference Include="Microsoft.Orleans.Streaming" Version="7.1.0" />
+        <PackageReference Include="Microsoft.Orleans.Transactions" Version="7.1.0" />
+    </ItemGroup>
+
+</Project>
