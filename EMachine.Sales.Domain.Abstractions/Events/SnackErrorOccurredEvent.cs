@@ -4,7 +4,7 @@ using Fluxera.Guards;
 namespace EMachine.Sales.Domain.Abstractions.Events;
 
 [Immutable]
-[Serializable]
+
 [GenerateSerializer]
 public sealed class SnackErrorOccurredEvent : ErrorOccurredEvent
 {

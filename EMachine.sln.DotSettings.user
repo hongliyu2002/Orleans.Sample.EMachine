@@ -1,4 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
-  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\fluentresults\3.15.2\lib\netstandard2.1\FluentResults.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\system.reactive\5.0.0\lib\net5.0\System.Reactive.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\system.linq.async\6.0.1\ref\net6.0\System.Linq.Async.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming\7.1.0\lib\net7.0\Orleans.Streaming.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\orleans.fluentresults\7.1.0.3\lib\net7.0\Orleans.FluentResults.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

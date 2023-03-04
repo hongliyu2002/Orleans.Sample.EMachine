@@ -3,16 +3,16 @@ using EMachine.Sales.Domain.Abstractions;
 using EMachine.Sales.Domain.Abstractions.Commands;
 using EMachine.Sales.Domain.Abstractions.Events;
 using EMachine.Sales.Domain.Rules;
-using FluentResults;
 using Fluxera.Guards;
 using Microsoft.Extensions.Logging;
+using Orleans.FluentResults;
 using Orleans.Providers;
 
 namespace EMachine.Sales.Domain;
 
 [LogConsistencyProvider(ProviderName = "EventStore")]
 [StorageProvider(ProviderName = "EventStore")]
-public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
+public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
 {
     private readonly ILogger<SnackGrain> _logger;
 

@@ -4,7 +4,7 @@ using Fluxera.Guards;
 namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
-[Serializable]
+
 [GenerateSerializer]
 public abstract class SnackCommand : ITraceable
 {

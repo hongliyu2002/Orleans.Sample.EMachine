@@ -1,23 +1,23 @@
 ﻿using EMachine.Domain.Shared.Events;
 using FlakeId;
-using FluentResults;
 using Fluxera.Guards;
 using Orleans.EventSourcing;
+using Orleans.FluentResults;
 using Orleans.Providers.Streams.Common;
 using Orleans.Streams;
 
 namespace EMachine.Domain.Shared;
 
-public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, DomainEvent>
+public abstract class EventPublisherGrain<TState> : JournaledGrain<TState, DomainEvent>, IEventPublisherGrain
     where TState : class, new()
 {
-    private readonly string _name;
-    private readonly string _nameSpace;
+    protected readonly string _name;
+    protected readonly string _nameSpace;
     protected IAsyncStream<DomainEvent> _stream = null!;
     protected IStreamProvider _streamProvider = null!;
 
     /// <inheritdoc />
-    protected EventSourcingGrain(string name, string nameSpace)
+    protected EventPublisherGrain(string name, string nameSpace)
     {
         _name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
         _nameSpace = Guard.Against.NullOrWhiteSpace(nameSpace, nameof(nameSpace));
@@ -35,7 +35,10 @@ public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, Domain
     {
         try
         {
-            RaiseEvent(evt);
+            if (!await RaiseConditionalEvent(evt))
+            {
+                return Result.Fail("Raise conditional event failed.");
+            }
             await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Id.Create()));
             return Result.Ok();
         }

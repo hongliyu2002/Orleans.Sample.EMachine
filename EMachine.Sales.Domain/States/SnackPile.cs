@@ -1,11 +1,10 @@
-﻿using FluentResults;
-using Fluxera.Guards;
+﻿using Fluxera.Guards;
 using Fluxera.ValueObject;
+using Orleans.FluentResults;
 
 namespace EMachine.Sales.Domain;
 
 [Immutable]
-[Serializable]
 [GenerateSerializer]
 public sealed class SnackPile : ValueObject<SnackPile>
 {

@@ -1,7 +1,7 @@
 ﻿namespace EMachine.Sales.Domain.Abstractions.Events;
 
 [Immutable]
-[Serializable]
+
 [GenerateSerializer]
 public sealed class SnackRemovedEvent : SnackEvent
 {

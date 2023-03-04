@@ -1,7 +1,7 @@
 ﻿namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
-[Serializable]
+
 [GenerateSerializer]
 public sealed class SnackRemoveCommand : SnackCommand
 {

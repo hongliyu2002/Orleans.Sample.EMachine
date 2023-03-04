@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
-using EMachine.Sales.Domain.Abstractions.Commands;
-using FluentResults;
-using Orleans;
+﻿using EMachine.Sales.Domain.Abstractions.Commands;
+using Orleans.FluentResults;
 
 namespace EMachine.Sales.Domain.Abstractions;
 

@@ -3,7 +3,6 @@
 namespace EMachine.Domain.Shared.Events;
 
 [Immutable]
-[Serializable]
 [GenerateSerializer]
 public abstract class ErrorOccurredEvent : DomainEvent
 {
@@ -16,6 +15,7 @@ public abstract class ErrorOccurredEvent : DomainEvent
     protected ErrorOccurredEvent(int code, string message, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
+        Code = code;
         Message = Guard.Against.NullOrWhiteSpace(message, nameof(message));
         Reasons = new List<string>();
     }

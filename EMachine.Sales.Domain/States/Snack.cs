@@ -5,7 +5,6 @@ using Fluxera.Guards;
 
 namespace EMachine.Sales.Domain;
 
-[Serializable]
 [GenerateSerializer]
 public sealed class Snack : Entity<Snack, Guid>, ISoftDeleteObject, IAuditedObject
 {

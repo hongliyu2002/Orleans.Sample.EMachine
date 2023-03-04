@@ -4,7 +4,6 @@ using Fluxera.Guards;
 namespace EMachine.Domain.Shared.Events;
 
 [Immutable]
-[Serializable]
 [GenerateSerializer]
 public abstract class DomainEvent : IDomainEvent, ITraceable
 {
@@ -22,9 +21,9 @@ public abstract class DomainEvent : IDomainEvent, ITraceable
 
     /// <inheritdoc />
     [Id(0)]
-    public Guid TraceId { get; set; }
+    public Guid TraceId { get; }
 
     /// <inheritdoc />
     [Id(1)]
-    public string OperatedBy { get; set; }
+    public string OperatedBy { get; }
 }
