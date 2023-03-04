@@ -3,17 +3,9 @@
 namespace EMachine.Sales.Domain.Abstractions.Events;
 
 [Immutable]
-
 [GenerateSerializer]
-public sealed class SnackNameChangedEvent : SnackEvent
+public sealed record SnackNameChangedEvent : SnackEvent
 {
-    /// <inheritdoc />
-    public SnackNameChangedEvent()
-    {
-        Name = string.Empty;
-    }
-
-    /// <inheritdoc />
     public SnackNameChangedEvent(Guid id, string name, Guid traceId, string operatedBy)
         : base(id, traceId, operatedBy)
     {
@@ -21,5 +13,5 @@ public sealed class SnackNameChangedEvent : SnackEvent
     }
 
     [Id(0)]
-    public string Name { get; set; }
+    public string Name { get; }
 }

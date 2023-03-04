@@ -1,12 +1,11 @@
 ﻿using Fluxera.Guards;
-using Fluxera.ValueObject;
 using Orleans.FluentResults;
 
 namespace EMachine.Domain.Shared;
 
 [Immutable]
 [GenerateSerializer]
-public sealed class Money : ValueObject<Money>
+public sealed record Money
 {
     public static readonly Money Zero = new(0, 0, 0, 0, 0, 0, 0);
     public static readonly Money OneYuan = new(1, 0, 0, 0, 0, 0, 0);
@@ -17,7 +16,7 @@ public sealed class Money : ValueObject<Money>
     public static readonly Money FiftyYuan = new(0, 0, 0, 0, 0, 1, 0);
     public static readonly Money OneHundredYuan = new(0, 0, 0, 0, 0, 0, 1);
 
-    private Money(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
+    public Money(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
     {
         Yuan1 = Guard.Against.Negative(yuan1, nameof(yuan1));
         Yuan2 = Guard.Against.Negative(yuan2, nameof(yuan2));
@@ -44,25 +43,6 @@ public sealed class Money : ValueObject<Money>
     public int Yuan100 { get; }
 
     public decimal Amount => Yuan1 * 1m + Yuan2 * 2m + Yuan5 * 5m + Yuan10 * 10m + Yuan20 * 20m + Yuan50 * 50m + Yuan100 * 100m;
-
-    #region Create
-
-    public static Result<Money> Create(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
-    {
-        return Result.Ok()
-                     .Verify(yuan1 >= 0, "￥1 cannot be negative.")
-                     .Verify(yuan2 >= 0, "￥2 cannot be negative.")
-                     .Verify(yuan5 >= 0, "￥5 cannot be negative.")
-                     .Verify(yuan10 >= 0, "￥10 cannot be negative.")
-                     .Verify(yuan20 >= 0, "￥20 cannot be negative.")
-                     .Verify(yuan50 >= 0, "￥50 cannot be negative.")
-                     .Verify(yuan100 >= 0, "￥100 cannot be negative.")
-                     .MapTry(() => new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100));
-    }
-
-    #endregion
-
-    #region Allocate
 
     public bool CanAllocate(decimal amount, out Money allocatedMoney)
     {
@@ -100,6 +80,21 @@ public sealed class Money : ValueObject<Money>
         var yuan1 = Math.Min((int)(amount / 1m), Yuan1);
         // amount -= yuan1 * 1m;
         return new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100);
+    }
+
+    #region Create
+
+    public static Result<Money> Create(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
+    {
+        return Result.Ok()
+                     .Verify(yuan1 >= 0, "￥1 cannot be negative.")
+                     .Verify(yuan2 >= 0, "￥2 cannot be negative.")
+                     .Verify(yuan5 >= 0, "￥5 cannot be negative.")
+                     .Verify(yuan10 >= 0, "￥10 cannot be negative.")
+                     .Verify(yuan20 >= 0, "￥20 cannot be negative.")
+                     .Verify(yuan50 >= 0, "￥50 cannot be negative.")
+                     .Verify(yuan100 >= 0, "￥100 cannot be negative.")
+                     .MapTry(() => new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100));
     }
 
     #endregion

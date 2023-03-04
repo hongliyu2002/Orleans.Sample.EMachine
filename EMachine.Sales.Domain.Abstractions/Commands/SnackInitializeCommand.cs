@@ -3,15 +3,9 @@
 namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
-
 [GenerateSerializer]
-public sealed class SnackInitializeCommand : SnackCommand
+public sealed record SnackInitializeCommand : SnackCommand
 {
-    public SnackInitializeCommand()
-    {
-        Name = string.Empty;
-    }
-
     public SnackInitializeCommand(string name, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
@@ -19,5 +13,5 @@ public sealed class SnackInitializeCommand : SnackCommand
     }
 
     [Id(0)]
-    public string Name { get; set; }
+    public string Name { get; }
 }

@@ -4,27 +4,17 @@ using Fluxera.Guards;
 namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
-
 [GenerateSerializer]
-public abstract class SnackCommand : ITraceable
+public abstract record SnackCommand : ITraceable
 {
-    protected SnackCommand()
-    {
-        OperatedBy = string.Empty;
-    }
-
     protected SnackCommand(Guid traceId, string operatedBy)
-        : this()
     {
         TraceId = Guard.Against.Empty(traceId, nameof(traceId));
         OperatedBy = Guard.Against.NullOrWhiteSpace(operatedBy, nameof(operatedBy));
     }
 
-    /// <inheritdoc />
     [Id(0)]
-    public Guid TraceId { get; set; }
-
-    /// <inheritdoc />
+    public Guid TraceId { get; }
     [Id(1)]
-    public string OperatedBy { get; set; }
+    public string OperatedBy { get; } = string.Empty;
 }

@@ -1,36 +1,31 @@
-﻿using Fluxera.Guards;
+﻿using System.Collections.Immutable;
+using Fluxera.Guards;
 
 namespace EMachine.Domain.Shared.Events;
 
 [Immutable]
 [GenerateSerializer]
-public abstract class ErrorOccurredEvent : DomainEvent
+public abstract record ErrorOccurredEvent : DomainEvent
 {
-    protected ErrorOccurredEvent()
-    {
-        Message = string.Empty;
-        Reasons = new List<string>();
-    }
-
     protected ErrorOccurredEvent(int code, string message, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
         Code = code;
         Message = Guard.Against.NullOrWhiteSpace(message, nameof(message));
-        Reasons = new List<string>();
+        Reasons = ImmutableList<string>.Empty;
     }
 
     protected ErrorOccurredEvent(int code, string message, string causedBy, Guid traceId, string operatedBy)
         : this(code, message, traceId, operatedBy)
     {
         causedBy = Guard.Against.NullOrWhiteSpace(causedBy, nameof(causedBy));
-        Reasons.Add(causedBy);
+        Reasons = Reasons.Add(causedBy);
     }
 
     [Id(0)]
-    public int Code { get; set; }
+    public int Code { get; }
     [Id(1)]
-    public string Message { get; set; }
+    public string Message { get; } = string.Empty;
     [Id(2)]
-    public List<string> Reasons { get; set; }
+    public IImmutableList<string> Reasons { get; } = ImmutableList<string>.Empty;
 }

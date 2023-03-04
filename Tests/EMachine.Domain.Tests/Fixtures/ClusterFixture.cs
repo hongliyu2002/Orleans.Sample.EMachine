@@ -1,15 +1,29 @@
-﻿namespace EMachine.Domain.Tests.Fixtures;
+﻿using Orleans.TestingHost;
+using Xunit;
+
+namespace EMachine.Domain.Tests.Fixtures;
 
 public class ClusterFixture : IAsyncLifetime
 {
+    public ClusterFixture()
+    {
+        Cluster = new TestClusterBuilder().AddClientBuilderConfigurator<TestClientBuilderConfigurator>()
+                                          .AddSiloBuilderConfigurator<TestSiloConfigurator>()
+                                          .Build();
+    }
+
+    public TestCluster Cluster { get; }
 
     /// <inheritdoc />
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
+        return Cluster.DeployAsync();
     }
 
     /// <inheritdoc />
-    public async Task DisposeAsync()
+    public Task DisposeAsync()
     {
+        return Cluster.DisposeAsync()
+                      .AsTask();
     }
 }

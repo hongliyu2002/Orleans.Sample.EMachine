@@ -10,6 +10,7 @@ public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
     protected readonly string _nameSpace;
     protected IAsyncStream<DomainEvent> _stream = null!;
     protected IStreamProvider _streamProvider = null!;
+    protected StreamSubscriptionHandle<DomainEvent>? _streamSubscription;
 
     /// <inheritdoc />
     protected EventSubscriberGrain(string name, string nameSpace)
@@ -19,10 +20,24 @@ public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
     }
 
     /// <inheritdoc />
-    public override Task OnActivateAsync(CancellationToken cancellationToken)
+    public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
         _streamProvider = this.GetStreamProvider(_name);
         _stream = _streamProvider.GetStream<DomainEvent>(_nameSpace, this.GetPrimaryKey());
-        return base.OnActivateAsync(cancellationToken);
+        _streamSubscription = await _stream.SubscribeAsync(HandleNextAsync, HandleExceptionAsync, HandCompleteAsync);
+        await base.OnActivateAsync(cancellationToken);
     }
+
+    /// <inheritdoc />
+    public override async Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)
+    {
+        await _streamSubscription!.UnsubscribeAsync();
+        await base.OnDeactivateAsync(reason, cancellationToken);
+    }
+
+    protected abstract Task<bool> HandleNextAsync(DomainEvent evt, StreamSequenceToken token);
+
+    protected abstract Task HandleExceptionAsync(Exception exception);
+
+    protected abstract Task HandCompleteAsync();
 }

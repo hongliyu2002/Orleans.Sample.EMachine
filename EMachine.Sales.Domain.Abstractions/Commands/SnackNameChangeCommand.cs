@@ -3,15 +3,9 @@
 namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
-
 [GenerateSerializer]
-public sealed class SnackNameChangeCommand : SnackCommand
+public sealed record SnackNameChangeCommand : SnackCommand
 {
-    public SnackNameChangeCommand()
-    {
-        Name = string.Empty;
-    }
-
     public SnackNameChangeCommand(string name, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
@@ -19,5 +13,5 @@ public sealed class SnackNameChangeCommand : SnackCommand
     }
 
     [Id(0)]
-    public string Name { get; set; }
+    public string Name { get; }
 }

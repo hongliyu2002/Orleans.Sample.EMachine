@@ -62,7 +62,7 @@ public sealed class Snack : Entity<Snack, Guid>, ISoftDeleteObject, IAuditedObje
 
     public void Apply(SnackInitializedEvent evt)
     {
-        ID = evt.ID;
+        ID = evt.Id;
         Name = evt.Name;
         CreatedAt = DateTimeOffset.UtcNow;
         CreatedBy = evt.OperatedBy;
