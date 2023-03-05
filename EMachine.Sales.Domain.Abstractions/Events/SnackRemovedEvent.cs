@@ -4,7 +4,7 @@
 [GenerateSerializer]
 public sealed record SnackRemovedEvent : SnackEvent
 {
-    public SnackRemovedEvent(Guid id, Guid traceId, string operatedBy)
+    public SnackRemovedEvent(long id, Guid traceId, string operatedBy)
         : base(id, traceId, operatedBy)
     {
     }

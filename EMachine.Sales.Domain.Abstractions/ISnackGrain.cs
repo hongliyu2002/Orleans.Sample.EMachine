@@ -5,7 +5,7 @@ using Orleans.FluentResults;
 
 namespace EMachine.Sales.Domain.Abstractions;
 
-public interface ISnackGrain : IGrainWithGuidKey
+public interface ISnackGrain : IGrainWithIntegerKey
 {
     [AlwaysInterleave]
     Task<Result<Snack>> GetAsync();

@@ -7,7 +7,7 @@ namespace EMachine.Sales.Domain.Abstractions.States;
 public sealed class Snack : ISoftDeleteObject, IAuditedObject
 {
     [Id(0)]
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     [Id(1)]
     public string Name { get; set; } = string.Empty;
@@ -43,7 +43,7 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"Snack with Id:'{Id}' Name:'{Name}'";
+        return $"Snack with Id:{Id} Name:'{Name}'";
     }
 
     #region Apply

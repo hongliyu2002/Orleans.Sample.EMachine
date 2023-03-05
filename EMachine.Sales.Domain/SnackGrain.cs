@@ -36,7 +36,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     /// <inheritdoc />
     public Task<Result> InitializeAsync(SnackInitializeCommand cmd)
     {
-        var id = this.GetPrimaryKey();
+        var id = this.GetPrimaryKeyLong();
         return Result.Ok()
                      .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
@@ -48,7 +48,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     /// <inheritdoc />
     public Task<Result> ChangeNameAsync(SnackNameChangeCommand cmd)
     {
-        var id = this.GetPrimaryKey();
+        var id = this.GetPrimaryKeyLong();
         return Result.Ok()
                      .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
@@ -60,7 +60,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     /// <inheritdoc />
     public Task<Result> RemoveAsync(SnackRemoveCommand cmd)
     {
-        var id = this.GetPrimaryKey();
+        var id = this.GetPrimaryKeyLong();
         return Result.Ok()
                      .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))

@@ -44,6 +44,31 @@ public sealed record Money
 
     public decimal Amount => Yuan1 * 1m + Yuan2 * 2m + Yuan5 * 5m + Yuan10 * 10m + Yuan20 * 20m + Yuan50 * 50m + Yuan100 * 100m;
 
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return $"Money ￥1:{Yuan1} ￥2:{Yuan2} ￥5:{Yuan5} ￥10:{Yuan10} ￥20:{Yuan20} ￥50:{Yuan50} ￥100:{Yuan100}";
+    }
+
+    #region Create
+
+    public static Result<Money> Create(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
+    {
+        return Result.Ok()
+                     .Verify(yuan1 >= 0, "￥1 cannot be negative.")
+                     .Verify(yuan2 >= 0, "￥2 cannot be negative.")
+                     .Verify(yuan5 >= 0, "￥5 cannot be negative.")
+                     .Verify(yuan10 >= 0, "￥10 cannot be negative.")
+                     .Verify(yuan20 >= 0, "￥20 cannot be negative.")
+                     .Verify(yuan50 >= 0, "￥50 cannot be negative.")
+                     .Verify(yuan100 >= 0, "￥100 cannot be negative.")
+                     .MapTry(() => new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100));
+    }
+
+    #endregion
+
+    #region Allocate
+
     public bool CanAllocate(decimal amount, out Money allocatedMoney)
     {
         if (amount < 0)
@@ -82,21 +107,6 @@ public sealed record Money
         return new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100);
     }
 
-    #region Create
-
-    public static Result<Money> Create(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
-    {
-        return Result.Ok()
-                     .Verify(yuan1 >= 0, "￥1 cannot be negative.")
-                     .Verify(yuan2 >= 0, "￥2 cannot be negative.")
-                     .Verify(yuan5 >= 0, "￥5 cannot be negative.")
-                     .Verify(yuan10 >= 0, "￥10 cannot be negative.")
-                     .Verify(yuan20 >= 0, "￥20 cannot be negative.")
-                     .Verify(yuan50 >= 0, "￥50 cannot be negative.")
-                     .Verify(yuan100 >= 0, "￥100 cannot be negative.")
-                     .MapTry(() => new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100));
-    }
-
     #endregion
 
     #region Operator
@@ -105,8 +115,8 @@ public sealed record Money
     {
         money1 = Guard.Against.Null(money1);
         money2 = Guard.Against.Null(money2);
-        var result = Create(money1.Yuan1 + money2.Yuan1, money1.Yuan2 + money2.Yuan2, money1.Yuan5 + money2.Yuan5, money1.Yuan10 + money2.Yuan10, money1.Yuan20 + money2.Yuan20,
-                            money1.Yuan50 + money2.Yuan50, money1.Yuan100 + money2.Yuan100);
+        var result = Create(money1.Yuan1 + money2.Yuan1, money1.Yuan2 + money2.Yuan2, money1.Yuan5 + money2.Yuan5, money1.Yuan10 + money2.Yuan10, money1.Yuan20 + money2.Yuan20, money1.Yuan50 + money2.Yuan50,
+                            money1.Yuan100 + money2.Yuan100);
         return result.IsSuccess ? result.Value : throw new InvalidOperationException(result.ToString());
     }
 
@@ -114,8 +124,8 @@ public sealed record Money
     {
         money1 = Guard.Against.Null(money1);
         money2 = Guard.Against.Null(money2);
-        var result = Create(money1.Yuan1 - money2.Yuan1, money1.Yuan2 - money2.Yuan2, money1.Yuan5 - money2.Yuan5, money1.Yuan10 - money2.Yuan10, money1.Yuan20 - money2.Yuan20,
-                            money1.Yuan50 - money2.Yuan50, money1.Yuan100 - money2.Yuan100);
+        var result = Create(money1.Yuan1 - money2.Yuan1, money1.Yuan2 - money2.Yuan2, money1.Yuan5 - money2.Yuan5, money1.Yuan10 - money2.Yuan10, money1.Yuan20 - money2.Yuan20, money1.Yuan50 - money2.Yuan50,
+                            money1.Yuan100 - money2.Yuan100);
         return result.IsSuccess ? result.Value : throw new InvalidOperationException(result.ToString());
     }
 
@@ -123,8 +133,7 @@ public sealed record Money
     {
         money1 = Guard.Against.Null(money1);
         multiplier = Guard.Against.Negative(multiplier, nameof(multiplier));
-        var result = Create(money1.Yuan1 * multiplier, money1.Yuan2 * multiplier, money1.Yuan5 * multiplier, money1.Yuan10 * multiplier, money1.Yuan20 * multiplier,
-                            money1.Yuan50 * multiplier, money1.Yuan100 * multiplier);
+        var result = Create(money1.Yuan1 * multiplier, money1.Yuan2 * multiplier, money1.Yuan5 * multiplier, money1.Yuan10 * multiplier, money1.Yuan20 * multiplier, money1.Yuan50 * multiplier, money1.Yuan100 * multiplier);
         return result.IsSuccess ? result.Value : throw new InvalidOperationException(result.ToString());
     }
 

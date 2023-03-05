@@ -7,11 +7,14 @@ namespace EMachine.Sales.Domain.Abstractions.States;
 [GenerateSerializer]
 public sealed record SnackPile
 {
+    // public static readonly SnackPile Empty = new(0, 0, 0, 0, 0, 0, 0);
+    
     public SnackPile(Snack snack, int quantity, decimal price)
     {
         Snack = Guard.Against.Null(snack, nameof(snack));
         Quantity = Guard.Against.Negative(quantity, nameof(quantity));
         Price = Guard.Against.Negative(price, nameof(price));
+        Price = Guard.Against.InvalidInput(price, x => x % 0.01m > 0, nameof(price));
     }
 
     [Id(0)]
@@ -23,16 +26,10 @@ public sealed record SnackPile
     [Id(2)]
     public decimal Price { get; }
 
-    public bool CanPopOne()
+    /// <inheritdoc />
+    public override string ToString()
     {
-        return Quantity >= 1;
-    }
-
-    public Result<SnackPile> PopOne()
-    {
-        return Result.Ok()
-                     .Ensure(CanPopOne(), "Insufficient snack.")
-                     .Map(() => new SnackPile(Snack, Quantity - 1, Price));
+        return $"SnackPile with Snack:'{Snack}' Quantity:{Quantity} Price:{Price}";
     }
 
     #region Create
@@ -43,7 +40,24 @@ public sealed record SnackPile
                       // .Verify(snack is not null, "Snack cannot be null.")
                      .Verify(quantity >= 0, "Quantity cannot be negative.")
                      .Verify(price >= 0, "Price cannot be negative.")
+                     .Verify(price % 0.01m == 0, "The decimal portion of the price cannot be less than 0.01.")
                      .MapTry(() => new SnackPile(snack, quantity, price));
+    }
+
+    #endregion
+
+    #region Pop One
+
+    public bool CanPopOne()
+    {
+        return Quantity >= 1;
+    }
+
+    public Result<SnackPile> PopOne()
+    {
+        return Result.Ok()
+                     .Ensure(CanPopOne(), "Insufficient snack.")
+                     .MapTry(() => new SnackPile(Snack, Quantity - 1, Price));
     }
 
     #endregion

@@ -89,10 +89,11 @@ public class SnackRepositoryGrain : Grain, ISnackRepositoryGrain
 
     private async Task<Result<IEnumerable<Snack>>> InitializeDataAsync()
     {
-        var results = await Task.WhenAll(CreateSnackAsync(new SnackRepositoryCreateOneCommand(new Guid("a74ad750-0d8b-4ede-ad29-e5e0d5c2dd9e"), "Cafe", Guid.NewGuid(), "System")),
-                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(new Guid("7db1925a-4458-479f-9c6b-1f708c35b29e"), "Chocolate", Guid.NewGuid(), "System")),
-                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(new Guid("d5753343-78d4-4c4a-a674-63b75f096059"), "Soda", Guid.NewGuid(), "System")),
-                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(new Guid("83d423b6-96a3-48fd-b9e7-97a00bb98e2f"), "Gum", Guid.NewGuid(), "System")));
+        var results = await Task.WhenAll(CreateSnackAsync(new SnackRepositoryCreateOneCommand(0, "(None)", Guid.NewGuid(), "System")),
+                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(1, "Cafe", Guid.NewGuid(), "System")),
+                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(2, "Chocolate", Guid.NewGuid(), "System")),
+                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(3, "Soda", Guid.NewGuid(), "System")),
+                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(4, "Gum", Guid.NewGuid(), "System")));
         return Result.Combine(results);
     }
 }
