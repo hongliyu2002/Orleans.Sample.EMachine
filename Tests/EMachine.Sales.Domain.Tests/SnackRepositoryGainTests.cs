@@ -47,7 +47,7 @@ public class SnackRepositoryGainTests
     public async Task Can_Get_Snack()
     {
         var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
-        var getResult = await grain.GetSnackAsync(new SnackRepositoryGetOneCommand(1, Guid.NewGuid(), "Boss"));
+        var getResult = await grain.GetSnackAsync(new SnackRepositoryGetOneQuery(1, Guid.NewGuid(), "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.Id.Should().Be(1);
         getResult.Value.Name.Should().Be("Cafe");
@@ -57,7 +57,7 @@ public class SnackRepositoryGainTests
     public async Task Can_Get_Snacks()
     {
         var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
-         var getResult = await grain.GetSnacksAsync(new SnackRepositoryGetListCommand(100, 0, Guid.NewGuid(), "Boss"));
+         var getResult = await grain.GetSnacksAsync(new SnackRepositoryGetListQuery(100, 0, Guid.NewGuid(), "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.Count.Should().BeGreaterOrEqualTo(5);
         getResult.Value.ForEach(x => _testOutputHelper.WriteLine(x.ToString()));

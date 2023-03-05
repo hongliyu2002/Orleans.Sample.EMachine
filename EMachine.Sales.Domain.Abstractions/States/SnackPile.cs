@@ -7,8 +7,6 @@ namespace EMachine.Sales.Domain.Abstractions.States;
 [GenerateSerializer]
 public sealed record SnackPile
 {
-    // public static readonly SnackPile Empty = new(0, 0, 0, 0, 0, 0, 0);
-    
     public SnackPile(Snack snack, int quantity, decimal price)
     {
         Snack = Guard.Against.Null(snack, nameof(snack));
@@ -37,11 +35,11 @@ public sealed record SnackPile
     public static Result<SnackPile> Create(Snack snack, int quantity, decimal price)
     {
         return Result.Ok()
-                      // .Verify(snack is not null, "Snack cannot be null.")
+                     .Verify(snack is not null, "Snack cannot be null.")
                      .Verify(quantity >= 0, "Quantity cannot be negative.")
                      .Verify(price >= 0, "Price cannot be negative.")
                      .Verify(price % 0.01m == 0, "The decimal portion of the price cannot be less than 0.01.")
-                     .MapTry(() => new SnackPile(snack, quantity, price));
+                     .MapTry(() => new SnackPile(snack!, quantity, price));
     }
 
     #endregion

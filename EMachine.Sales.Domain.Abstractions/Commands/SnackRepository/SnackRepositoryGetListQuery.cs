@@ -4,9 +4,9 @@ namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackRepositoryGetListCommand : SnackRepositoryCommand
+public sealed record SnackRepositoryGetListQuery : SnackRepositoryQuery
 {
-    public SnackRepositoryGetListCommand(int maxResultCount, int skipCount, Guid traceId, string operatedBy)
+    public SnackRepositoryGetListQuery(int maxResultCount, int skipCount, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
         MaxResultCount = Guard.Against.NegativeOrZero(maxResultCount, nameof(maxResultCount));

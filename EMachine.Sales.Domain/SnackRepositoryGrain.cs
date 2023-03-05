@@ -22,25 +22,25 @@ public class SnackRepositoryGrain : Grain, ISnackRepositoryGrain
     }
 
     /// <inheritdoc />
-    public Task<Result<Snack>> GetSnackAsync(SnackRepositoryGetOneCommand cmd)
+    public Task<Result<Snack>> GetSnackAsync(SnackRepositoryGetOneQuery query)
     {
         return Result.Ok()
-                     .Ensure(_snacks.State.Set.Contains(cmd.Id), $"Snack {cmd.Id} does not exist.")
-                     .BindAsync(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id)
+                     .Ensure(_snacks.State.Set.Contains(query.Id), $"Snack {query.Id} does not exist.")
+                     .BindAsync(() => GrainFactory.GetGrain<ISnackGrain>(query.Id)
                                                   .GetAsync());
     }
 
     /// <inheritdoc />
-    public async Task<Result<ImmutableList<Snack>>> GetSnacksAsync(SnackRepositoryGetListCommand cmd)
+    public async Task<Result<ImmutableList<Snack>>> GetSnacksAsync(SnackRepositoryGetListQuery query)
     {
-        var snackTasks = _snacks.State.Set.Select(id => GrainFactory.GetGrain<ISnackGrain>(id)
-                                                                    .GetAsync());
+        var snackTasks = _snacks.State.Set.Select(id => GrainFactory.GetGrain<ISnackGrain>(id))
+                                .Select(grain => grain.GetAsync());
         var snackResults = await Task.WhenAll(snackTasks.ToArray());
         var snacks = snackResults.Where(r => r is { IsSuccess: true, Value.IsDeleted: false })
                                  .Select(r => r.Value)
                                  .OrderBy(x => x.Name)
-                                 .Skip(cmd.SkipCount)
-                                 .Take(cmd.MaxResultCount);
+                                 .Skip(query.SkipCount)
+                                 .Take(query.MaxResultCount);
         return Result.Ok(snacks.ToImmutableList());
     }
 
@@ -68,32 +68,15 @@ public class SnackRepositoryGrain : Grain, ISnackRepositoryGrain
     }
 
     /// <inheritdoc />
-    public Task<Result> ChangeSnackNameAsync(SnackRepositoryChangeOneNameCommand cmd)
-    {
-        ISnackGrain? grain = null;
-        return Result.Ok()
-                     .Ensure(_snacks.State.Set.Contains(cmd.Id), $"Snack {cmd.Id} does not exist.")
-                     .TapTry(() => grain = GrainFactory.GetGrain<ISnackGrain>(cmd.Id))
-                     .BindTryAsync(() => grain!.ChangeNameAsync(new SnackNameChangeCommand(cmd.Name, cmd.TraceId, cmd.OperatedBy)));
-    }
-
-    /// <inheritdoc />
     public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
         if (_snacks.State.Set.Count == 0)
         {
-            await InitializeDataAsync();
+            await Task.WhenAll(CreateSnackAsync(new SnackRepositoryCreateOneCommand(1, "Cafe", Guid.NewGuid(), "System")),
+                               CreateSnackAsync(new SnackRepositoryCreateOneCommand(2, "Chocolate", Guid.NewGuid(), "System")),
+                               CreateSnackAsync(new SnackRepositoryCreateOneCommand(3, "Soda", Guid.NewGuid(), "System")),
+                               CreateSnackAsync(new SnackRepositoryCreateOneCommand(4, "Gum", Guid.NewGuid(), "System")));
         }
         await base.OnActivateAsync(cancellationToken);
-    }
-
-    private async Task<Result<IEnumerable<Snack>>> InitializeDataAsync()
-    {
-        var results = await Task.WhenAll(CreateSnackAsync(new SnackRepositoryCreateOneCommand(0, "(None)", Guid.NewGuid(), "System")),
-                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(1, "Cafe", Guid.NewGuid(), "System")),
-                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(2, "Chocolate", Guid.NewGuid(), "System")),
-                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(3, "Soda", Guid.NewGuid(), "System")),
-                                         CreateSnackAsync(new SnackRepositoryCreateOneCommand(4, "Gum", Guid.NewGuid(), "System")));
-        return Result.Combine(results);
     }
 }

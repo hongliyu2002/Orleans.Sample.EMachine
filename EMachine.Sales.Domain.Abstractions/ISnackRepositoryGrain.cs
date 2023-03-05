@@ -9,14 +9,12 @@ namespace EMachine.Sales.Domain.Abstractions;
 public interface ISnackRepositoryGrain : IGrainWithGuidKey
 {
     [AlwaysInterleave]
-    Task<Result<Snack>> GetSnackAsync(SnackRepositoryGetOneCommand cmd);
+    Task<Result<Snack>> GetSnackAsync(SnackRepositoryGetOneQuery query);
 
     [AlwaysInterleave]
-    Task<Result<ImmutableList<Snack>>> GetSnacksAsync(SnackRepositoryGetListCommand cmd);
+    Task<Result<ImmutableList<Snack>>> GetSnacksAsync(SnackRepositoryGetListQuery query);
 
     Task<Result<Snack>> CreateSnackAsync(SnackRepositoryCreateOneCommand cmd);
 
     Task<Result> DeleteSnackAsync(SnackRepositoryDeleteOneCommand cmd);
-    
-    Task<Result> ChangeSnackNameAsync(SnackRepositoryChangeOneNameCommand cmd);
 }
