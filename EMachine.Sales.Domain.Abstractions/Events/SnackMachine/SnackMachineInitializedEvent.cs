@@ -3,14 +3,14 @@ using EMachine.Domain.Shared;
 using EMachine.Sales.Domain.Abstractions.States;
 using Fluxera.Guards;
 
-namespace EMachine.Sales.Domain.Abstractions.Commands;
+namespace EMachine.Sales.Domain.Abstractions.Events;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineInitializeCommand : SnackMachineCommand
+public sealed record SnackMachineInitializedEvent : SnackMachineEvent
 {
-    public SnackMachineInitializeCommand(Money moneyInside, ImmutableList<Slot> slots, Guid traceId, string operatedBy)
-        : base(traceId, operatedBy)
+    public SnackMachineInitializedEvent(Guid id, Money moneyInside, ImmutableList<Slot> slots, Guid traceId, string operatedBy)
+        : base(id, traceId, operatedBy)
     {
         MoneyInside = Guard.Against.Null(moneyInside);
         Slots = Guard.Against.Null(slots);

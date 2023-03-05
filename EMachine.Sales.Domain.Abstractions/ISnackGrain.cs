@@ -12,7 +12,7 @@ public interface ISnackGrain : IGrainWithIntegerKey
     
     Task<Result> InitializeAsync(SnackInitializeCommand cmd);
 
-    Task<Result> ChangeNameAsync(SnackNameChangeCommand cmd);
-
     Task<Result> RemoveAsync(SnackRemoveCommand cmd);
+    
+    Task<Result> ChangeNameAsync(SnackNameChangeCommand cmd);
 }

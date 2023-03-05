@@ -15,6 +15,16 @@ public sealed record Money
     public static readonly Money TwentyYuan = new(0, 0, 0, 0, 1, 0, 0);
     public static readonly Money FiftyYuan = new(0, 0, 0, 0, 0, 1, 0);
     public static readonly Money OneHundredYuan = new(0, 0, 0, 0, 0, 0, 1);
+    public static readonly Money[] CoinsAndNotes =
+    {
+        OneYuan,
+        TwoYuan,
+        FiveYuan,
+        TenYuan,
+        TwentyYuan,
+        FiftyYuan,
+        OneHundredYuan
+    };
 
     public Money(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
     {
@@ -115,8 +125,7 @@ public sealed record Money
     {
         money1 = Guard.Against.Null(money1);
         money2 = Guard.Against.Null(money2);
-        var result = Create(money1.Yuan1 + money2.Yuan1, money1.Yuan2 + money2.Yuan2, money1.Yuan5 + money2.Yuan5, money1.Yuan10 + money2.Yuan10, money1.Yuan20 + money2.Yuan20, money1.Yuan50 + money2.Yuan50,
-                            money1.Yuan100 + money2.Yuan100);
+        var result = Create(money1.Yuan1 + money2.Yuan1, money1.Yuan2 + money2.Yuan2, money1.Yuan5 + money2.Yuan5, money1.Yuan10 + money2.Yuan10, money1.Yuan20 + money2.Yuan20, money1.Yuan50 + money2.Yuan50, money1.Yuan100 + money2.Yuan100);
         return result.IsSuccess ? result.Value : throw new InvalidOperationException(result.ToString());
     }
 
@@ -124,8 +133,7 @@ public sealed record Money
     {
         money1 = Guard.Against.Null(money1);
         money2 = Guard.Against.Null(money2);
-        var result = Create(money1.Yuan1 - money2.Yuan1, money1.Yuan2 - money2.Yuan2, money1.Yuan5 - money2.Yuan5, money1.Yuan10 - money2.Yuan10, money1.Yuan20 - money2.Yuan20, money1.Yuan50 - money2.Yuan50,
-                            money1.Yuan100 - money2.Yuan100);
+        var result = Create(money1.Yuan1 - money2.Yuan1, money1.Yuan2 - money2.Yuan2, money1.Yuan5 - money2.Yuan5, money1.Yuan10 - money2.Yuan10, money1.Yuan20 - money2.Yuan20, money1.Yuan50 - money2.Yuan50, money1.Yuan100 - money2.Yuan100);
         return result.IsSuccess ? result.Value : throw new InvalidOperationException(result.ToString());
     }
 

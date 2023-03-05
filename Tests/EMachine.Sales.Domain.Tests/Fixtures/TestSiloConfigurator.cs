@@ -10,7 +10,8 @@ public class TestSiloConfigurator : ISiloConfigurator
     {
         siloBuilder.AddMemoryGrainStorage("PubSubStore")
                    .AddMemoryGrainStorage("SnackStore")
-                   .AddLogStorageBasedLogConsistencyProvider("SnackEventStore")
+                   .AddMemoryGrainStorage("SnackMachineStore")
+                   .AddLogStorageBasedLogConsistencyProvider("EventStore")
                    .AddMemoryStreams("Default");
     }
 }

@@ -12,6 +12,8 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
     [Id(1)]
     public string Name { get; set; } = string.Empty;
 
+    public bool IsCreated => CreatedAt != null;
+
     /// <inheritdoc />
     [Id(2)]
     public DateTimeOffset? CreatedAt { get; set; }
@@ -56,18 +58,18 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
         CreatedBy = evt.OperatedBy;
     }
 
-    public void Apply(SnackNameChangedEvent evt)
-    {
-        Name = evt.Name;
-        LastModifiedAt = DateTimeOffset.UtcNow;
-        LastModifiedBy = evt.OperatedBy;
-    }
-
     public void Apply(SnackRemovedEvent evt)
     {
         DeletedAt = DateTimeOffset.UtcNow;
         DeletedBy = evt.OperatedBy;
         IsDeleted = true;
+    }
+
+    public void Apply(SnackNameChangedEvent evt)
+    {
+        Name = evt.Name;
+        LastModifiedAt = DateTimeOffset.UtcNow;
+        LastModifiedBy = evt.OperatedBy;
     }
 
     #endregion

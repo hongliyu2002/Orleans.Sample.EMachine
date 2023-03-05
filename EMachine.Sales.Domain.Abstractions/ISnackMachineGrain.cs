@@ -9,6 +9,10 @@ public interface ISnackMachineGrain : IGrainWithGuidKey
 {
     [AlwaysInterleave]
     Task<Result<SnackMachine>> GetAsync();
-    
+
     Task<Result> InitializeAsync(SnackMachineInitializeCommand cmd);
+
+    Task<Result> RemoveAsync(SnackMachineRemoveCommand cmd);
+
+    Task<Result> InsertMoneyAsync(SnackMachineInsertMoneyCommand cmd);
 }
