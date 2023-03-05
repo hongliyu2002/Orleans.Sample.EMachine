@@ -40,6 +40,12 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
     [Id(8)]
     public bool IsDeleted { get; set; }
 
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return $"Snack {Id} : {Name}";
+    }
+
     #region Apply
 
     public void Apply(SnackInitializedEvent evt)

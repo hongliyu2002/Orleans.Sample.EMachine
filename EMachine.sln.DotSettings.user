@@ -5,16 +5,10 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming\7.1.0\lib\net7.0\Orleans.Streaming.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\orleans.fluentresults\7.1.0.3\lib\net7.0\Orleans.FluentResults.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=04a91470_002D4324_002D45cc_002Dbce2_002D74f539d44715/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MoneyTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1b12dc1d_002Dc920_002D4072_002D9a2b_002Ddb975c71475b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SnackGrainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::ACE27B14-6E99-4C7C-A942-467B35739D7F::net7.0::EMachine.Domain.Tests.MoneyTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::ACE27B14-6E99-4C7C-A942-467B35739D7F::net7.0::EMachine.Domain.Tests.MoneyGrainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::ACE27B14-6E99-4C7C-A942-467B35739D7F::net7.0::EMachine.Domain.Tests.Sales.SnackGrainTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ee9091ff_002D344a_002D4efb_002D8724_002Db6c111f6c74c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MoneyGrainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::ACE27B14-6E99-4C7C-A942-467B35739D7F::net7.0::EMachine.Domain.Tests.MoneyGrainTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::ACE27B14-6E99-4C7C-A942-467B35739D7F::net7.0::EMachine.Domain.Tests.MoneyTests.Cannot_Create_Negative_Money&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::ACE27B14-6E99-4C7C-A942-467B35739D7F::net7.0::EMachine.Domain.Tests.MoneyTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	
+	</wpf:ResourceDictionary>

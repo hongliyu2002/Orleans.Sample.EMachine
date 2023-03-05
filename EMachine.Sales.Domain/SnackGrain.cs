@@ -19,7 +19,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
 
     /// <inheritdoc />
     public SnackGrain(ILogger<SnackGrain> logger)
-        : base("MemoryStream", "Sales.Snacks")
+        : base("Default", "Sales.Snacks")
     {
         _logger = Guard.Against.Null(logger);
     }

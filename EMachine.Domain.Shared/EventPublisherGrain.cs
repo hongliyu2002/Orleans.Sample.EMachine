@@ -1,5 +1,6 @@
 ﻿using EMachine.Domain.Shared.Events;
 using FlakeId;
+using FlakeId.Extensions;
 using Fluxera.Guards;
 using Orleans.EventSourcing;
 using Orleans.FluentResults;
@@ -39,7 +40,7 @@ public abstract class EventPublisherGrain<TState> : JournaledGrain<TState, Domai
             {
                 return Result.Fail("Raise conditional event failed.");
             }
-            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Id.Create()));
+            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Id.Create().ToUnixTimeMilliseconds()));
             return Result.Ok();
         }
         catch (Exception ex)
@@ -52,7 +53,7 @@ public abstract class EventPublisherGrain<TState> : JournaledGrain<TState, Domai
     {
         try
         {
-            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Id.Create()));
+            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Id.Create().ToUnixTimeMilliseconds()));
             return Result.Ok();
         }
         catch (Exception ex)
