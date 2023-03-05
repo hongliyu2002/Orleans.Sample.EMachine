@@ -43,7 +43,7 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"Snack {Id} : {Name}";
+        return $"Snack with Id:'{Id}' Name:'{Name}'";
     }
 
     #region Apply
