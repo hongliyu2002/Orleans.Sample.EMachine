@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="States" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\EMachine.Domain.Shared\EMachine.Domain.Shared.csproj" />
     </ItemGroup>
 

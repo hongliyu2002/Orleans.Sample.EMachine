@@ -31,7 +31,7 @@ public abstract class EventPublisherGrain<TState> : JournaledGrain<TState, Domai
         return base.OnActivateAsync(cancellationToken);
     }
 
-    protected async Task<Result> SaveAndPublishAsync(DomainEvent evt)
+    protected async Task<Result> PublishAsync(DomainEvent evt)
     {
         try
         {

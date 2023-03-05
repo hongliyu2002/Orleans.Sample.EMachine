@@ -1,36 +1,16 @@
 ﻿using EMachine.Sales.Domain.Abstractions.Events;
-using Fluxera.Entity;
 using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
-using Fluxera.Guards;
 
-namespace EMachine.Sales.Domain;
+namespace EMachine.Sales.Domain.Abstractions.States;
 
 [GenerateSerializer]
-public sealed class Snack : Entity<Snack, Guid>, ISoftDeleteObject, IAuditedObject
+public sealed class Snack : ISoftDeleteObject, IAuditedObject
 {
-    /// <inheritdoc />
-    public Snack()
-    {
-        Name = string.Empty;
-        CreatedBy = string.Empty;
-        LastModifiedBy = string.Empty;
-        DeletedBy = string.Empty;
-    }
-
-    /// <inheritdoc />
-    public Snack(Guid id, string name)
-        : this()
-    {
-        ID = Guard.Against.Empty(id, nameof(id));
-        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
-    }
-
-    /// <inheritdoc />
     [Id(0)]
-    public override Guid ID { get; set; }
+    public Guid Id { get; set; }
 
     [Id(1)]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <inheritdoc />
     [Id(2)]
@@ -46,23 +26,25 @@ public sealed class Snack : Entity<Snack, Guid>, ISoftDeleteObject, IAuditedObje
 
     /// <inheritdoc />
     [Id(5)]
-    public string CreatedBy { get; set; }
+    public string CreatedBy { get; set; } = string.Empty;
 
     /// <inheritdoc />
     [Id(6)]
-    public string LastModifiedBy { get; set; }
+    public string LastModifiedBy { get; set; } = string.Empty;
 
     /// <inheritdoc />
     [Id(7)]
-    public string DeletedBy { get; set; }
+    public string DeletedBy { get; set; } = string.Empty;
 
     /// <inheritdoc />
     [Id(8)]
     public bool IsDeleted { get; set; }
 
+    #region Apply
+
     public void Apply(SnackInitializedEvent evt)
     {
-        ID = evt.Id;
+        Id = evt.Id;
         Name = evt.Name;
         CreatedAt = DateTimeOffset.UtcNow;
         CreatedBy = evt.OperatedBy;
@@ -81,4 +63,7 @@ public sealed class Snack : Entity<Snack, Guid>, ISoftDeleteObject, IAuditedObje
         DeletedBy = evt.OperatedBy;
         IsDeleted = true;
     }
+
+    #endregion
+
 }
