@@ -1,4 +1,5 @@
-﻿using EMachine.Sales.Domain.Abstractions;
+﻿using System.Collections.Immutable;
+using EMachine.Sales.Domain.Abstractions;
 using EMachine.Sales.Domain.Abstractions.Commands;
 using EMachine.Sales.Domain.Abstractions.States;
 using Fluxera.Guards;
@@ -30,7 +31,7 @@ public class SnackRepositoryGrain : Grain, ISnackRepositoryGrain
     }
 
     /// <inheritdoc />
-    public async Task<Result<IEnumerable<Snack>>> GetSnacksAsync(SnackRepositoryGetListCommand cmd)
+    public async Task<Result<ImmutableList<Snack>>> GetSnacksAsync(SnackRepositoryGetListCommand cmd)
     {
         var snackTasks = _snacks.State.Set.Select(id => GrainFactory.GetGrain<ISnackGrain>(id)
                                                                     .GetAsync());
@@ -40,7 +41,7 @@ public class SnackRepositoryGrain : Grain, ISnackRepositoryGrain
                                  .OrderBy(x => x.Name)
                                  .Skip(cmd.SkipCount)
                                  .Take(cmd.MaxResultCount);
-        return Result.Ok(snacks);
+        return Result.Ok(snacks.ToImmutableList());
     }
 
     /// <inheritdoc />

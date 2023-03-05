@@ -18,7 +18,7 @@ public class MoneyGrain : Grain, IMoneyGrain
     private readonly IPersistentState<MoneyState> _money;
 
     /// <inheritdoc />
-    public MoneyGrain([PersistentState("Money", "MemoryStore")] IPersistentState<MoneyState> money)
+    public MoneyGrain([PersistentState("Money", "MoneyStore")] IPersistentState<MoneyState> money)
     {
         _money = money;
     }

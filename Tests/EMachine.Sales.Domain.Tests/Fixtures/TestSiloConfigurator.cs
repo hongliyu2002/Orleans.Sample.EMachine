@@ -1,6 +1,6 @@
 ﻿using Orleans.TestingHost;
 
-namespace EMachine.Domain.Tests.Fixtures;
+namespace EMachine.Sales.Domain.Tests.Fixtures;
 
 public class TestSiloConfigurator : ISiloConfigurator
 {
@@ -9,8 +9,8 @@ public class TestSiloConfigurator : ISiloConfigurator
     public void Configure(ISiloBuilder siloBuilder)
     {
         siloBuilder.AddMemoryGrainStorage("PubSubStore")
-                   .AddMemoryGrainStorage("MoneyStore")
-                   .AddLogStorageBasedLogConsistencyProvider("MoneyEventStore")
+                   .AddMemoryGrainStorage("SnackStore")
+                   .AddLogStorageBasedLogConsistencyProvider("SnackEventStore")
                    .AddMemoryStreams("Default");
     }
 }

@@ -1,4 +1,5 @@
-﻿using EMachine.Sales.Domain.Abstractions.Commands;
+﻿using System.Collections.Immutable;
+using EMachine.Sales.Domain.Abstractions.Commands;
 using EMachine.Sales.Domain.Abstractions.States;
 using Orleans.Concurrency;
 using Orleans.FluentResults;
@@ -11,7 +12,7 @@ public interface ISnackRepositoryGrain : IGrainWithGuidKey
     Task<Result<Snack>> GetSnackAsync(SnackRepositoryGetOneCommand cmd);
 
     [AlwaysInterleave]
-    Task<Result<IEnumerable<Snack>>> GetSnacksAsync(SnackRepositoryGetListCommand cmd);
+    Task<Result<ImmutableList<Snack>>> GetSnacksAsync(SnackRepositoryGetListCommand cmd);
 
     Task<Result<Snack>> CreateSnackAsync(SnackRepositoryCreateOneCommand cmd);
 

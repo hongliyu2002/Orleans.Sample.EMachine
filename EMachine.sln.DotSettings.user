@@ -5,10 +5,12 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming\7.1.0\lib\net7.0\Orleans.Streaming.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\orleans.fluentresults\7.1.0.3\lib\net7.0\Orleans.FluentResults.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1b12dc1d_002Dc920_002D4072_002D9a2b_002Ddb975c71475b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SnackGrainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::ACE27B14-6E99-4C7C-A942-467B35739D7F::net7.0::EMachine.Domain.Tests.Sales.SnackGrainTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=18d7d4b2_002D0f56_002D4c1d_002Daa5b_002D6d3ace3ad201/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Tests&amp;gt;\&amp;lt;EMachine.Domain.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;EMachine.Domain.Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Sales.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;Sales&amp;gt;\&amp;lt;EMachine.Sales.Domain.Tests&amp;gt;" /&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
 	
 	</wpf:ResourceDictionary>
