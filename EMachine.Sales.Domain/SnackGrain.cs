@@ -28,6 +28,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     public Task<Result<Snack>> GetAsync()
     {
         return Task.FromResult(Result.Ok(State)
+                                     .Ensure(State.IsDeleted == false, "Snack is already removed.")
                                      .Ensure(State.CreatedAt != null, "Snack is not initialized."));
     }
 
@@ -35,10 +36,14 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     public Task<Result> InitializeAsync(SnackInitializeCommand cmd)
     {
         var id = this.GetPrimaryKey();
-        return (State.CreatedAt == null) switch
+        return State.IsDeleted switch
                {
-                   true => PublishAsync(new SnackInitializedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy)),
-                   false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackAlreadyExist.Value, $"Snack {id} already exist.", cmd.TraceId, cmd.OperatedBy))
+                   true => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, $"Snack {id} has already removed.", cmd.TraceId, cmd.OperatedBy)),
+                   false => (State.CreatedAt == null) switch
+                            {
+                                true => PublishAsync(new SnackInitializedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy)),
+                                false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackAlreadyExist.Value, $"Snack {id} already exist.", cmd.TraceId, cmd.OperatedBy))
+                            }
                };
     }
 
@@ -46,10 +51,14 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     public Task<Result> ChangeNameAsync(SnackNameChangeCommand cmd)
     {
         var id = this.GetPrimaryKey();
-        return (State.CreatedAt != null) switch
+        return State.IsDeleted switch
                {
-                   true => PublishAsync(new SnackNameChangedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy)),
-                   false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy))
+                   true => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, $"Snack {id} has already removed.", cmd.TraceId, cmd.OperatedBy)),
+                   false => (State.CreatedAt == null) switch
+                            {
+                                true => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy)),
+                                false => PublishAsync(new SnackNameChangedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy))
+                            }
                };
     }
 
@@ -57,15 +66,14 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     public Task<Result> RemoveAsync(SnackRemoveCommand cmd)
     {
         var id = this.GetPrimaryKey();
-        return (State.CreatedAt != null) switch
+        return State.IsDeleted switch
                {
-                   true => !State.IsDeleted switch
-                           {
-                               true => PublishAsync(new SnackRemovedEvent(id, cmd.TraceId, cmd.OperatedBy)),
-                               false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, $"Snack {id} has already removed.", cmd.TraceId,
-                                                                                      cmd.OperatedBy))
-                           },
-                   false => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy))
+                   true => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, $"Snack {id} has already removed.", cmd.TraceId, cmd.OperatedBy)),
+                   false => (State.CreatedAt == null) switch
+                            {
+                                true => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackDoesNotExist.Value, $"Snack {id} does not exist.", cmd.TraceId, cmd.OperatedBy)),
+                                false => PublishAsync(new SnackRemovedEvent(id, cmd.TraceId, cmd.OperatedBy))
+                            }
                };
     }
 }

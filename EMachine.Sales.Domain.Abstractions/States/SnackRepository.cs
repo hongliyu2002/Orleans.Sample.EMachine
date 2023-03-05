@@ -4,5 +4,5 @@
 public sealed class SnackRepository
 {
     [Id(0)]
-    public HashSet<Guid> Set { get; set; }
+    public HashSet<Guid> Set { get; set; } = new();
 }
