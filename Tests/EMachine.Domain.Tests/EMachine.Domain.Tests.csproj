@@ -38,7 +38,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\EMachine.Domain.Shared\EMachine.Domain.Shared.csproj" />
+        <ProjectReference Include="..\..\EMachine.Domain.Shared\EMachine.Domain.Shared.csproj" />
     </ItemGroup>
 
 </Project>

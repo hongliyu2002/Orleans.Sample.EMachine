@@ -29,9 +29,7 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
     public Task<Result<SnackMachine>> GetAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok(State)
-                                     .Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.")
-                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
+        return Task.FromResult(Result.Ok(State).Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
     }
 
     /// <inheritdoc />

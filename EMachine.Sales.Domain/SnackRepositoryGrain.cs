@@ -24,23 +24,15 @@ public class SnackRepositoryGrain : Grain, ISnackRepositoryGrain
     /// <inheritdoc />
     public Task<Result<Snack>> GetSnackAsync(SnackRepositoryGetOneQuery query)
     {
-        return Result.Ok()
-                     .Ensure(_snacks.State.Set.Contains(query.Id), $"Snack {query.Id} does not exist.")
-                     .BindAsync(() => GrainFactory.GetGrain<ISnackGrain>(query.Id)
-                                                  .GetAsync());
+        return Result.Ok().Ensure(_snacks.State.Set.Contains(query.Id), $"Snack {query.Id} does not exist.").BindAsync(() => GrainFactory.GetGrain<ISnackGrain>(query.Id).GetAsync());
     }
 
     /// <inheritdoc />
     public async Task<Result<ImmutableList<Snack>>> GetSnacksAsync(SnackRepositoryGetListQuery query)
     {
-        var snackTasks = _snacks.State.Set.Select(id => GrainFactory.GetGrain<ISnackGrain>(id))
-                                .Select(grain => grain.GetAsync());
+        var snackTasks = _snacks.State.Set.Select(id => GrainFactory.GetGrain<ISnackGrain>(id)).Select(grain => grain.GetAsync());
         var snackResults = await Task.WhenAll(snackTasks.ToArray());
-        var snacks = snackResults.Where(r => r is { IsSuccess: true, Value.IsDeleted: false })
-                                 .Select(r => r.Value)
-                                 .OrderBy(x => x.Name)
-                                 .Skip(query.SkipCount)
-                                 .Take(query.MaxResultCount);
+        var snacks = snackResults.Where(r => r is { IsSuccess: true, Value.IsDeleted: false }).Select(r => r.Value).OrderBy(x => x.Name).Skip(query.SkipCount).Take(query.MaxResultCount);
         return Result.Ok(snacks.ToImmutableList());
     }
 
@@ -72,9 +64,7 @@ public class SnackRepositoryGrain : Grain, ISnackRepositoryGrain
     {
         if (_snacks.State.Set.Count == 0)
         {
-            await Task.WhenAll(CreateSnackAsync(new SnackRepositoryCreateOneCommand(1, "Cafe", Guid.NewGuid(), "System")),
-                               CreateSnackAsync(new SnackRepositoryCreateOneCommand(2, "Chocolate", Guid.NewGuid(), "System")),
-                               CreateSnackAsync(new SnackRepositoryCreateOneCommand(3, "Soda", Guid.NewGuid(), "System")),
+            await Task.WhenAll(CreateSnackAsync(new SnackRepositoryCreateOneCommand(1, "Cafe", Guid.NewGuid(), "System")), CreateSnackAsync(new SnackRepositoryCreateOneCommand(2, "Chocolate", Guid.NewGuid(), "System")), CreateSnackAsync(new SnackRepositoryCreateOneCommand(3, "Soda", Guid.NewGuid(), "System")),
                                CreateSnackAsync(new SnackRepositoryCreateOneCommand(4, "Gum", Guid.NewGuid(), "System")));
         }
         await base.OnActivateAsync(cancellationToken);

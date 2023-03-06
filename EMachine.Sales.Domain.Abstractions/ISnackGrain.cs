@@ -9,10 +9,10 @@ public interface ISnackGrain : IGrainWithIntegerKey
 {
     [AlwaysInterleave]
     Task<Result<Snack>> GetAsync();
-    
+
     Task<Result> InitializeAsync(SnackInitializeCommand cmd);
 
     Task<Result> RemoveAsync(SnackRemoveCommand cmd);
-    
+
     Task<Result> ChangeNameAsync(SnackNameChangeCommand cmd);
 }

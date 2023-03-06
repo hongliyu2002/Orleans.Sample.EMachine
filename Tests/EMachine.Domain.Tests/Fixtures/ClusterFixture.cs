@@ -7,9 +7,7 @@ public class ClusterFixture : IAsyncLifetime
 {
     public ClusterFixture()
     {
-        Cluster = new TestClusterBuilder().AddClientBuilderConfigurator<TestClientBuilderConfigurator>()
-                                          .AddSiloBuilderConfigurator<TestSiloConfigurator>()
-                                          .Build();
+        Cluster = new TestClusterBuilder().AddClientBuilderConfigurator<TestClientBuilderConfigurator>().AddSiloBuilderConfigurator<TestSiloConfigurator>().Build();
     }
 
     public TestCluster Cluster { get; }
@@ -23,7 +21,6 @@ public class ClusterFixture : IAsyncLifetime
     /// <inheritdoc />
     public Task DisposeAsync()
     {
-        return Cluster.DisposeAsync()
-                      .AsTask();
+        return Cluster.DisposeAsync().AsTask();
     }
 }
