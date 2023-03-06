@@ -35,7 +35,7 @@ public sealed record SnackPile
     public static Result<SnackPile> Create(Snack snack, int quantity, decimal price)
     {
         return Result.Ok()
-                     .Verify(snack is not null, "Snack cannot be null.")
+                     .Verify(snack != null, "Snack cannot be null.")
                      .Verify(quantity >= 0, "Quantity cannot be negative.")
                      .Verify(price >= 0, "Price cannot be negative.")
                      .Verify(price % 0.01m == 0, "The decimal portion of the price cannot be less than 0.01.")
@@ -44,18 +44,17 @@ public sealed record SnackPile
 
     #endregion
 
-    #region Pop One
+    #region Try Pop
 
-    public bool CanPopOne()
+    public bool TryPopOne(out SnackPile? snackPile)
     {
-        return Quantity >= 1;
-    }
-
-    public Result<SnackPile> PopOne()
-    {
-        return Result.Ok()
-                     .Ensure(CanPopOne(), "Insufficient snack.")
-                     .MapTry(() => new SnackPile(Snack, Quantity - 1, Price));
+        if (Quantity < 1)
+        {
+            snackPile = null;
+            return false;
+        }
+        snackPile = new SnackPile(Snack, Quantity - 1, Price);
+        return true;
     }
 
     #endregion

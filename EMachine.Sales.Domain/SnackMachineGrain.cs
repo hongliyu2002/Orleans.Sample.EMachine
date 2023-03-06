@@ -111,6 +111,8 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.AmountInTransaction > 0m, $"Snack machine {id} is not in transaction.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotInTransaction.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
+                     .EnsureAsync(State.MoneyInside.CanAllocate(State.AmountInTransaction, out _), $"Not enough change in the snack machine {id}.")
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotEnoughChange.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackMachineReturnedMoneyEvent(id, cmd.TraceId, cmd.OperatedBy)));
     }
 
@@ -123,7 +125,7 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated, $"Snack machine {id} is not initialized.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
-                     .EnsureAsync(SlotExists(cmd.Position), $"Slot at position {cmd.Position} of snack machine {id} does not exist.")
+                     .EnsureAsync(State.TryGetSlot(cmd.Position, out _), $"Slot at position {cmd.Position} of snack machine {id} does not exist.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotNotExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackMachineLoadedSnacksEvent(id, cmd.Position, cmd.SnackPile, cmd.TraceId, cmd.OperatedBy)));
     }
@@ -137,34 +139,16 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated, $"Snack machine {id} is not initialized.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
-                     .EnsureAsync(TryGetSnackPile(cmd.Position, out var snackPile), $"Snack pile in the slot at position {cmd.Position} of snack machine {id} does not exist.")
+                     .EnsureAsync(State.TryGetSlot(cmd.Position, out _), $"Slot at position {cmd.Position} of snack machine {id} does not exist.")
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotNotExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
+                     .EnsureAsync(State.TryGetSnackPile(cmd.Position, out var snackPile), $"Snack pile of the slot at position {cmd.Position} in the snack machine {id} does not exist.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotSnackPileNotExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
-                     .EnsureAsync(State.AmountInTransaction < snackPile!.Price, $"Not enough money (￥{State.AmountInTransaction}) to buy the {snackPile.Snack} (￥{snackPile.Price}) in the snack machine {id}.")
+                     .EnsureAsync(snackPile!.TryPopOne(out _), $"Not enough snack in the snack pile of the slot at position {cmd.Position} in the snack machine {id}.")
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotEnoughSnack.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
+                     .EnsureAsync(State.AmountInTransaction < snackPile.Price, $"Not enough money (￥{State.AmountInTransaction}) to buy the {snackPile.Snack} (￥{snackPile.Price}) in the snack machine {id}.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotEnoughMoney.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
-                     .EnsureAsync(State.MoneyInside.CanAllocate(State.AmountInTransaction - snackPile.Price, out _), $"Not enough change in the snack machine {id}.")
+                     .EnsureAsync(State.MoneyInside.CanAllocate(State.AmountInTransaction - snackPile.Price, out _), $"Not enough change in the snack machine {id} after purchase.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotEnoughChange.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackMachineBoughtSnackEvent(id, cmd.Position, cmd.TraceId, cmd.OperatedBy)));
-    }
-
-    private bool SlotExists(int position)
-    {
-        return State.Slots.Any(x => x.Position == position);
-    }
-
-    private bool TryGetSlot(int position, out Slot? slot)
-    {
-        slot = State.Slots.FirstOrDefault(x => x.Position == position);
-        return slot != null;
-    }
-
-    private bool TryGetSnackPile(int position, out SnackPile? snackPile)
-    {
-        if (TryGetSlot(position, out var slot))
-        {
-            snackPile = slot!.SnackPile;
-            return snackPile != null;
-        }
-        snackPile = null;
-        return false;
     }
 }
