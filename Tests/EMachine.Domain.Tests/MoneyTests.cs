@@ -1,12 +1,11 @@
 ﻿using EMachine.Domain.Shared;
-using EMachine.Domain.Tests.Fixtures;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace EMachine.Domain.Tests;
 
-[Collection(TestCollectionFixture.Name)]
+[Collection(MoneyCollectionFixture.Name)]
 public class MoneyTests
 {
     private readonly ITestOutputHelper _testOutputHelper;
@@ -110,14 +109,14 @@ public class MoneyTests
                      };
         action.Should().Throw<InvalidOperationException>();
     }
-    
+
     [Fact]
     public void Can_Create_Money()
     {
         var moneyResult = Money.Create(1, 2, 3, 4, 5, 6, 7);
         moneyResult.IsSuccess.Should().BeTrue();
     }
-    
+
     [Fact]
     public void Cannot_Create_Negative_Money()
     {

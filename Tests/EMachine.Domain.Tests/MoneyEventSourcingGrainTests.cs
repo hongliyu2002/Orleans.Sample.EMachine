@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 
 namespace EMachine.Domain.Tests;
 
-[Collection(TestCollectionFixture.Name)]
+[Collection(MoneyCollectionFixture.Name)]
 public class MoneyEventSourcingGrainTests
 {
     private readonly TestCluster _cluster;
@@ -25,10 +25,8 @@ public class MoneyEventSourcingGrainTests
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<IMoneyEsGrain>(id);
         var getResult = await grain.GetAsync();
-        getResult.IsSuccess.Should()
-                 .Be(true);
-        getResult.Value.Should()
-                 .Be(Money.Zero);
+        getResult.IsSuccess.Should().Be(true);
+        getResult.Value.Should().Be(Money.Zero);
         _testOutputHelper.WriteLine(getResult.ToString());
     }
 
@@ -38,13 +36,10 @@ public class MoneyEventSourcingGrainTests
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<IMoneyEsGrain>(id);
         var result = await grain.AddAsync(Money.FiftyYuan);
-        result.IsSuccess.Should()
-              .Be(true);
+        result.IsSuccess.Should().Be(true);
         var getResult = await grain.GetAsync();
-        getResult.IsSuccess.Should()
-                 .Be(true);
-        getResult.Value.Should()
-                 .Be(Money.FiftyYuan);
+        getResult.IsSuccess.Should().Be(true);
+        getResult.Value.Should().Be(Money.FiftyYuan);
         _testOutputHelper.WriteLine(getResult.ToString());
     }
 }

@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace EMachine.Sales.Domain.Tests;
 
-[Collection(TestCollectionFixture.Name)]
+[Collection(SnackRepositoryCollectionFixture.Name)]
 public class SnackRepositoryGainTests
 {
     private readonly TestCluster _cluster;
@@ -31,7 +31,7 @@ public class SnackRepositoryGainTests
         createResult.Value.CreatedBy.Should().Be("Leo");
         _testOutputHelper.WriteLine(createResult.ToString());
     }
-    
+
     [Fact]
     public async Task Can_Delete_Snack()
     {
@@ -57,7 +57,7 @@ public class SnackRepositoryGainTests
     public async Task Can_Get_Snacks()
     {
         var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
-         var getResult = await grain.GetSnacksAsync(new SnackRepositoryGetListQuery(100, 0, Guid.NewGuid(), "Boss"));
+        var getResult = await grain.GetSnacksAsync(new SnackRepositoryGetListQuery(100, 0, Guid.NewGuid(), "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.Count.Should().BeGreaterOrEqualTo(5);
         getResult.Value.ForEach(x => _testOutputHelper.WriteLine(x.ToString()));

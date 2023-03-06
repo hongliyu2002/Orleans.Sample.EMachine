@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 
 namespace EMachine.Domain.Tests;
 
-[Collection(TestCollectionFixture.Name)]
+[Collection(MoneyCollectionFixture.Name)]
 public class MoneyGrainTests
 {
     private readonly TestCluster _cluster;
