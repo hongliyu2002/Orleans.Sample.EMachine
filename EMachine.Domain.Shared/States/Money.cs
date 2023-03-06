@@ -77,25 +77,17 @@ public sealed record Money
 
     #endregion
 
-    #region Allocate
+    #region Try Allocate
 
-    public bool CanAllocate(decimal amount, out Money allocatedMoney)
+    public bool TryAllocate(decimal amount, out Money moneyAllocated)
     {
         if (amount < 0)
         {
-            allocatedMoney = Zero;
+            moneyAllocated = Zero;
             return false;
         }
-        allocatedMoney = AllocateCore(amount);
-        return allocatedMoney.Amount == amount;
-    }
-
-    public Result<Money> Allocate(decimal amount)
-    {
-        return Result.Ok()
-                     .Ensure(amount >= 0, $"Invalid amount: {amount}.")
-                     .Ensure(CanAllocate(amount, out var allocatedMoney), "Cannot allocate money, lack of change.")
-                     .Map(() => allocatedMoney);
+        moneyAllocated = AllocateCore(amount);
+        return moneyAllocated.Amount == amount;
     }
 
     private Money AllocateCore(decimal amount)

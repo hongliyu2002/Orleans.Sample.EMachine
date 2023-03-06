@@ -52,7 +52,7 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"SnackMachine with Id:'{Id}' MoneyInside:'{MoneyInside}' AmountInTransaction:{AmountInTransaction} Slots:'{string.Join(';', Slots.Select(s => s.ToString()))}'";
+        return $"SnackMachine with Id:'{Id}' MoneyInside:'{MoneyInside}' AmountInTransaction:{AmountInTransaction} Slots:'{string.Join(';', Slots.Select(slot => slot.ToString()))}'";
     }
 
     #region Try Get
@@ -61,17 +61,6 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
     {
         slot = Slots.FirstOrDefault(x => x.Position == position);
         return slot != null;
-    }
-
-    public bool TryGetSnackPile(int position, out SnackPile? snackPile)
-    {
-        if (TryGetSlot(position, out var slot))
-        {
-            snackPile = slot!.SnackPile;
-            return snackPile != null;
-        }
-        snackPile = null;
-        return false;
     }
 
     #endregion
@@ -118,14 +107,12 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
 
     public void Apply(SnackMachineReturnedMoneyEvent evt)
     {
-        var moneyToReturnResult = MoneyInside.Allocate(AmountInTransaction);
-        if (moneyToReturnResult.IsFailed)
+        if (MoneyInside.TryAllocate(AmountInTransaction, out var moneyAllocated))
         {
-            return;
+            MoneyInside -= moneyAllocated;
+            LastModifiedAt = DateTimeOffset.UtcNow;
+            LastModifiedBy = evt.OperatedBy;
         }
-        MoneyInside -= moneyToReturnResult.Value;
-        LastModifiedAt = DateTimeOffset.UtcNow;
-        LastModifiedBy = evt.OperatedBy;
     }
 
     public void Apply(SnackMachineLoadedSnacksEvent evt)
@@ -140,7 +127,7 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
 
     public void Apply(SnackMachineBoughtSnackEvent evt)
     {
-        if (TryGetSlot(evt.Position, out var slot) && slot is { SnackPile: { } } && slot.SnackPile.TryPopOne(out var snackPilePopped) && snackPilePopped != null)
+        if (TryGetSlot(evt.Position, out var slot) && slot is { SnackPile: { } } && slot.SnackPile.TryPopOne(out var snackPilePopped) && snackPilePopped is { })
         {
             slot.SnackPile = snackPilePopped;
             AmountInTransaction -= snackPilePopped.Price;

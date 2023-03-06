@@ -16,7 +16,7 @@ public sealed class ErrorCodes : Enumeration<ErrorCodes, int>
     public static readonly ErrorCodes SnackMachineSingleCoinOrNoteRequired = new(206, nameof(SnackMachineSingleCoinOrNoteRequired));
     public static readonly ErrorCodes SnackMachineSlotNotExists = new(207, nameof(SnackMachineSlotNotExists));
     public static readonly ErrorCodes SnackMachineSlotSnackPileNotExists = new(208, nameof(SnackMachineSlotSnackPileNotExists));
-    public static readonly ErrorCodes SnackMachineNotEnoughSnack = new(209, nameof(SnackMachineNotEnoughSnack));
+    public static readonly ErrorCodes SnackMachineSlotSnackPileNotEnoughSnack = new(209, nameof(SnackMachineSlotSnackPileNotEnoughSnack));
     public static readonly ErrorCodes SnackMachineNotEnoughMoney = new(210, nameof(SnackMachineNotEnoughMoney));
     public static readonly ErrorCodes SnackMachineNotEnoughChange = new(211, nameof(SnackMachineNotEnoughChange));
 

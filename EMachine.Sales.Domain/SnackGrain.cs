@@ -30,7 +30,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     {
         var id = this.GetPrimaryKeyLong();
         return Task.FromResult(Result.Ok(State)
-                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
+                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
                                      .Ensure(State.IsCreated, $"Snack {id} is not initialized."));
     }
 
@@ -39,7 +39,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     {
         var id = this.GetPrimaryKeyLong();
         return Result.Ok()
-                     .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
+                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated == false, $"Snack {id} already exists.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
@@ -51,7 +51,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     {
         var id = this.GetPrimaryKeyLong();
         return Result.Ok()
-                     .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
+                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated, $"Snack {id} is not initialized.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
@@ -63,7 +63,7 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     {
         var id = this.GetPrimaryKeyLong();
         return Result.Ok()
-                     .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
+                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated, $"Snack {id} is not initialized.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
