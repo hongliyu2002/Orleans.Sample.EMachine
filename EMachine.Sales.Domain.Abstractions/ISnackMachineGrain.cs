@@ -14,5 +14,15 @@ public interface ISnackMachineGrain : IGrainWithGuidKey
 
     Task<Result> RemoveAsync(SnackMachineRemoveCommand cmd);
 
+    Task<Result> LoadMoneyAsync(SnackMachineLoadMoneyCommand cmd);
+
+    Task<Result> UnloadMoneyAsync(SnackMachineUnloadMoneyCommand cmd);
+
     Task<Result> InsertMoneyAsync(SnackMachineInsertMoneyCommand cmd);
+
+    Task<Result> ReturnMoneyAsync(SnackMachineReturnMoneyCommand cmd);
+
+    Task<Result> LoadSnacksAsync(SnackMachineLoadSnacksCommand cmd);
+
+    Task<Result> BuySnackAsync(SnackMachineBuySnackCommand cmd);
 }

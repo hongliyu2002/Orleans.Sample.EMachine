@@ -1,4 +1,5 @@
 ﻿using EMachine.Domain.Shared;
+using EMachine.Domain.Shared.Extensions;
 using EMachine.Sales.Domain.Abstractions;
 using EMachine.Sales.Domain.Abstractions.Commands;
 using EMachine.Sales.Domain.Abstractions.Events;
@@ -39,9 +40,9 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
         var id = this.GetPrimaryKeyLong();
         return Result.Ok()
                      .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
-                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated == false, $"Snack {id} already exists.")
-                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackAlreadyExists.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackInitializedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy)));
     }
 
@@ -51,9 +52,9 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
         var id = this.GetPrimaryKeyLong();
         return Result.Ok()
                      .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
-                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated, $"Snack {id} is not initialized.")
-                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackIsNotInitialized.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackRemovedEvent(id, cmd.TraceId, cmd.OperatedBy)));
     }
 
@@ -63,9 +64,9 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
         var id = this.GetPrimaryKeyLong();
         return Result.Ok()
                      .Ensure(State.IsDeleted == false, $"Snack {id} has already removed.")
-                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackHasRemoved.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackRemoved.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.IsCreated, $"Snack {id} is not initialized.")
-                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, SnackErrorCodes.SnackIsNotInitialized.Value, string.Join(';', errors.Select(e => e.ToString())), cmd.TraceId, cmd.OperatedBy)))
+                     .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackNameChangedEvent(id, cmd.Name, cmd.TraceId, cmd.OperatedBy)));
     }
 }
