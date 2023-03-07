@@ -13,7 +13,7 @@ using Orleans.Providers;
 namespace EMachine.Sales.Domain;
 
 [LogConsistencyProvider(ProviderName = "EventStore")]
-[StorageProvider(ProviderName = "SnackMachineStore")]
+[StorageProvider(ProviderName = "SalesStore")]
 public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnackMachineGrain
 {
     private readonly ILogger<SnackMachineGrain> _logger;

@@ -13,7 +13,7 @@ using Orleans.Providers;
 namespace EMachine.Sales.Domain;
 
 [LogConsistencyProvider(ProviderName = "EventStore")]
-[StorageProvider(ProviderName = "SnackStore")]
+[StorageProvider(ProviderName = "SalesStore")]
 public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
 {
     private readonly ILogger<SnackGrain> _logger;
@@ -29,7 +29,9 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     public Task<Result<Snack>> GetAsync()
     {
         var id = this.GetPrimaryKeyLong();
-        return Task.FromResult(Result.Ok(State).Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.").Ensure(State.IsCreated, $"Snack {id} is not initialized."));
+        return Task.FromResult(Result.Ok(State)
+                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
+                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized."));
     }
 
     /// <inheritdoc />

@@ -8,6 +8,11 @@ public class TestSiloConfigurator : ISiloConfigurator
     /// <inheritdoc />
     public void Configure(ISiloBuilder siloBuilder)
     {
-        siloBuilder.AddMemoryGrainStorage("PubSubStore").AddMemoryGrainStorage("SnackStore").AddMemoryGrainStorage("SnackMachineStore").AddLogStorageBasedLogConsistencyProvider("EventStore").AddMemoryStreams("Default");
+        siloBuilder.AddMemoryGrainStorage("PubSubStore")
+                   .AddMemoryGrainStorage("SalesStore")
+                   .AddMemoryGrainStorage("ManagementStore")
+                   .AddMemoryGrainStorage("BankingStore")
+                   .AddLogStorageBasedLogConsistencyProvider("EventStore")
+                   .AddMemoryStreams("Default");
     }
 }

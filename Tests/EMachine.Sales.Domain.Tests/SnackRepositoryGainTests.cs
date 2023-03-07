@@ -26,9 +26,11 @@ public class SnackRepositoryGainTests
         var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
         var createResult = await grain.CreateSnackAsync(new SnackRepositoryCreateOneCommand(1000, "Apple", Guid.NewGuid(), "Leo"));
         createResult.IsSuccess.Should().Be(true);
-        createResult.Value.Id.Should().Be(1000);
-        createResult.Value.Name.Should().Be("Apple");
-        createResult.Value.CreatedBy.Should().Be("Leo");
+        var result = await createResult.Value.GetAsync();
+        result.IsSuccess.Should().Be(true);
+        result.Value.Id.Should().Be(1000);
+        result.Value.Name.Should().Be("Apple");
+        result.Value.CreatedBy.Should().Be("Leo");
         _testOutputHelper.WriteLine(createResult.ToString());
     }
 
@@ -49,8 +51,9 @@ public class SnackRepositoryGainTests
         var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
         var getResult = await grain.GetSnackAsync(new SnackRepositoryGetOneQuery(1, Guid.NewGuid(), "Boss"));
         getResult.IsSuccess.Should().BeTrue();
-        getResult.Value.Id.Should().Be(1);
-        getResult.Value.Name.Should().Be("Cafe");
+        var result = await getResult.Value.GetAsync();
+        result.Value.Id.Should().Be(1);
+        result.Value.Name.Should().Be("Cafe");
     }
 
     [Fact]

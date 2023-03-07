@@ -26,6 +26,7 @@
       &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Domain.Tests.SnackRepositoryGainTests&lt;/TestId&gt;&#xD;
     &lt;/TestAncestor&gt;&#xD;
     &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;EMachine.Domain.Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Sales.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;Sales&amp;gt;\&amp;lt;EMachine.Sales.Domain.Tests&amp;gt;" /&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
