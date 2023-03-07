@@ -18,7 +18,7 @@ public class SalesEntityFrameworkCoreModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void ConfigureServices(IServiceConfigurationContext context)
     {
-        // Add the repository contributor for the 'Default' repository.
-        context.Services.AddRepositoryContributor<RepositoryContributor>();
+        // Add the repository contributor for the 'Sales' repository.
+        context.Services.AddRepositoryContributor<RepositoryContributor>("Sales");
     }
 }

@@ -7,19 +7,19 @@ namespace EMachine.Sales.Domain.Entities;
 [PublicAPI]
 public sealed class SnackMachineBase : AggregateRoot<SnackMachineBase, Guid>, ISoftDeleteObject, IAuditedObject
 {
-    public int InsideYuan1 { get; }
+    public int InsideYuan1 { get; set; }
 
-    public int InsideYuan2 { get; }
+    public int InsideYuan2 { get; set; }
 
-    public int InsideYuan5 { get; }
+    public int InsideYuan5 { get; set; }
 
-    public int InsideYuan10 { get; }
+    public int InsideYuan10 { get; set; }
 
-    public int InsideYuan20 { get; }
+    public int InsideYuan20 { get; set; }
 
-    public int InsideYuan50 { get; }
+    public int InsideYuan50 { get; set; }
 
-    public int InsideYuan100 { get; }
+    public int InsideYuan100 { get; set; }
 
     public decimal AmountInTransaction { get; set; }
 

@@ -18,7 +18,6 @@ public sealed class SlotBaseConfiguration : IEntityTypeConfiguration<SlotBase>
     public void Configure(EntityTypeBuilder<SlotBase> builder)
     {
         builder.ToTable("Slots");
-        builder.UseRepositoryDefaults();
         builder.HasKey(x => new
                             {
                                 x.MachineId,
@@ -26,6 +25,7 @@ public sealed class SlotBaseConfiguration : IEntityTypeConfiguration<SlotBase>
                             });
         builder.HasOne<SnackMachineBase>().WithMany(x => x.Slots).HasForeignKey(x => x.MachineId);
         builder.HasOne<SnackBase>().WithMany().HasForeignKey(x => x.SnackId);
+        builder.UseRepositoryDefaults();
         _callback?.Invoke(builder);
     }
 }
