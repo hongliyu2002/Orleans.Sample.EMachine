@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace EMachine.Sales.Domain.Entities;
 
 [PublicAPI]
-public sealed class SlotBase : Entity<SlotBase, long>
+public sealed class SlotBase : Entity<SlotBase, Guid>
 {
     public Guid MachineId { get; set; }
 

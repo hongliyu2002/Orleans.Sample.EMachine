@@ -18,8 +18,6 @@ public sealed class SnackBaseConfiguration : IEntityTypeConfiguration<SnackBase>
     public void Configure(EntityTypeBuilder<SnackBase> builder)
     {
         builder.ToTable("Snacks");
-        builder.HasKey(x => x.ID);
-        builder.Property(x => x.ID).ValueGeneratedNever();
         builder.UseRepositoryDefaults();
         _callback?.Invoke(builder);
     }

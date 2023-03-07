@@ -5,35 +5,16 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming\7.1.0\lib\net7.0\Orleans.Streaming.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\orleans.fluentresults\7.1.0.3\lib\net7.0\Orleans.FluentResults.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09ba0b14_002D2fd8_002D4ca4_002Dbf9f_002Dca614a7c8a62/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="SnackRepositoryGainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Domain.Tests.SnackRepositoryGainTests&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Domain.Tests.SnackGrainTests&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;EMachine.Domain.Tests&amp;gt;" /&gt;&#xD;
-  &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=18d7d4b2_002D0f56_002D4c1d_002Daa5b_002D6d3ace3ad201/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;Tests&amp;gt;\&amp;lt;EMachine.Domain.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;EMachine.Domain.Tests&amp;gt;" /&gt;&#xD;
-    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Sales.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;Sales&amp;gt;\&amp;lt;EMachine.Sales.Domain.Tests&amp;gt;" /&gt;&#xD;
-  &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=88f532fa_002Dbf45_002D4d07_002Dadaf_002D43ccbffdab34/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SnackRepositoryGainTests #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09709e26_002Dd69d_002D43ec_002Da78e_002D7dbbe6c4da57/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_Add_SnackBase" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Domain.Tests.SnackRepositoryGainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::BEAFC322-4059-4000-970D-71746D195BE9::net7.0::EMachine.Sales.EntityFrameworkCore.Tests.SalesModuleTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bf2b38af_002D04e3_002D4e6f_002Db3da_002Dfd668ee796a7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="SnackRepositoryGainTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Domain.Tests.SnackRepositoryGainTests&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;EMachine.Domain.Tests&amp;gt;" /&gt;&#xD;
-    &lt;Project Location="F:\RiderProjects\EMachine\Tests\EMachine.Sales.Domain.Tests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;Sales&amp;gt;\&amp;lt;EMachine.Sales.Domain.Tests&amp;gt;" /&gt;&#xD;
-  &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
 	
 	
 	</wpf:ResourceDictionary>

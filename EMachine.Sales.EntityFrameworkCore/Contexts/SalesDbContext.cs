@@ -1,6 +1,5 @@
 ﻿using Fluxera.Extensions.Hosting.Modules.Persistence;
 using Fluxera.Repository;
-using Fluxera.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMachine.Sales.EntityFrameworkCore.Contexts;
@@ -19,6 +18,9 @@ public sealed class SalesDbContext : DbContext
     {
         _databaseNameProvider = databaseNameProvider;
         _databaseConnectionStringProvider = databaseConnectionStringProvider;
+
+        // Database.EnsureDeleted();
+        // Database.EnsureCreated();
     }
 
     /// <inheritdoc />
@@ -26,13 +28,17 @@ public sealed class SalesDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var repositoryName = new RepositoryName("Default");
-            var databaseName = _databaseNameProvider?.GetDatabaseName(repositoryName);
+            var repositoryName = new RepositoryName("Sales");
             var connectionString = _databaseConnectionStringProvider?.GetConnectionString(repositoryName);
-            connectionString ??= "Server=localhost;Integrated Security=True;TrustServerCertificate=True;";
-            connectionString = connectionString.EnsureEndsWith(";");
-            connectionString += $"Database={databaseName ?? "Sales"}";
-            optionsBuilder.UseSqlServer(connectionString);
+            connectionString ??= "Data Source=Sales.db";
+            optionsBuilder.UseSqlite(connectionString);
+
+            // var databaseName = _databaseNameProvider?.GetDatabaseName(repositoryName);
+            // var connectionString = _databaseConnectionStringProvider?.GetConnectionString(repositoryName);
+            // connectionString ??= "Server=localhost;Integrated Security=False;User Id=sa;Password=Bosshong2010;TrustServerCertificate=True;";
+            // connectionString = connectionString.EnsureEndsWith(";");
+            // connectionString += $"Database={databaseName ?? "Sales"}";
+            // optionsBuilder.UseSqlServer(connectionString);
         }
     }
 

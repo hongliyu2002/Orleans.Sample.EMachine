@@ -18,7 +18,6 @@ public sealed class SnackMachineBaseConfiguration : IEntityTypeConfiguration<Sna
     public void Configure(EntityTypeBuilder<SnackMachineBase> builder)
     {
         builder.ToTable("SnackMachines");
-        builder.HasKey(x => x.ID);
         builder.UseRepositoryDefaults();
         _callback?.Invoke(builder);
     }

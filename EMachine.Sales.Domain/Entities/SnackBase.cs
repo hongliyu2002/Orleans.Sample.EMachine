@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Fluxera.ComponentModel.Annotations;
 using Fluxera.Entity;
 using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
 using JetBrains.Annotations;
