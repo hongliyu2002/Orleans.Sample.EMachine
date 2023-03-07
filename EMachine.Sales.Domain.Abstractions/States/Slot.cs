@@ -7,14 +7,14 @@ public sealed class Slot
     public Guid MachineId { get; set; }
 
     [Id(1)]
-    public SnackPile? SnackPile { get; set; }
+    public int Position { get; set; }
 
     [Id(2)]
-    public int Position { get; set; }
+    public SnackPile? SnackPile { get; set; }
 
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"Slot with MachineId:'{MachineId}' SnackPile:'{SnackPile}' Position:{Position}";
+        return $"Slot with MachineId:'{MachineId}' Position:{Position} SnackPile:'{SnackPile}'";
     }
 }
