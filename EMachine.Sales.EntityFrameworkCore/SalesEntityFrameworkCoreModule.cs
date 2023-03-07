@@ -1,4 +1,5 @@
-﻿using EMachine.Sales.EntityFrameworkCore.Contributors;
+﻿using EMachine.Sales.Domain;
+using EMachine.Sales.EntityFrameworkCore.Contributors;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
@@ -9,12 +10,15 @@ using JetBrains.Annotations;
 namespace EMachine.Sales.EntityFrameworkCore;
 
 [PublicAPI]
+[DependsOn<SalesDomainModule>]
 [DependsOn<EntityFrameworkCorePersistenceModule>]
 [DependsOn<ConfigurationModule>]
 public class SalesEntityFrameworkCoreModule : ConfigureServicesModule
 {
+    /// <inheritdoc />
     public override void ConfigureServices(IServiceConfigurationContext context)
     {
+        // Add the repository contributor for the 'Default' repository.
         context.Services.AddRepositoryContributor<RepositoryContributor>();
     }
 }

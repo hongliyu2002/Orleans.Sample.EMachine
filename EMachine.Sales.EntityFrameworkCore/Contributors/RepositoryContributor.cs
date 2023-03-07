@@ -1,4 +1,4 @@
-﻿using EMachine.Sales.Orleans.Abstractions.Entities;
+﻿using EMachine.Sales.Domain.Entities;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules.Persistence;
 using JetBrains.Annotations;

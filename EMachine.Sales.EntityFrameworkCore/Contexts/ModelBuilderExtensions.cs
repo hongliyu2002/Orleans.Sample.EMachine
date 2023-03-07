@@ -1,4 +1,4 @@
-﻿using EMachine.Sales.Orleans.Abstractions.Entities;
+﻿using EMachine.Sales.Domain.Entities;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

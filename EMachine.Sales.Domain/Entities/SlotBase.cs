@@ -1,7 +1,7 @@
 ﻿using Fluxera.Entity;
 using JetBrains.Annotations;
 
-namespace EMachine.Sales.Orleans.Abstractions.Entities;
+namespace EMachine.Sales.Domain.Entities;
 
 [PublicAPI]
 public sealed class SlotBase : Entity<SlotBase, long>

@@ -2,7 +2,7 @@
 using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
 using JetBrains.Annotations;
 
-namespace EMachine.Sales.Orleans.Abstractions.Entities;
+namespace EMachine.Sales.Domain.Entities;
 
 [PublicAPI]
 public sealed class SnackMachineBase : AggregateRoot<SnackMachineBase, Guid>, ISoftDeleteObject, IAuditedObject
