@@ -1,4 +1,4 @@
-﻿using EMachine.Sales.Domain.Abstractions.Entities;
+﻿using EMachine.Sales.Orleans.Abstractions.Entities;
 using Fluxera.Repository.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

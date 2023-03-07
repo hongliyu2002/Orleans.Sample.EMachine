@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Domain.Shared", "EMachine.Domain.Shared\EMachine.Domain.Shared.csproj", "{EE4315D0-6388-4CA9-B198-C681556666CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Shared", "EMachine.Orleans.Shared\EMachine.Orleans.Shared.csproj", "{EE4315D0-6388-4CA9-B198-C681556666CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{823B0948-3D76-4C0F-A0CF-35E7EC66FB87}"
 EndProject
@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Management", "Management", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{6FE22FE8-111F-4A77-84DF-AA7337628688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Domain", "EMachine.Sales.Domain\EMachine.Sales.Domain.csproj", "{F66BF32C-34A2-440C-9D81-A3FF410E67C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Orleans", "EMachine.Sales.Orleans\EMachine.Sales.Orleans.csproj", "{F66BF32C-34A2-440C-9D81-A3FF410E67C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Domain.Abstractions", "EMachine.Sales.Domain.Abstractions\EMachine.Sales.Domain.Abstractions.csproj", "{3609A8C8-8167-4F69-AD42-6B39F61BD5F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Orleans.Abstractions", "EMachine.Sales.Orleans.Abstractions\EMachine.Sales.Orleans.Abstractions.csproj", "{3609A8C8-8167-4F69-AD42-6B39F61BD5F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F67E33D-3051-41E5-A69C-11FB76696842}"
 EndProject
@@ -24,11 +24,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Banking", "Banking", "{05D1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Management", "Management", "{3D211588-8C65-419D-A82F-CFE6A110E2EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Domain.Tests", "Tests\EMachine.Domain.Tests\EMachine.Domain.Tests.csproj", "{ACE27B14-6E99-4C7C-A942-467B35739D7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Tests", "Tests\EMachine.Orleans.Tests\EMachine.Orleans.Tests.csproj", "{ACE27B14-6E99-4C7C-A942-467B35739D7F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{959D928E-D148-47DB-83C8-9D5966631859}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Domain.Tests", "Tests\EMachine.Sales.Domain.Tests\EMachine.Sales.Domain.Tests.csproj", "{C1473A8F-BD43-4A04-80E0-A69C7BB52F52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Orleans.Tests", "Tests\EMachine.Sales.Orleans.Tests\EMachine.Sales.Orleans.Tests.csproj", "{C1473A8F-BD43-4A04-80E0-A69C7BB52F52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.EntityFrameworkCore", "EMachine.Sales.EntityFrameworkCore\EMachine.Sales.EntityFrameworkCore.csproj", "{E5926741-058F-4ED9-970F-53B91B73601E}"
 EndProject

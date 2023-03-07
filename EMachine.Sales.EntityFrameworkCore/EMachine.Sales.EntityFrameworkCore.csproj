@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EMachine.Sales.Domain.Abstractions\EMachine.Sales.Domain.Abstractions.csproj" />
+        <ProjectReference Include="..\EMachine.Sales.Orleans.Abstractions\EMachine.Sales.Orleans.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>
