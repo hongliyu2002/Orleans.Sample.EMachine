@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 namespace EMachine.Sales.Domain.Tests;
 
 [Collection(SnackRepositoryCollectionFixture.Name)]
-public class SnackRepositoryGainTests
+public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
 {
     private readonly TestCluster _cluster;
     private readonly ITestOutputHelper _testOutputHelper;
@@ -23,24 +23,26 @@ public class SnackRepositoryGainTests
     [Fact]
     public async Task Can_Create_Snack()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
-        var createResult = await grain.CreateSnackAsync(new SnackRepositoryCreateOneCommand(1000, "Apple", Guid.NewGuid(), "Leo"));
+        var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
+        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(1000, "Apple", Guid.NewGuid(), "Leo"));
         createResult.IsSuccess.Should().Be(true);
-        var result = await createResult.Value.GetAsync();
+        createResult.Value.GetPrimaryKeyLong().Should().Be(1000);
+        _testOutputHelper.WriteLine(createResult.ToString());
+        var result = await createResult.Value.GetNameAsync();
         result.IsSuccess.Should().Be(true);
-        result.Value.Id.Should().Be(1000);
-        result.Value.Name.Should().Be("Apple");
-        result.Value.CreatedBy.Should().Be("Leo");
+        result.Value.Should().Be("Apple");
         _testOutputHelper.WriteLine(createResult.ToString());
     }
 
     [Fact]
     public async Task Can_Delete_Snack()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
-        var createResult = await grain.CreateSnackAsync(new SnackRepositoryCreateOneCommand(1001, "Lemon", Guid.NewGuid(), "Leo"));
+        var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
+        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(1001, "Lemon", Guid.NewGuid(), "Leo"));
         createResult.IsSuccess.Should().Be(true);
-        var deleteResult = await grain.DeleteSnackAsync(new SnackRepositoryDeleteOneCommand(1001, Guid.NewGuid(), "Boss"));
+        createResult.Value.GetPrimaryKeyLong().Should().Be(1001);
+        _testOutputHelper.WriteLine(createResult.ToString());
+        var deleteResult = await grain.DeleteAsync(new SnackWriterDeleteOneCommand(1001, Guid.NewGuid(), "Boss"));
         deleteResult.IsSuccess.Should().Be(true);
         _testOutputHelper.WriteLine(deleteResult.ToString());
     }
@@ -48,21 +50,26 @@ public class SnackRepositoryGainTests
     [Fact]
     public async Task Can_Get_Snack()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
-        var getResult = await grain.GetSnackAsync(new SnackRepositoryGetOneQuery(1, Guid.NewGuid(), "Boss"));
+        var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
+        var getResult = await grain.GetAsync(new SnackWriterGetOneCommand(1, Guid.NewGuid(), "Boss"));
         getResult.IsSuccess.Should().BeTrue();
-        var result = await getResult.Value.GetAsync();
-        result.Value.Id.Should().Be(1);
-        result.Value.Name.Should().Be("Cafe");
+        getResult.Value.GetPrimaryKeyLong().Should().Be(1);
+        var result = await getResult.Value.GetNameAsync();
+        result.Value.Should().Be("Cafe");
     }
 
     [Fact]
     public async Task Can_Get_Snacks()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackRepositoryGrain>(Guid.Empty);
-        var getResult = await grain.GetSnacksAsync(new SnackRepositoryGetListQuery(100, 0, Guid.NewGuid(), "Boss"));
+        var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
+        var getResult = await grain.GetMultipleAsync(new SnackWriterGetMultipleCommand(new long[]
+                                                                                       {
+                                                                                           2,
+                                                                                           3,
+                                                                                           4
+                                                                                       }, Guid.NewGuid(), "Boss"));
         getResult.IsSuccess.Should().BeTrue();
-        getResult.Value.Count.Should().BeGreaterOrEqualTo(5);
+        getResult.Value.Count.Should().Be(3);
         getResult.Value.ForEach(x => _testOutputHelper.WriteLine(x.ToString()));
     }
 }

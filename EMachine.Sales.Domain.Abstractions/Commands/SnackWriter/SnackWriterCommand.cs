@@ -5,9 +5,9 @@ namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public abstract record SnackMachineRepositoryQuery : ITraceable
+public abstract record SnackWriterCommand : ITraceable
 {
-    protected SnackMachineRepositoryQuery(Guid traceId, string operatedBy)
+    protected SnackWriterCommand(Guid traceId, string operatedBy)
     {
         TraceId = Guard.Against.Empty(traceId, nameof(traceId));
         OperatedBy = Guard.Against.NullOrWhiteSpace(operatedBy, nameof(operatedBy));
@@ -15,6 +15,7 @@ public abstract record SnackMachineRepositoryQuery : ITraceable
 
     [Id(0)]
     public Guid TraceId { get; }
+
     [Id(1)]
     public string OperatedBy { get; } = string.Empty;
 }

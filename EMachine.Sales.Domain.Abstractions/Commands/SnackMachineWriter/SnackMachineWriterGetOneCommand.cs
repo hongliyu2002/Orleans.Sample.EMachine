@@ -2,9 +2,9 @@
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineRepositoryGetOneQuery : SnackMachineRepositoryQuery
+public sealed record SnackMachineWriterGetOneCommand : SnackMachineWriterCommand
 {
-    public SnackMachineRepositoryGetOneQuery(Guid id, Guid traceId, string operatedBy)
+    public SnackMachineWriterGetOneCommand(Guid id, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
         Id = id;

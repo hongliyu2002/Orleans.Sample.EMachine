@@ -2,9 +2,9 @@
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineRepositoryDeleteOneCommand : SnackMachineRepositoryCommand
+public sealed record SnackMachineWriterDeleteOneCommand : SnackMachineWriterCommand
 {
-    public SnackMachineRepositoryDeleteOneCommand(Guid id, Guid traceId, string operatedBy)
+    public SnackMachineWriterDeleteOneCommand(Guid id, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
         Id = id;

@@ -18,7 +18,7 @@ public interface IMoneyEsGrain : IGrainWithGuidKey
 
 [LogConsistencyProvider(ProviderName = "MoneyEventStore")]
 [StorageProvider(ProviderName = "MoneyStore")]
-public class MoneyEsGrain : EventPublisherGrain<MoneyEsState>, IMoneyEsGrain
+public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
 {
     private readonly ILogger<MoneyEsGrain> _logger;
 

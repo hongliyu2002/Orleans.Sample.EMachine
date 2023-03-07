@@ -8,11 +8,20 @@ namespace EMachine.Sales.Domain.Abstractions;
 public interface ISnackGrain : IGrainWithIntegerKey
 {
     [AlwaysInterleave]
-    Task<Result<Snack>> GetAsync();
+    Task<Result<string>> GetNameAsync();
+
+    [AlwaysInterleave]
+    Task<bool> CanInitializeAsync();
 
     Task<Result> InitializeAsync(SnackInitializeCommand cmd);
 
+    [AlwaysInterleave]
+    Task<bool> CanRemoveAsync();
+
     Task<Result> RemoveAsync(SnackRemoveCommand cmd);
 
+    [AlwaysInterleave]
+    Task<bool> CanChangeNameAsync();
+    
     Task<Result> ChangeNameAsync(SnackNameChangeCommand cmd);
 }

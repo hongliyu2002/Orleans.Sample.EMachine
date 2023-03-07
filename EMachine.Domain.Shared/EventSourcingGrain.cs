@@ -9,7 +9,7 @@ using Orleans.Streams;
 
 namespace EMachine.Domain.Shared;
 
-public abstract class EventPublisherGrain<TState> : JournaledGrain<TState, DomainEvent>, IEventPublisherGrain
+public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, DomainEvent>, IEventSourcingGrain
     where TState : class, new()
 {
     protected readonly string _name;
@@ -18,7 +18,7 @@ public abstract class EventPublisherGrain<TState> : JournaledGrain<TState, Domai
     protected IStreamProvider _streamProvider = null!;
 
     /// <inheritdoc />
-    protected EventPublisherGrain(string name, string nameSpace)
+    protected EventSourcingGrain(string name, string nameSpace)
     {
         _name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
         _nameSpace = Guard.Against.NullOrWhiteSpace(nameSpace, nameof(nameSpace));

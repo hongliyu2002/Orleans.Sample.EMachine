@@ -1,4 +1,5 @@
-﻿using EMachine.Domain.Shared;
+﻿using System.Collections.Immutable;
+using EMachine.Domain.Shared;
 using EMachine.Domain.Shared.Extensions;
 using EMachine.Sales.Domain.Abstractions;
 using EMachine.Sales.Domain.Abstractions.Commands;
@@ -14,7 +15,7 @@ namespace EMachine.Sales.Domain;
 
 [LogConsistencyProvider(ProviderName = "EventStore")]
 [StorageProvider(ProviderName = "SalesStore")]
-public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnackMachineGrain
+public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnackMachineGrain
 {
     private readonly ILogger<SnackMachineGrain> _logger;
 
@@ -26,10 +27,39 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
     }
 
     /// <inheritdoc />
-    public Task<Result<SnackMachine>> GetAsync()
+    public Task<Result<Money>> GetMoneyInsideAsync()
     {
-        var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok(State).Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
+        var id = this.GetPrimaryKeyLong();
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
+                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
+                                     .Map(() => State.MoneyInside));
+    }
+
+    /// <inheritdoc />
+    public Task<Result<decimal>> GetAmountInTransactionAsync()
+    {
+        var id = this.GetPrimaryKeyLong();
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
+                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
+                                     .Map(() => State.AmountInTransaction));
+    }
+
+    /// <inheritdoc />
+    public Task<Result<ImmutableList<Slot>>> GetSlotsAsync()
+    {
+        var id = this.GetPrimaryKeyLong();
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
+                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
+                                     .Map(() => State.Slots.ToImmutableList()));
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CanInitializeAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated == false);
     }
 
     /// <inheritdoc />
@@ -42,6 +72,12 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
                      .EnsureAsync(State.IsCreated == false, $"Snack machine {id} already exists.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackMachineInitializedEvent(id, cmd.MoneyInside, cmd.Slots, cmd.TraceId, cmd.OperatedBy)));
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CanRemoveAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated && State.AmountInTransaction == 0m);
     }
 
     /// <inheritdoc />
@@ -59,6 +95,12 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
     }
 
     /// <inheritdoc />
+    public Task<bool> CanLoadMoneyAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated);
+    }
+
+    /// <inheritdoc />
     public Task<Result> LoadMoneyAsync(SnackMachineLoadMoneyCommand cmd)
     {
         var id = this.GetPrimaryKey();
@@ -68,6 +110,12 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
                      .EnsureAsync(State.IsCreated, $"Snack machine {id} is not initialized.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackMachineLoadedMoneyEvent(id, cmd.Money, cmd.TraceId, cmd.OperatedBy)));
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CanUnloadMoneyAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated && State.AmountInTransaction == 0m);
     }
 
     /// <inheritdoc />
@@ -85,6 +133,12 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
     }
 
     /// <inheritdoc />
+    public Task<bool> CanInsertMoneyAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated);
+    }
+
+    /// <inheritdoc />
     public Task<Result> InsertMoneyAsync(SnackMachineInsertMoneyCommand cmd)
     {
         var id = this.GetPrimaryKey();
@@ -96,6 +150,12 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
                      .EnsureAsync(Money.CoinsAndNotes.Contains(cmd.Money), $"Only single coin or note should be inserted into the snack machine {id}.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSingleCoinOrNoteRequired.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackMachineInsertedMoneyEvent(id, cmd.Money, cmd.TraceId, cmd.OperatedBy)));
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CanReturnMoneyAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated && State.AmountInTransaction > 0m && State.MoneyInside.TryAllocate(State.AmountInTransaction, out _));
     }
 
     /// <inheritdoc />
@@ -115,6 +175,12 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
     }
 
     /// <inheritdoc />
+    public Task<bool> CanLoadSnacksAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated);
+    }
+
+    /// <inheritdoc />
     public Task<Result> LoadSnacksAsync(SnackMachineLoadSnacksCommand cmd)
     {
         var id = this.GetPrimaryKey();
@@ -126,6 +192,12 @@ public sealed class SnackMachineGrain : EventPublisherGrain<SnackMachine>, ISnac
                      .EnsureAsync(State.TryGetSlot(cmd.Position, out _), $"Slot at position {cmd.Position} in the snack machine {id} does not exist.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotNotExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackMachineLoadedSnacksEvent(id, cmd.Position, cmd.SnackPile, cmd.TraceId, cmd.OperatedBy)));
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CanBuySnackAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated);
     }
 
     /// <inheritdoc />

@@ -14,7 +14,7 @@ namespace EMachine.Sales.Domain;
 
 [LogConsistencyProvider(ProviderName = "EventStore")]
 [StorageProvider(ProviderName = "SalesStore")]
-public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
+public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
 {
     private readonly ILogger<SnackGrain> _logger;
 
@@ -26,12 +26,19 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     }
 
     /// <inheritdoc />
-    public Task<Result<Snack>> GetAsync()
+    public Task<Result<string>> GetNameAsync()
     {
         var id = this.GetPrimaryKeyLong();
-        return Task.FromResult(Result.Ok(State)
+        return Task.FromResult(Result.Ok()
                                      .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
-                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized."));
+                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
+                                     .Map(() => State.Name));
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CanInitializeAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated == false);
     }
 
     /// <inheritdoc />
@@ -47,6 +54,12 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
     }
 
     /// <inheritdoc />
+    public Task<bool> CanRemoveAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated);
+    }
+
+    /// <inheritdoc />
     public Task<Result> RemoveAsync(SnackRemoveCommand cmd)
     {
         var id = this.GetPrimaryKeyLong();
@@ -56,6 +69,12 @@ public sealed class SnackGrain : EventPublisherGrain<Snack>, ISnackGrain
                      .EnsureAsync(State.IsCreated, $"Snack {id} is not initialized.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .BindAsync(() => PublishAsync(new SnackRemovedEvent(id, cmd.TraceId, cmd.OperatedBy)));
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CanChangeNameAsync()
+    {
+        return Task.FromResult(State.IsDeleted == false && State.IsCreated);
     }
 
     /// <inheritdoc />

@@ -1,5 +1,5 @@
 ﻿namespace EMachine.Domain.Shared;
 
-public interface IEventPublisherGrain
+public interface IEventSourcingGrain
 {
 }

@@ -26,11 +26,9 @@ public class SnackGrainTests
         var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(999);
         var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Orange", Guid.NewGuid(), "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
-        var getResult = await grain.GetAsync();
+        var getResult = await grain.GetNameAsync();
         getResult.IsSuccess.Should().Be(true);
-        getResult.Value.Id.Should().Be(999);
-        getResult.Value.Name.Should().Be("Orange");
-        getResult.Value.CreatedBy.Should().Be("Leo");
+        getResult.Value.Should().Be("Orange");
         _testOutputHelper.WriteLine(getResult.ToString());
     }
 
@@ -42,30 +40,22 @@ public class SnackGrainTests
         initializeResult.IsSuccess.Should().Be(true);
         var changeNameResult = await grain.ChangeNameAsync(new SnackNameChangeCommand("Candy", Guid.NewGuid(), "Boss"));
         changeNameResult.IsSuccess.Should().Be(true);
-        var getResult = await grain.GetAsync();
+        var getResult = await grain.GetNameAsync();
         getResult.IsSuccess.Should().Be(true);
-        getResult.Value.Id.Should().Be(1000);
-        getResult.Value.Name.Should().Be("Candy");
-        getResult.Value.CreatedBy.Should().Be("Leo");
-        getResult.Value.LastModifiedBy.Should().Be("Boss");
+        getResult.Value.Should().Be("Candy");
         _testOutputHelper.WriteLine(getResult.ToString());
     }
 
     [Fact]
-    public async Task Can_Remove_And_Get_Snack()
+    public async Task Can_Remove_And_Cannot_Get_Snack()
     {
         var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(1001);
         var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("BBQ", Guid.NewGuid(), "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
         var removeResult = await grain.RemoveAsync(new SnackRemoveCommand(Guid.NewGuid(), "Boss"));
         removeResult.IsSuccess.Should().Be(true);
-        var getResult = await grain.GetAsync();
+        var getResult = await grain.GetNameAsync();
         getResult.IsSuccess.Should().Be(false);
-        getResult.Value.Id.Should().Be(1001);
-        getResult.Value.Name.Should().Be("BBQ");
-        getResult.Value.CreatedBy.Should().Be("Leo");
-        getResult.Value.IsDeleted.Should().Be(true);
-        getResult.Value.DeletedBy.Should().Be("Boss");
         _testOutputHelper.WriteLine(getResult.ToString());
     }
 
@@ -78,11 +68,9 @@ public class SnackGrainTests
         var reInitializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Green Tea", Guid.NewGuid(), "Boss"));
         reInitializeResult.IsSuccess.Should().Be(false);
         _testOutputHelper.WriteLine(reInitializeResult.ToString());
-        var getResult = await grain.GetAsync();
+        var getResult = await grain.GetNameAsync();
         getResult.IsSuccess.Should().Be(true);
-        getResult.Value.Id.Should().Be(1002);
-        getResult.Value.Name.Should().Be("Red Tea");
-        getResult.Value.CreatedBy.Should().Be("Leo");
+        getResult.Value.Should().Be("Red Tea");
         _testOutputHelper.WriteLine(getResult.ToString());
     }
 
@@ -97,13 +85,8 @@ public class SnackGrainTests
         var reInitializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Chocolate", Guid.NewGuid(), "Janet"));
         reInitializeResult.IsSuccess.Should().Be(false);
         _testOutputHelper.WriteLine(reInitializeResult.ToString());
-        var getResult = await grain.GetAsync();
+        var getResult = await grain.GetNameAsync();
         getResult.IsSuccess.Should().Be(false);
-        getResult.Value.Id.Should().Be(1003);
-        getResult.Value.Name.Should().Be("Cafe");
-        getResult.Value.CreatedBy.Should().Be("Leo");
-        getResult.Value.IsDeleted.Should().Be(true);
-        getResult.Value.DeletedBy.Should().Be("Boss");
         _testOutputHelper.WriteLine(getResult.ToString());
     }
 }

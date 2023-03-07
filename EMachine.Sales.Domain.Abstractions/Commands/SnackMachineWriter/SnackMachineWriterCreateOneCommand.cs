@@ -7,9 +7,9 @@ namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineRepositoryCreateOneCommand : SnackMachineRepositoryCommand
+public sealed record SnackMachineWriterCreateOneCommand : SnackMachineWriterCommand
 {
-    public SnackMachineRepositoryCreateOneCommand(Guid id, Money moneyInside, IImmutableList<Slot> slots, Guid traceId, string operatedBy)
+    public SnackMachineWriterCreateOneCommand(Guid id, Money moneyInside, IImmutableList<Slot> slots, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
         Id = id;

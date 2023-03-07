@@ -4,9 +4,9 @@ namespace EMachine.Sales.Domain.Abstractions.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackRepositoryCreateOneCommand : SnackRepositoryCommand
+public sealed record SnackWriterCreateOneCommand : SnackWriterCommand
 {
-    public SnackRepositoryCreateOneCommand(long id, string name, Guid traceId, string operatedBy)
+    public SnackWriterCreateOneCommand(long id, string name, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
         Id = Guard.Against.Negative(id, nameof(id));
