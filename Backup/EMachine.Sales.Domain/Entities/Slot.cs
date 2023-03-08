@@ -10,11 +10,5 @@ public sealed class Slot : Entity<Slot, Guid>
 
     public int Position { get; set; }
 
-    public Guid? SnackUuId { get; set; }
-
-    public Snack? Snack { get; set; }
-
-    public int? Quantity { get; set; }
-
-    public decimal? Price { get; set; }
+    public SnackPile? SnackPile { get; set; }
 }

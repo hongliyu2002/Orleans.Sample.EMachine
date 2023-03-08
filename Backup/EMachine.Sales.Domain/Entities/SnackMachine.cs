@@ -9,21 +9,7 @@ public sealed class SnackMachine : AggregateRoot<SnackMachine, Guid>, ISoftDelet
 {
     public Guid UuId { get; set; }
 
-    public int Yuan1Inside { get; set; }
-
-    public int Yuan2Inside { get; set; }
-
-    public int Yuan5Inside { get; set; }
-
-    public int Yuan10Inside { get; set; }
-
-    public int Yuan20Inside { get; set; }
-
-    public int Yuan50Inside { get; set; }
-
-    public int Yuan100Inside { get; set; }
-
-    public decimal AmountInside  { get; set; }
+    public Money MoneyInside { get; set; } = null!;
 
     public decimal AmountInTransaction { get; set; }
 

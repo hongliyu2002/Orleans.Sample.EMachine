@@ -1,5 +1,4 @@
-﻿using Fluxera.Guards;
-using Fluxera.ValueObject;
+﻿using Fluxera.ValueObject;
 using JetBrains.Annotations;
 
 namespace EMachine.Sales.Domain.Entities;

@@ -1,5 +1,4 @@
 ﻿using EMachine.Sales.Domain.Entities;
-using Fluxera.Repository.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,15 +17,17 @@ public sealed class SlotEntityConfiguration : IEntityTypeConfiguration<Slot>
     public void Configure(EntityTypeBuilder<Slot> builder)
     {
         builder.ToTable("Slots");
-        builder.HasIndex(x => new
-                              {
-                                  x.MachineUuId,
-                                  x.Position
-                              })
-               .IsUnique();
+        builder.HasIndex(x => x.ID);
+        builder.HasKey(x => new
+                            {
+                                x.MachineUuId,
+                                x.Position
+                            });
         builder.HasOne<SnackMachine>().WithMany(x => x.Slots).HasForeignKey(x => x.MachineUuId);
-        builder.HasOne<Snack>(x => x.Snack).WithMany().HasForeignKey(x => x.SnackUuId);
-        builder.UseRepositoryDefaults();
+        builder.OwnsOne(x => x.SnackPile, nav =>
+                                          {
+                                              nav.HasOne<Snack>(sp => sp.Snack).WithMany().HasForeignKey(sp => sp.SnackUuId);
+                                          });
         _callback?.Invoke(builder);
     }
 }

@@ -18,6 +18,9 @@ public sealed class SalesDbContext : DbContext
     {
         _databaseNameProvider = databaseNameProvider;
         _databaseConnectionStringProvider = databaseConnectionStringProvider;
+
+        Database.EnsureDeleted();
+        Database.EnsureCreated();
     }
 
     /// <inheritdoc />

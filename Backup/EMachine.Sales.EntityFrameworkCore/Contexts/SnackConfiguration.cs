@@ -1,5 +1,4 @@
 ﻿using EMachine.Sales.Domain.Entities;
-using Fluxera.Repository.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,12 +17,12 @@ public sealed class SnackEntityConfiguration : IEntityTypeConfiguration<Snack>
     public void Configure(EntityTypeBuilder<Snack> builder)
     {
         builder.ToTable("Snacks");
-        builder.HasIndex(x => x.UuId).IsUnique();
+        builder.HasIndex(x => x.ID);
+        builder.HasKey(x => x.UuId);
         builder.Property(x => x.Name).HasMaxLength(100);
         builder.Property(x => x.CreatedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
-        builder.UseRepositoryDefaults();
         _callback?.Invoke(builder);
     }
 }
