@@ -7,7 +7,7 @@ namespace EMachine.Orleans.Shared;
 
 public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
 {
-    protected readonly string _name;
+    protected readonly string _provider;
     protected readonly string _nameSpace;
     protected readonly IServiceScopeFactory _scopeFactory;
     protected AsyncServiceScope _scope;
@@ -16,9 +16,9 @@ public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
     protected StreamSubscriptionHandle<DomainEvent>? _streamSubscription;
 
     /// <inheritdoc />
-    protected EventSubscriberGrain(string name, string nameSpace, IServiceScopeFactory scopeFactory)
+    protected EventSubscriberGrain(string provider, string nameSpace, IServiceScopeFactory scopeFactory)
     {
-        _name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+        _provider = Guard.Against.NullOrWhiteSpace(provider, nameof(provider));
         _nameSpace = Guard.Against.NullOrWhiteSpace(nameSpace, nameof(nameSpace));
         _scopeFactory = Guard.Against.Null(scopeFactory, nameof(scopeFactory));
     }
@@ -28,7 +28,7 @@ public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
     {
         await base.OnActivateAsync(cancellationToken);
         _scope = _scopeFactory.CreateAsyncScope();
-        _streamProvider = this.GetStreamProvider(_name);
+        _streamProvider = this.GetStreamProvider(_provider);
         _stream = _streamProvider.GetStream<DomainEvent>(_nameSpace, this.GetPrimaryKey());
         _streamSubscription = await _stream.SubscribeAsync(HandleNextAsync, HandleExceptionAsync, HandCompleteAsync);
     }

@@ -11,13 +11,14 @@ using Polly;
 
 namespace EMachine.Sales.Orleans.Projection;
 
+[ImplicitStreamSubscription(Constants.SnackNamespace)]
 public sealed class SnackSubscriberGrain : EventSubscriberGrain
 {
     private readonly ILogger<SnackSubscriberGrain> _logger;
     private SalesDbContext _dbContext = null!;
 
     public SnackSubscriberGrain(IServiceScopeFactory scopeFactory, ILogger<SnackSubscriberGrain> logger)
-        : base("Default", "Sales.Snacks", scopeFactory)
+        : base(Constants.StreamProviderName, Constants.SnackNamespace, scopeFactory)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
     }

@@ -13,6 +13,6 @@ public class TestSiloConfigurator : ISiloConfigurator
                    .AddMemoryGrainStorage("ManagementStore")
                    .AddMemoryGrainStorage("BankingStore")
                    .AddLogStorageBasedLogConsistencyProvider("EventStore")
-                   .AddMemoryStreams("Default");
+                   .AddMemoryStreams(Constants.StreamProviderName);
     }
 }

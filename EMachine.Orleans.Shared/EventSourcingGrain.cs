@@ -40,7 +40,7 @@ public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, Domain
             {
                 return Result.Fail("Raise conditional event failed.");
             }
-            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Id.Create().ToUnixTimeMilliseconds()));
+            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Version));
             return Result.Ok();
         }
         catch (Exception ex)
@@ -53,7 +53,7 @@ public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, Domain
     {
         try
         {
-            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Id.Create().ToUnixTimeMilliseconds()));
+            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Version));
             return Result.Ok();
         }
         catch (Exception ex)
