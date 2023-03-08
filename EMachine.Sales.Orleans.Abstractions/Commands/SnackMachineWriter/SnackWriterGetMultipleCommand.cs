@@ -1,15 +1,16 @@
-﻿using Fluxera.Guards;
+﻿using EMachine.Orleans.Shared.Commands;
+using Fluxera.Guards;
 
 namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineWriterGetMultipleCommand : SnackMachineWriterCommand
+public sealed record SnackMachineWriterGetMultipleCommand : DomainCommand
 {
-    public SnackMachineWriterGetMultipleCommand(Guid[] ids, Guid traceId, string operatedBy)
-        : base(traceId, operatedBy)
+    public SnackMachineWriterGetMultipleCommand(Guid[] ids, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+        : base(traceId, operatedAt, operatedBy)
     {
-        Ids =  Guard.Against.Null(ids, nameof(ids));
+        Ids = Guard.Against.Null(ids, nameof(ids));
     }
 
     [Id(0)]

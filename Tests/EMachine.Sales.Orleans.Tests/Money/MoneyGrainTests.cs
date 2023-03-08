@@ -1,11 +1,11 @@
-﻿using EMachine.Orleans.Shared;
-using EMachine.Orleans.Tests.Fixtures;
+﻿using EMachine.Sales.Orleans.States;
+using EMachine.Sales.Orleans.Tests.Fixtures;
 using FluentAssertions;
 using Orleans.TestingHost;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace EMachine.Orleans.Tests;
+namespace EMachine.Sales.Orleans.Tests;
 
 [Collection(MoneyCollectionFixture.Name)]
 public class MoneyGrainTests

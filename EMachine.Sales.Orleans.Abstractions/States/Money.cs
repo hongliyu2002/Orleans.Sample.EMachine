@@ -1,7 +1,7 @@
 ﻿using Fluxera.Guards;
 using Orleans.FluentResults;
 
-namespace EMachine.Orleans.Shared;
+namespace EMachine.Sales.Orleans.States;
 
 [Immutable]
 [GenerateSerializer]

@@ -1,11 +1,13 @@
-﻿namespace EMachine.Sales.Orleans.Commands;
+﻿using EMachine.Orleans.Shared.Commands;
+
+namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackRemoveCommand : SnackCommand
+public sealed record SnackRemoveCommand : DomainCommand
 {
-    public SnackRemoveCommand(Guid traceId, string operatedBy)
-        : base(traceId, operatedBy)
+    public SnackRemoveCommand(Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+        : base(traceId, operatedAt, operatedBy)
     {
     }
 }

@@ -1,5 +1,4 @@
-﻿using EMachine.Sales.Orleans;
-using EMachine.Sales.Orleans.Commands;
+﻿using EMachine.Sales.Orleans.Commands;
 using EMachine.Sales.Orleans.Tests.Fixtures;
 using FluentAssertions;
 using Orleans.TestingHost;
@@ -25,7 +24,7 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
     {
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
-        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Apple", Guid.NewGuid(), "Leo"));
+        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Apple", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         createResult.IsSuccess.Should().Be(true);
         createResult.Value.GetPrimaryKey().Should().Be(id);
         _testOutputHelper.WriteLine(createResult.ToString());
@@ -40,11 +39,11 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
     {
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
-        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Lemon", Guid.NewGuid(), "Leo"));
+        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Lemon", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         createResult.IsSuccess.Should().Be(true);
         createResult.Value.GetPrimaryKey().Should().Be(id);
         _testOutputHelper.WriteLine(createResult.ToString());
-        var deleteResult = await grain.DeleteAsync(new SnackWriterDeleteOneCommand(id, Guid.NewGuid(), "Boss"));
+        var deleteResult = await grain.DeleteAsync(new SnackWriterDeleteOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         deleteResult.IsSuccess.Should().Be(true);
         _testOutputHelper.WriteLine(deleteResult.ToString());
     }
@@ -54,7 +53,7 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
     {
         var id = new Guid("ae9e8d38-8289-47fe-8084-99df2b894556");
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
-        var getResult = await grain.GetAsync(new SnackWriterGetOneCommand(id, Guid.NewGuid(), "Boss"));
+        var getResult = await grain.GetAsync(new SnackWriterGetOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.GetPrimaryKey().Should().Be(id);
         var result = await getResult.Value.GetNameAsync();
@@ -70,7 +69,7 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
                                                                                            new("23697d49-75f1-4e3c-aa0d-5a98cf3ad122"),
                                                                                            new Guid("5b4103f4-7d90-4680-afc1-70dc48b96629"),
                                                                                            new Guid("ad63bc13-5075-47d7-8525-b32b52352192")
-                                                                                       }, Guid.NewGuid(), "Boss"));
+                                                                                       }, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.Count.Should().Be(3);
         getResult.Value.ForEach(x => _testOutputHelper.WriteLine(x.ToString()));

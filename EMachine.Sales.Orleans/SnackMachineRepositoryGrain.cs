@@ -37,7 +37,7 @@ public class SnackMachineRepositoryGrain : Grain, ISnackMachineWriterGrain
         return Result.Ok<ISnackMachineGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
                      .EnsureAsync(grain => grain.CanInitializeAsync(), $"SnackMachine {cmd.Id} already exists or has been deleted.")
-                     .TapTryAsync(grain => grain.InitializeAsync(new SnackMachineInitializeCommand(cmd.MoneyInside, cmd.Slots, cmd.TraceId, cmd.OperatedBy)));
+                     .TapTryAsync(grain => grain.InitializeAsync(new SnackMachineInitializeCommand(cmd.MoneyInside, cmd.Slots, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
     }
 
     /// <inheritdoc />
@@ -46,6 +46,6 @@ public class SnackMachineRepositoryGrain : Grain, ISnackMachineWriterGrain
         return Result.Ok<ISnackMachineGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
                      .EnsureAsync(grain => grain.CanRemoveAsync(), $"SnackMachine {cmd.Id} does not exists or has been deleted.")
-                     .BindTryAsync(grain => grain.RemoveAsync(new SnackMachineRemoveCommand(cmd.TraceId, cmd.OperatedBy)));
+                     .BindTryAsync(grain => grain.RemoveAsync(new SnackMachineRemoveCommand(cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
     }
 }

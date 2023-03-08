@@ -54,13 +54,13 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
     {
         Id = evt.Id;
         Name = evt.Name;
-        CreatedAt = DateTimeOffset.UtcNow;
+        CreatedAt = evt.OperatedAt;
         CreatedBy = evt.OperatedBy;
     }
 
     public void Apply(SnackRemovedEvent evt)
     {
-        DeletedAt = DateTimeOffset.UtcNow;
+        DeletedAt = evt.OperatedAt;
         DeletedBy = evt.OperatedBy;
         IsDeleted = true;
     }
@@ -68,7 +68,7 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
     public void Apply(SnackNameChangedEvent evt)
     {
         Name = evt.Name;
-        LastModifiedAt = DateTimeOffset.UtcNow;
+        LastModifiedAt = evt.OperatedAt;
         LastModifiedBy = evt.OperatedBy;
     }
 

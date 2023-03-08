@@ -1,14 +1,15 @@
-﻿using EMachine.Sales.Orleans.States;
+﻿using EMachine.Orleans.Shared.Commands;
+using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
 
 namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineLoadSnacksCommand : SnackMachineCommand
+public sealed record SnackMachineLoadSnacksCommand : DomainCommand
 {
-    public SnackMachineLoadSnacksCommand(int position, SnackPile snackPile, Guid traceId, string operatedBy)
-        : base(traceId, operatedBy)
+    public SnackMachineLoadSnacksCommand(int position, SnackPile snackPile, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+        : base(traceId, operatedAt, operatedBy)
     {
         Position = Guard.Against.Negative(position);
         SnackPile = Guard.Against.Null(snackPile);

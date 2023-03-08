@@ -5,10 +5,10 @@ namespace EMachine.Sales.Orleans.Events;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineLoadedSnacksEvent : SnackMachineEvent
+public sealed record SnackMachineSnacksLoadedEvent : SnackMachineEvent
 {
-    public SnackMachineLoadedSnacksEvent(Guid id, int position, SnackPile snackPile, Guid traceId, string operatedBy)
-        : base(id, traceId, operatedBy)
+    public SnackMachineSnacksLoadedEvent(Guid id, int position, SnackPile snackPile, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+        : base(id, traceId, operatedAt, operatedBy)
     {
         Position = Guard.Against.Negative(position);
         SnackPile = Guard.Against.Null(snackPile);

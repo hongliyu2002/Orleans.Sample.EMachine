@@ -72,66 +72,66 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
         Id = evt.Id;
         MoneyInside = evt.MoneyInside;
         Slots = evt.Slots.ToList();
-        CreatedAt = DateTimeOffset.UtcNow;
+        CreatedAt = evt.OperatedAt;
         CreatedBy = evt.OperatedBy;
     }
 
     public void Apply(SnackMachineRemovedEvent evt)
     {
-        DeletedAt = DateTimeOffset.UtcNow;
+        DeletedAt = evt.OperatedAt;
         DeletedBy = evt.OperatedBy;
         IsDeleted = true;
     }
 
-    public void Apply(SnackMachineLoadedMoneyEvent evt)
+    public void Apply(SnackMachineMoneyLoadedEvent evt)
     {
         MoneyInside += evt.Money;
-        LastModifiedAt = DateTimeOffset.UtcNow;
+        LastModifiedAt = evt.OperatedAt;
         LastModifiedBy = evt.OperatedBy;
     }
 
-    public void Apply(SnackMachineUnloadedMoneyEvent evt)
+    public void Apply(SnackMachineMoneyUnloadedEvent evt)
     {
         MoneyInside = Money.Zero;
-        LastModifiedAt = DateTimeOffset.UtcNow;
+        LastModifiedAt = evt.OperatedAt;
         LastModifiedBy = evt.OperatedBy;
     }
 
-    public void Apply(SnackMachineInsertedMoneyEvent evt)
+    public void Apply(SnackMachineMoneyInsertedEvent evt)
     {
         AmountInTransaction += evt.Money.Amount;
         MoneyInside += evt.Money;
-        LastModifiedAt = DateTimeOffset.UtcNow;
+        LastModifiedAt = evt.OperatedAt;
         LastModifiedBy = evt.OperatedBy;
     }
 
-    public void Apply(SnackMachineReturnedMoneyEvent evt)
+    public void Apply(SnackMachineMoneyReturnedEvent evt)
     {
         if (MoneyInside.TryAllocate(AmountInTransaction, out var moneyAllocated))
         {
             MoneyInside -= moneyAllocated;
-            LastModifiedAt = DateTimeOffset.UtcNow;
+            LastModifiedAt = evt.OperatedAt;
             LastModifiedBy = evt.OperatedBy;
         }
     }
 
-    public void Apply(SnackMachineLoadedSnacksEvent evt)
+    public void Apply(SnackMachineSnacksLoadedEvent evt)
     {
         if (TryGetSlot(evt.Position, out var slot) && slot is { SnackPile: { } })
         {
             slot.SnackPile = evt.SnackPile;
-            LastModifiedAt = DateTimeOffset.UtcNow;
+            LastModifiedAt = evt.OperatedAt;
             LastModifiedBy = evt.OperatedBy;
         }
     }
 
-    public void Apply(SnackMachineBoughtSnackEvent evt)
+    public void Apply(SnackMachineSnackBoughtEvent evt)
     {
         if (TryGetSlot(evt.Position, out var slot) && slot is { SnackPile: { } } && slot.SnackPile.TryPopOne(out var snackPilePopped) && snackPilePopped is { })
         {
             slot.SnackPile = snackPilePopped;
             AmountInTransaction -= snackPilePopped.Price;
-            LastModifiedAt = DateTimeOffset.UtcNow;
+            LastModifiedAt = evt.OperatedAt;
             LastModifiedBy = evt.OperatedBy;
         }
     }

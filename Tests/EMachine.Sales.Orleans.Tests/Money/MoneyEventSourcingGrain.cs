@@ -1,12 +1,13 @@
 ﻿using EMachine.Orleans.Shared;
 using EMachine.Orleans.Shared.Events;
+using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
 using Microsoft.Extensions.Logging;
 using Orleans.Concurrency;
 using Orleans.FluentResults;
 using Orleans.Providers;
 
-namespace EMachine.Orleans.Tests;
+namespace EMachine.Sales.Orleans.Tests;
 
 public interface IMoneyEsGrain : IGrainWithGuidKey
 {
@@ -38,7 +39,7 @@ public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
     /// <inheritdoc />
     public Task<Result> AddAsync(Money money)
     {
-        return PublishAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), "Leo"));
+        return PublishAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
     }
 }
 
@@ -58,8 +59,8 @@ public sealed class MoneyEsState
 [GenerateSerializer]
 public sealed record MoneyEsAddedEvent : DomainEvent
 {
-    public MoneyEsAddedEvent(Money money, Guid traceId, string operatedBy)
-        : base(traceId, operatedBy)
+    public MoneyEsAddedEvent(Money money, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+        : base(traceId, operatedAt, operatedBy)
     {
         Money = Guard.Against.Null(money, nameof(money));
     }

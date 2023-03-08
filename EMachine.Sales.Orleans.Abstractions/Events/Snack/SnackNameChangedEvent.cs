@@ -6,8 +6,8 @@ namespace EMachine.Sales.Orleans.Events;
 [GenerateSerializer]
 public sealed record SnackNameChangedEvent : SnackEvent
 {
-    public SnackNameChangedEvent(Guid id, string name, Guid traceId, string operatedBy)
-        : base(id, traceId, operatedBy)
+    public SnackNameChangedEvent(Guid id, string name, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+        : base(id, traceId, operatedAt, operatedBy)
     {
         Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
     }

@@ -26,5 +26,5 @@ public interface ISnackGrain : IGrainWithGuidKey
     [AlwaysInterleave]
     Task<bool> CanChangeNameAsync();
     
-    Task<Result> ChangeNameAsync(SnackNameChangeCommand cmd);
+    Task<Result> ChangeNameAsync(SnackChangeNameCommand cmd);
 }

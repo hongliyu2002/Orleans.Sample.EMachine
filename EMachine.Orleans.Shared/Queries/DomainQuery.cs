@@ -1,13 +1,12 @@
-﻿using Fluxera.Entity.DomainEvents;
-using Fluxera.Guards;
+﻿using Fluxera.Guards;
 
-namespace EMachine.Orleans.Shared.Events;
+namespace EMachine.Orleans.Shared.Queries;
 
 [Immutable]
 [GenerateSerializer]
-public abstract record DomainEvent : IDomainEvent, ITraceable
+public abstract record DomainQuery : ITraceable
 {
-    protected DomainEvent(Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+    protected DomainQuery(Guid traceId, DateTimeOffset operatedAt, string operatedBy)
     {
         TraceId = Guard.Against.Empty(traceId, nameof(traceId));
         OperatedAt = Guard.Against.Default(operatedAt, nameof(operatedAt));

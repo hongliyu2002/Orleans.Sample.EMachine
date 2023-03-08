@@ -1,9 +1,10 @@
 ﻿using EMachine.Orleans.Shared;
+using EMachine.Sales.Orleans.States;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace EMachine.Orleans.Tests;
+namespace EMachine.Sales.Orleans.Tests;
 
 [Collection(MoneyCollectionFixture.Name)]
 public class MoneyTests

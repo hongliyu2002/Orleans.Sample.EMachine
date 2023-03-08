@@ -1,8 +1,8 @@
-﻿using EMachine.Orleans.Shared;
+﻿using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
 using Orleans.Runtime;
 
-namespace EMachine.Orleans.Tests;
+namespace EMachine.Sales.Orleans.Tests;
 
 public interface IMoneyGrain : IGrainWithGuidKey
 {

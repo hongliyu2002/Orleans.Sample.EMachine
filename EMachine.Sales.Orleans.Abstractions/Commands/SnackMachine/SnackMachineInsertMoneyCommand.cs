@@ -1,14 +1,15 @@
-﻿using EMachine.Orleans.Shared;
+﻿using EMachine.Orleans.Shared.Commands;
+using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
 
 namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineInsertMoneyCommand : SnackMachineCommand
+public sealed record SnackMachineInsertMoneyCommand : DomainCommand
 {
-    public SnackMachineInsertMoneyCommand(Money money, Guid traceId, string operatedBy)
-        : base(traceId, operatedBy)
+    public SnackMachineInsertMoneyCommand(Money money, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
+        : base(traceId, operatedAt, operatedBy)
     {
         Money = Guard.Against.Null(money);
     }

@@ -1,7 +1,7 @@
-﻿using EMachine.Orleans.Tests.Fixtures;
+﻿using EMachine.Sales.Orleans.Tests.Fixtures;
 using Xunit;
 
-namespace EMachine.Orleans.Tests;
+namespace EMachine.Sales.Orleans.Tests;
 
 [CollectionDefinition(Name)]
 public class MoneyCollectionFixture : ICollectionFixture<ClusterFixture>

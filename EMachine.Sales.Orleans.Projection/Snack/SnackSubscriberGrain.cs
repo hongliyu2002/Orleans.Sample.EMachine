@@ -74,7 +74,7 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
                     {
                         Id = evt.Id,
                         Name = evt.Name,
-                        CreatedAt = DateTimeOffset.UtcNow,
+                        CreatedAt = evt.OperatedAt,
                         CreatedBy = evt.OperatedBy
                     };
         await _dbContext.Snacks.AddAsync(snack);
@@ -90,7 +90,7 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
             _logger.LogWarning($"Snack {evt.Id} does not exist.");
             return false;
         }
-        snackInDb.DeletedAt = DateTimeOffset.UtcNow;
+        snackInDb.DeletedAt = evt.OperatedAt;
         snackInDb.DeletedBy = evt.OperatedBy;
         snackInDb.IsDeleted = true;
         var savedNumber = await _dbContext.SaveChangesAsync();
@@ -106,7 +106,7 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
             return false;
         }
         snackInDb.Name = evt.Name;
-        snackInDb.LastModifiedAt = DateTimeOffset.UtcNow;
+        snackInDb.LastModifiedAt = evt.OperatedAt;
         snackInDb.LastModifiedBy = evt.OperatedBy;
         var savedNumber = await _dbContext.SaveChangesAsync();
         return savedNumber > 0;
