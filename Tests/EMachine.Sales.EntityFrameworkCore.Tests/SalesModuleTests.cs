@@ -12,16 +12,17 @@ namespace EMachine.Sales.EntityFrameworkCore.Tests;
 [Collection("Sales")]
 public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreModule>, IDisposable
 {
+
+    private readonly SalesDbContext _dbContext;
     private readonly ITestOutputHelper _testOutputHelper;
 
     public SalesModuleTests(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
         StartApplication();
-
-        var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
-        // dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
+        _dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
+        // _dbContext.Database.EnsureDeleted();
+        _dbContext.Database.EnsureCreated();
     }
 
     /// <inheritdoc />
@@ -33,7 +34,6 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
     [Fact]
     public async Task Should_Add_SnackEntity()
     {
-        var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
         var id = Guid.NewGuid();
         var snack = new Snack
                     {
@@ -42,10 +42,10 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
                         CreatedAt = DateTimeOffset.UtcNow,
                         CreatedBy = "System"
                     };
-        await dbContext.Snacks.AddAsync(snack);
-        await dbContext.SaveChangesAsync();
+        await _dbContext.Snacks.AddAsync(snack);
+        await _dbContext.SaveChangesAsync();
         snack.Id.Should().Be(id);
-        var snackGet = await dbContext.Snacks.FindAsync(id);
+        var snackGet = await _dbContext.Snacks.FindAsync(id);
         snackGet.Should().NotBeNull();
         _testOutputHelper.WriteLine(snackGet!.ToString());
     }
@@ -53,7 +53,6 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
     [Fact]
     public async Task Should_Add_SnackMachineEntity()
     {
-        var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
         var id = Guid.NewGuid();
         var snackMachine = new SnackMachine
                            {
@@ -73,9 +72,9 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
                            };
         snackMachine.MoneyInside.Amount = snackMachine.MoneyInside.Yuan1 * 1m + snackMachine.MoneyInside.Yuan2 * 2m + snackMachine.MoneyInside.Yuan5 * 5m + snackMachine.MoneyInside.Yuan10 * 10m + snackMachine.MoneyInside.Yuan20 * 20m
                                         + snackMachine.MoneyInside.Yuan50 * 50m + snackMachine.MoneyInside.Yuan100 * 100m;
-        await dbContext.SnackMachines.AddAsync(snackMachine);
-        await dbContext.SaveChangesAsync();
-        var snacks = await dbContext.Snacks.Take(3).ToListAsync();
+        await _dbContext.SnackMachines.AddAsync(snackMachine);
+        await _dbContext.SaveChangesAsync();
+        var snacks = await _dbContext.Snacks.Take(3).ToListAsync();
         var snack01 = snacks.Skip(0).Take(1).FirstOrDefault();
         var snack02 = snacks.Skip(1).Take(1).FirstOrDefault();
         var snack03 = snacks.Skip(2).Take(1).FirstOrDefault();
@@ -129,11 +128,11 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
                                                         }
                                                }
                                });
-        await dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
         snackMachine.Id.Should().Be(id);
-        var snackMachineGet = await dbContext.SnackMachines.Include(x => x.Slots).FirstOrDefaultAsync();
+        var snackMachineGet = await _dbContext.SnackMachines.Include(x => x.Slots).FirstOrDefaultAsync();
         snackMachineGet.Should().NotBeNull();
-        snackMachineGet.Slots.Should().HaveCount(4);
-        _testOutputHelper.WriteLine(snackMachineGet!.ToString());
+        snackMachineGet!.Slots.Should().HaveCount(4);
+        _testOutputHelper.WriteLine(snackMachineGet.ToString());
     }
 }
