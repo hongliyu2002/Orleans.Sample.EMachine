@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
-using EMachine.Sales.Orleans.Abstractions;
-using EMachine.Sales.Orleans.Abstractions.Commands;
+using EMachine.Sales.Orleans.Commands;
 using Fluxera.Guards;
 using Microsoft.Extensions.Logging;
 using Orleans.Concurrency;

@@ -1,7 +1,7 @@
 ﻿using EMachine.Orleans.Shared.Events;
 using Fluxera.Guards;
 
-namespace EMachine.Sales.Orleans.Abstractions.Events;
+namespace EMachine.Sales.Orleans.Events;
 
 [Immutable]
 [GenerateSerializer]

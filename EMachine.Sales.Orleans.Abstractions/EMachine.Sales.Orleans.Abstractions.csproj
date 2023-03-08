@@ -4,7 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>EMachine.Sales.Domain.Abstractions</RootNamespace>
+        <RootNamespace>EMachine.Sales.Domain</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

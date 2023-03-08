@@ -1,4 +1,4 @@
-﻿namespace EMachine.Sales.Orleans.Abstractions.Commands;
+﻿namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]

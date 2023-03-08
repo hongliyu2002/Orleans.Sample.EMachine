@@ -117,7 +117,8 @@ public sealed record Money
     {
         money1 = Guard.Against.Null(money1);
         money2 = Guard.Against.Null(money2);
-        var result = Create(money1.Yuan1 + money2.Yuan1, money1.Yuan2 + money2.Yuan2, money1.Yuan5 + money2.Yuan5, money1.Yuan10 + money2.Yuan10, money1.Yuan20 + money2.Yuan20, money1.Yuan50 + money2.Yuan50, money1.Yuan100 + money2.Yuan100);
+        var result = Create(money1.Yuan1 + money2.Yuan1, money1.Yuan2 + money2.Yuan2, money1.Yuan5 + money2.Yuan5, money1.Yuan10 + money2.Yuan10, money1.Yuan20 + money2.Yuan20, money1.Yuan50 + money2.Yuan50,
+                            money1.Yuan100 + money2.Yuan100);
         return result.IsSuccess ? result.Value : throw new InvalidOperationException(result.ToString());
     }
 
@@ -125,7 +126,8 @@ public sealed record Money
     {
         money1 = Guard.Against.Null(money1);
         money2 = Guard.Against.Null(money2);
-        var result = Create(money1.Yuan1 - money2.Yuan1, money1.Yuan2 - money2.Yuan2, money1.Yuan5 - money2.Yuan5, money1.Yuan10 - money2.Yuan10, money1.Yuan20 - money2.Yuan20, money1.Yuan50 - money2.Yuan50, money1.Yuan100 - money2.Yuan100);
+        var result = Create(money1.Yuan1 - money2.Yuan1, money1.Yuan2 - money2.Yuan2, money1.Yuan5 - money2.Yuan5, money1.Yuan10 - money2.Yuan10, money1.Yuan20 - money2.Yuan20, money1.Yuan50 - money2.Yuan50,
+                            money1.Yuan100 - money2.Yuan100);
         return result.IsSuccess ? result.Value : throw new InvalidOperationException(result.ToString());
     }
 

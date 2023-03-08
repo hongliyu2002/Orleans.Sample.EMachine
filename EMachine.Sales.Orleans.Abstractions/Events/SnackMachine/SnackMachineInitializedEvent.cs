@@ -1,9 +1,9 @@
 ﻿using System.Collections.Immutable;
 using EMachine.Orleans.Shared;
-using EMachine.Sales.Orleans.Abstractions.States;
+using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
 
-namespace EMachine.Sales.Orleans.Abstractions.Events;
+namespace EMachine.Sales.Orleans.Events;
 
 [Immutable]
 [GenerateSerializer]

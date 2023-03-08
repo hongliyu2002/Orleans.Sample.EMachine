@@ -1,11 +1,10 @@
 ﻿using System.Collections.Immutable;
 using EMachine.Orleans.Shared;
 using EMachine.Orleans.Shared.Extensions;
-using EMachine.Sales.Orleans.Abstractions;
-using EMachine.Sales.Orleans.Abstractions.Commands;
-using EMachine.Sales.Orleans.Abstractions.Events;
-using EMachine.Sales.Orleans.Abstractions.States;
+using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.Events;
 using EMachine.Sales.Orleans.Rules;
+using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
 using Microsoft.Extensions.Logging;
 using Orleans.FluentResults;
@@ -27,33 +26,31 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
+    public Task<Result<SnackMachine>> GetAsync()
+    {
+        var id = this.GetPrimaryKey();
+        return Task.FromResult(Result.Ok(State).Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
+    }
+
+    /// <inheritdoc />
     public Task<Result<Money>> GetMoneyInsideAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
-                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
-                                     .Map(() => State.MoneyInside));
+        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.MoneyInside));
     }
 
     /// <inheritdoc />
     public Task<Result<decimal>> GetAmountInTransactionAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
-                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
-                                     .Map(() => State.AmountInTransaction));
+        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.AmountInTransaction));
     }
 
     /// <inheritdoc />
     public Task<Result<ImmutableList<Slot>>> GetSlotsAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
-                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
-                                     .Map(() => State.Slots.ToImmutableList()));
+        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.Slots.ToImmutableList()));
     }
 
     /// <inheritdoc />
@@ -211,7 +208,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotInitialized.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(State.TryGetSlot(cmd.Position, out var slot), $"Slot at position {cmd.Position} in the snack machine {id} does not exist.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotNotExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
-                     .EnsureAsync(slot!.SnackPile is { }, $"Snack pile of the slot at position {cmd.Position} in the snack machine {id} does not exist.")
+                     .EnsureAsync(slot!.SnackPile is not null, $"Snack pile of the slot at position {cmd.Position} in the snack machine {id} does not exist.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotSnackPileNotExists.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))
                      .EnsureAsync(slot.SnackPile!.TryPopOne(out _), $"Not enough snack in the snack pile of the slot at position {cmd.Position} in the snack machine {id}.")
                      .TapErrorAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotSnackPileNotEnoughSnack.Value, errors.ToMessage(), cmd.TraceId, cmd.OperatedBy)))

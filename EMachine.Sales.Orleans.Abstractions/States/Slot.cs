@@ -1,4 +1,4 @@
-﻿namespace EMachine.Sales.Orleans.Abstractions.States;
+﻿namespace EMachine.Sales.Orleans.States;
 
 [GenerateSerializer]
 public sealed class Slot

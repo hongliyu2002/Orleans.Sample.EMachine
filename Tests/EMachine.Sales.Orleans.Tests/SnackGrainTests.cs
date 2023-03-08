@@ -1,5 +1,5 @@
-﻿using EMachine.Sales.Orleans.Abstractions;
-using EMachine.Sales.Orleans.Abstractions.Commands;
+﻿using EMachine.Sales.Orleans;
+using EMachine.Sales.Orleans.Commands;
 using EMachine.Sales.Orleans.Tests.Fixtures;
 using FluentAssertions;
 using Orleans.TestingHost;

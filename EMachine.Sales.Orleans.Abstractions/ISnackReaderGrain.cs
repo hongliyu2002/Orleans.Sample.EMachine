@@ -1,4 +1,4 @@
-﻿namespace EMachine.Sales.Orleans.Abstractions;
+﻿namespace EMachine.Sales.Orleans;
 
 public class ISnackReaderGrain : IGrainWithGuidKey
 {

@@ -1,7 +1,7 @@
-﻿using EMachine.Sales.Orleans.Abstractions.Events;
+﻿using EMachine.Sales.Orleans.Events;
 using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
 
-namespace EMachine.Sales.Orleans.Abstractions.States;
+namespace EMachine.Sales.Orleans.States;
 
 [GenerateSerializer]
 public sealed class Snack : ISoftDeleteObject, IAuditedObject

@@ -1,11 +1,15 @@
-﻿using EMachine.Sales.Orleans.Abstractions.Commands;
+﻿using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.States;
 using Orleans.Concurrency;
 using Orleans.FluentResults;
 
-namespace EMachine.Sales.Orleans.Abstractions;
+namespace EMachine.Sales.Orleans;
 
 public interface ISnackGrain : IGrainWithGuidKey
 {
+    [AlwaysInterleave]
+    Task<Result<Snack>> GetAsync();
+    
     [AlwaysInterleave]
     Task<Result<string>> GetNameAsync();
 

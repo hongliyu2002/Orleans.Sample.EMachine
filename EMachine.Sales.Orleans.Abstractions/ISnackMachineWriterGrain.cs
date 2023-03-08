@@ -1,9 +1,9 @@
 ﻿using System.Collections.Immutable;
-using EMachine.Sales.Orleans.Abstractions.Commands;
+using EMachine.Sales.Orleans.Commands;
 using Orleans.Concurrency;
 using Orleans.FluentResults;
 
-namespace EMachine.Sales.Orleans.Abstractions;
+namespace EMachine.Sales.Orleans;
 
 public interface ISnackMachineWriterGrain : IGrainWithGuidKey
 {

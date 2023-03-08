@@ -1,10 +1,9 @@
 ﻿using EMachine.Orleans.Shared;
 using EMachine.Orleans.Shared.Extensions;
-using EMachine.Sales.Orleans.Abstractions;
-using EMachine.Sales.Orleans.Abstractions.Commands;
-using EMachine.Sales.Orleans.Abstractions.Events;
-using EMachine.Sales.Orleans.Abstractions.States;
+using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.Events;
 using EMachine.Sales.Orleans.Rules;
+using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
 using Microsoft.Extensions.Logging;
 using Orleans.FluentResults;
@@ -26,13 +25,17 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
     }
 
     /// <inheritdoc />
+    public Task<Result<Snack>> GetAsync()
+    {
+        var id = this.GetPrimaryKey();
+        return Task.FromResult(Result.Ok(State).Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.").Ensure(State.IsCreated, $"Snack {id} is not initialized."));
+    }
+
+    /// <inheritdoc />
     public Task<Result<string>> GetNameAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.")
-                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
-                                     .Map(() => State.Name));
+        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.").Ensure(State.IsCreated, $"Snack {id} is not initialized.").Map(() => State.Name));
     }
 
     /// <inheritdoc />

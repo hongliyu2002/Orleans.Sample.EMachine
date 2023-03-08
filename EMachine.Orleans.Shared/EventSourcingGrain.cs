@@ -25,11 +25,11 @@ public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, Domain
     }
 
     /// <inheritdoc />
-    public override Task OnActivateAsync(CancellationToken cancellationToken)
+    public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
+        await base.OnActivateAsync(cancellationToken);
         _streamProvider = this.GetStreamProvider(_name);
         _stream = _streamProvider.GetStream<DomainEvent>(_nameSpace, this.GetPrimaryKey());
-        return base.OnActivateAsync(cancellationToken);
     }
 
     protected async Task<Result> PublishAsync(DomainEvent evt)

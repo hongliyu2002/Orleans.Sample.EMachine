@@ -1,7 +1,7 @@
 ﻿using EMachine.Orleans.Shared;
 using Fluxera.Guards;
 
-namespace EMachine.Sales.Orleans.Abstractions.Commands;
+namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
