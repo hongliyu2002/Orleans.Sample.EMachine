@@ -17,7 +17,7 @@ public sealed class SnackMachineEntityConfiguration : IEntityTypeConfiguration<S
     public void Configure(EntityTypeBuilder<SnackMachine> builder)
     {
         builder.ToTable("SnackMachines");
-        builder.HasKey(x => x.Key);
+        builder.HasKey(x => x.Id);
         builder.OwnsOne(x => x.MoneyInside);
         builder.Property(x => x.CreatedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);

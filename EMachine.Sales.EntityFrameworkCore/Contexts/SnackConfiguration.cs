@@ -17,7 +17,7 @@ public sealed class SnackEntityConfiguration : IEntityTypeConfiguration<Snack>
     public void Configure(EntityTypeBuilder<Snack> builder)
     {
         builder.ToTable("Snacks");
-        builder.HasKey(x => x.Key);
+        builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).HasMaxLength(100);
         builder.Property(x => x.CreatedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);

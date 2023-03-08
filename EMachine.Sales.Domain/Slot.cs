@@ -5,7 +5,7 @@ namespace EMachine.Sales.Domain;
 [PublicAPI]
 public sealed class Slot
 {
-    public Guid MachineKey { get; set; }
+    public Guid MachineId { get; set; }
 
     public int Position { get; set; }
 

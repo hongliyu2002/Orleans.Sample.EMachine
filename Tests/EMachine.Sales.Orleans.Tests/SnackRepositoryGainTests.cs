@@ -23,11 +23,11 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
     [Fact]
     public async Task Can_Create_Snack()
     {
-        var key = Guid.NewGuid();
+        var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
-        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(key, "Apple", Guid.NewGuid(), "Leo"));
+        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Apple", Guid.NewGuid(), "Leo"));
         createResult.IsSuccess.Should().Be(true);
-        createResult.Value.GetPrimaryKey().Should().Be(key);
+        createResult.Value.GetPrimaryKey().Should().Be(id);
         _testOutputHelper.WriteLine(createResult.ToString());
         var result = await createResult.Value.GetNameAsync();
         result.IsSuccess.Should().Be(true);
@@ -38,13 +38,13 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
     [Fact]
     public async Task Can_Delete_Snack()
     {
-        var key = Guid.NewGuid();
+        var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
-        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(key, "Lemon", Guid.NewGuid(), "Leo"));
+        var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Lemon", Guid.NewGuid(), "Leo"));
         createResult.IsSuccess.Should().Be(true);
-        createResult.Value.GetPrimaryKey().Should().Be(key);
+        createResult.Value.GetPrimaryKey().Should().Be(id);
         _testOutputHelper.WriteLine(createResult.ToString());
-        var deleteResult = await grain.DeleteAsync(new SnackWriterDeleteOneCommand(key, Guid.NewGuid(), "Boss"));
+        var deleteResult = await grain.DeleteAsync(new SnackWriterDeleteOneCommand(id, Guid.NewGuid(), "Boss"));
         deleteResult.IsSuccess.Should().Be(true);
         _testOutputHelper.WriteLine(deleteResult.ToString());
     }
@@ -52,11 +52,11 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
     [Fact]
     public async Task Can_Get_Snack()
     {
-        var key = new Guid("ae9e8d38-8289-47fe-8084-99df2b894556");
+        var id = new Guid("ae9e8d38-8289-47fe-8084-99df2b894556");
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
-        var getResult = await grain.GetAsync(new SnackWriterGetOneCommand(key, Guid.NewGuid(), "Boss"));
+        var getResult = await grain.GetAsync(new SnackWriterGetOneCommand(id, Guid.NewGuid(), "Boss"));
         getResult.IsSuccess.Should().BeTrue();
-        getResult.Value.GetPrimaryKey().Should().Be(key);
+        getResult.Value.GetPrimaryKey().Should().Be(id);
         var result = await getResult.Value.GetNameAsync();
         result.Value.Should().Be("Cafe");
     }

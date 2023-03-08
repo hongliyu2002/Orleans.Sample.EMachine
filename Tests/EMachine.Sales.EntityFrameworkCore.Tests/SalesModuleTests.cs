@@ -34,18 +34,18 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
     public async Task Should_Add_SnackEntity()
     {
         var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
-        var key = Guid.NewGuid();
+        var id = Guid.NewGuid();
         var snack = new Snack
                     {
-                        Key = key,
+                        Id = id,
                         Name = "Cafe",
                         CreatedAt = DateTimeOffset.UtcNow,
                         CreatedBy = "System"
                     };
         await dbContext.Snacks.AddAsync(snack);
         await dbContext.SaveChangesAsync();
-        snack.Key.Should().Be(key);
-        var snackGet = await dbContext.Snacks.FindAsync(key);
+        snack.Id.Should().Be(id);
+        var snackGet = await dbContext.Snacks.FindAsync(id);
         snackGet.Should().NotBeNull();
         _testOutputHelper.WriteLine(snackGet!.ToString());
     }
@@ -54,10 +54,10 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
     public async Task Should_Add_SnackMachineEntity()
     {
         var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
-        var key = Guid.NewGuid();
+        var id = Guid.NewGuid();
         var snackMachine = new SnackMachine
                            {
-                               Key = key,
+                               Id = id,
                                MoneyInside = new Money
                                              {
                                                  Yuan1 = 10,
@@ -81,19 +81,19 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         var snack03 = snacks.Skip(2).Take(1).FirstOrDefault();
         snackMachine.Slots.Add(new Slot
                                {
-                                   MachineKey = key,
+                                   MachineId = id,
                                    Position = 0
                                });
         snackMachine.Slots.Add(new Slot
                                {
-                                   MachineKey = key,
+                                   MachineId = id,
                                    Position = 1,
                                    SnackPile = snack01 switch
                                                {
                                                    null => null,
                                                    _ => new SnackPile
                                                         {
-                                                            SnackKey = snack01.Key,
+                                                            SnackId = snack01.Id,
                                                             Quantity = 20,
                                                             Price = 3
                                                         }
@@ -101,14 +101,14 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
                                });
         snackMachine.Slots.Add(new Slot
                                {
-                                   MachineKey = key,
+                                   MachineId = id,
                                    Position = 2,
                                    SnackPile = snack02 switch
                                                {
                                                    null => null,
                                                    _ => new SnackPile
                                                         {
-                                                            SnackKey = snack02.Key,
+                                                            SnackId = snack02.Id,
                                                             Quantity = 10,
                                                             Price = 9
                                                         }
@@ -116,21 +116,21 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
                                });
         snackMachine.Slots.Add(new Slot
                                {
-                                   MachineKey = key,
+                                   MachineId = id,
                                    Position = 3,
                                    SnackPile = snack03 switch
                                                {
                                                    null => null,
                                                    _ => new SnackPile
                                                         {
-                                                            SnackKey = snack03.Key,
+                                                            SnackId = snack03.Id,
                                                             Quantity = 15,
                                                             Price = 6
                                                         }
                                                }
                                });
         await dbContext.SaveChangesAsync();
-        snackMachine.Key.Should().Be(key);
+        snackMachine.Id.Should().Be(id);
         var snackMachineGet = await dbContext.SnackMachines.Include(x => x.Slots).FirstOrDefaultAsync();
         snackMachineGet.Should().NotBeNull();
         snackMachineGet.Slots.Should().HaveCount(4);

@@ -4,8 +4,8 @@
 [GenerateSerializer]
 public sealed record SnackMachineUnloadedMoneyEvent : SnackMachineEvent
 {
-    public SnackMachineUnloadedMoneyEvent(Guid key, Guid traceId, string operatedBy)
-        : base(key, traceId, operatedBy)
+    public SnackMachineUnloadedMoneyEvent(Guid id, Guid traceId, string operatedBy)
+        : base(id, traceId, operatedBy)
     {
     }
 }

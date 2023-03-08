@@ -19,13 +19,13 @@ public sealed class SlotEntityConfiguration : IEntityTypeConfiguration<Slot>
         builder.ToTable("Slots");
         builder.HasKey(x => new
                             {
-                                x.MachineKey,
+                                x.MachineId,
                                 x.Position
                             });
-        builder.HasOne<SnackMachine>().WithMany(x => x.Slots).HasForeignKey(x => x.MachineKey).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne<SnackMachine>().WithMany(x => x.Slots).HasForeignKey(x => x.MachineId).OnDelete(DeleteBehavior.Cascade);
         builder.OwnsOne<SnackPile>(x => x.SnackPile, nav =>
                                                      {
-                                                         nav.HasOne<Snack>(x => x.Snack).WithMany().HasForeignKey(x => x.SnackKey).OnDelete(DeleteBehavior.Cascade);
+                                                         nav.HasOne<Snack>(x => x.Snack).WithMany().HasForeignKey(x => x.SnackId).OnDelete(DeleteBehavior.Cascade);
                                                      });
         _callback?.Invoke(builder);
     }

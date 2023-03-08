@@ -5,7 +5,7 @@ namespace EMachine.Sales.Domain;
 [PublicAPI]
 public sealed class SnackMachine
 {
-    public Guid Key { get; set; }
+    public Guid Id { get; set; }
 
     public Money MoneyInside { get; set; } = null!;
 

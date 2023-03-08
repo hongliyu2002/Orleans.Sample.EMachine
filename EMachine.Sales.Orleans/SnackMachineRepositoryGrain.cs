@@ -22,13 +22,13 @@ public class SnackMachineRepositoryGrain : Grain, ISnackMachineWriterGrain
     /// <inheritdoc />
     public Task<Result<ISnackMachineGrain>> GetAsync(SnackMachineWriterGetOneCommand cmd)
     {
-        return Task.FromResult(Result.Ok(GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Key)));
+        return Task.FromResult(Result.Ok(GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id)));
     }
 
     /// <inheritdoc />
     public Task<Result<ImmutableList<ISnackMachineGrain>>> GetMultipleAsync(SnackMachineWriterGetMultipleCommand cmd)
     {
-        var snacks = cmd.Keys.Select(key => GrainFactory.GetGrain<ISnackMachineGrain>(key));
+        var snacks = cmd.Ids.Select(id => GrainFactory.GetGrain<ISnackMachineGrain>(id));
         return Task.FromResult(Result.Ok(snacks.ToImmutableList()));
     }
 
@@ -36,8 +36,8 @@ public class SnackMachineRepositoryGrain : Grain, ISnackMachineWriterGrain
     public Task<Result<ISnackMachineGrain>> CreateAsync(SnackMachineWriterCreateOneCommand cmd)
     {
         return Result.Ok<ISnackMachineGrain>()
-                     .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Key))
-                     .EnsureAsync(grain => grain.CanInitializeAsync(), $"SnackMachine {cmd.Key} already exists or has been deleted.")
+                     .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
+                     .EnsureAsync(grain => grain.CanInitializeAsync(), $"SnackMachine {cmd.Id} already exists or has been deleted.")
                      .TapTryAsync(grain => grain.InitializeAsync(new SnackMachineInitializeCommand(cmd.MoneyInside, cmd.Slots, cmd.TraceId, cmd.OperatedBy)));
     }
 
@@ -45,8 +45,8 @@ public class SnackMachineRepositoryGrain : Grain, ISnackMachineWriterGrain
     public Task<Result> DeleteAsync(SnackMachineWriterDeleteOneCommand cmd)
     {
         return Result.Ok<ISnackMachineGrain>()
-                     .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Key))
-                     .EnsureAsync(grain => grain.CanRemoveAsync(), $"SnackMachine {cmd.Key} does not exists or has been deleted.")
+                     .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
+                     .EnsureAsync(grain => grain.CanRemoveAsync(), $"SnackMachine {cmd.Id} does not exists or has been deleted.")
                      .BindTryAsync(grain => grain.RemoveAsync(new SnackMachineRemoveCommand(cmd.TraceId, cmd.OperatedBy)));
     }
 }

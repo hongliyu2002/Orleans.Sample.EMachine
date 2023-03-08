@@ -7,8 +7,8 @@ namespace EMachine.Sales.Orleans.Abstractions.Events;
 [GenerateSerializer]
 public sealed record SnackMachineInsertedMoneyEvent : SnackMachineEvent
 {
-    public SnackMachineInsertedMoneyEvent(Guid key, Money money, Guid traceId, string operatedBy)
-        : base(key, traceId, operatedBy)
+    public SnackMachineInsertedMoneyEvent(Guid id, Money money, Guid traceId, string operatedBy)
+        : base(id, traceId, operatedBy)
     {
         Money = Guard.Against.Null(money);
     }

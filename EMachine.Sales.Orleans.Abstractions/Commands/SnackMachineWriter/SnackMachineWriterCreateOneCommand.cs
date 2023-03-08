@@ -9,16 +9,16 @@ namespace EMachine.Sales.Orleans.Abstractions.Commands;
 [GenerateSerializer]
 public sealed record SnackMachineWriterCreateOneCommand : SnackMachineWriterCommand
 {
-    public SnackMachineWriterCreateOneCommand(Guid key, Money moneyInside, IImmutableList<Slot> slots, Guid traceId, string operatedBy)
+    public SnackMachineWriterCreateOneCommand(Guid id, Money moneyInside, IImmutableList<Slot> slots, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
-        Key = Guard.Against.Empty(key, nameof(key));
+        Id = Guard.Against.Empty(id, nameof(id));
         MoneyInside = Guard.Against.Null(moneyInside);
         Slots = Guard.Against.Null(slots);
     }
 
     [Id(0)]
-    public Guid Key { get; }
+    public Guid Id { get; }
 
     [Id(1)]
     public Money MoneyInside { get; }
