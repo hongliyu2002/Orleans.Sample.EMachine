@@ -7,8 +7,8 @@ namespace EMachine.Sales.Orleans.Abstractions.Events;
 [GenerateSerializer]
 public sealed record SnackMachineLoadedSnacksEvent : SnackMachineEvent
 {
-    public SnackMachineLoadedSnacksEvent(Guid uuId, int position, SnackPile snackPile, Guid traceId, string operatedBy)
-        : base(uuId, traceId, operatedBy)
+    public SnackMachineLoadedSnacksEvent(Guid key, int position, SnackPile snackPile, Guid traceId, string operatedBy)
+        : base(key, traceId, operatedBy)
     {
         Position = Guard.Against.Negative(position);
         SnackPile = Guard.Against.Null(snackPile);

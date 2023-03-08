@@ -1,13 +1,11 @@
-﻿using Fluxera.Entity;
-using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
-namespace EMachine.Sales.Domain.Entities;
+namespace EMachine.Sales.Domain;
 
 [PublicAPI]
-public sealed class Snack : AggregateRoot<Snack, Guid>, ISoftDeleteObject, IAuditedObject
+public sealed class Snack
 {
-    public Guid UuId { get; set; }
+    public Guid Key { get; set; }
 
     public string Name { get; set; } = null!;
 

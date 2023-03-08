@@ -6,15 +6,15 @@ namespace EMachine.Sales.Orleans.Abstractions.Commands;
 [GenerateSerializer]
 public sealed record SnackWriterCreateOneCommand : SnackWriterCommand
 {
-    public SnackWriterCreateOneCommand(Guid uuId, string name, Guid traceId, string operatedBy)
+    public SnackWriterCreateOneCommand(Guid key, string name, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
-        UuId = Guard.Against.Empty(uuId, nameof(uuId));
+        Key = Guard.Against.Empty(key, nameof(key));
         Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
     }
 
     [Id(0)]
-    public Guid UuId { get; }
+    public Guid Key { get; }
 
     [Id(1)]
     public string Name { get; }

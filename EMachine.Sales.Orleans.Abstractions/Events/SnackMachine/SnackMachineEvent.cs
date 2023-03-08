@@ -7,12 +7,12 @@ namespace EMachine.Sales.Orleans.Abstractions.Events;
 [GenerateSerializer]
 public abstract record SnackMachineEvent : DomainEvent
 {
-    protected SnackMachineEvent(Guid uuId, Guid traceId, string operatedBy)
+    protected SnackMachineEvent(Guid key, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
-        UuId = Guard.Against.Empty(uuId, nameof(uuId));
+        Key = Guard.Against.Empty(key, nameof(key));
     }
 
     [Id(0)]
-    public Guid UuId { get; }
+    public Guid Key { get; }
 }

@@ -1,27 +1,28 @@
-﻿using EMachine.Sales.Domain;
-using EMachine.Sales.EntityFrameworkCore.Contributors;
+﻿using EMachine.Sales.EntityFrameworkCore.Contexts;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
-using Fluxera.Extensions.Hosting.Modules.Persistence;
-using Fluxera.Extensions.Hosting.Modules.Persistence.EntityFrameworkCore;
-using Fluxera.Extensions.Hosting.Modules.Serilog;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EMachine.Sales.EntityFrameworkCore;
 
 [PublicAPI]
-[DependsOn<SalesDomainModule>]
-[DependsOn<SerilogModule>]
-[DependsOn<EntityFrameworkCorePersistenceModule>]
-
 [DependsOn<ConfigurationModule>]
 public class SalesEntityFrameworkCoreModule : ConfigureServicesModule
 {
     /// <inheritdoc />
     public override void ConfigureServices(IServiceConfigurationContext context)
     {
-        // Add the repository contributor for the 'Sales' repository.
-        context.Services.AddRepositoryContributor<RepositoryContributor>("Sales");
+        context.Services.AddDbContextPool<SalesDbContext>(options =>
+                                                          {
+                                                              var connectionString = context.Configuration.GetConnectionString("SalesDB") ?? "Data Source=Sales.db";
+                                                              options.UseSqlite(connectionString, sqlite =>
+                                                                                                  {
+                                                                                                      sqlite.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                                                                                                  });
+                                                          });
     }
 }

@@ -1,9 +1,8 @@
-﻿using EMachine.Sales.Domain.Entities;
-using EMachine.Sales.Domain.Repositories;
+﻿using EMachine.Sales.Domain;
 using EMachine.Sales.EntityFrameworkCore.Contexts;
 using FluentAssertions;
 using Fluxera.Extensions.Hosting.Modules.UnitTesting;
-using Fluxera.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
@@ -19,7 +18,9 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
     {
         _testOutputHelper = testOutputHelper;
         StartApplication();
+
         var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
+        // dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
 
@@ -32,52 +33,107 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
     [Fact]
     public async Task Should_Add_SnackEntity()
     {
-        var unitOfWorkFactory = ApplicationLoader.ServiceProvider.GetRequiredService<IUnitOfWorkFactory>();
-        var unitOfWork = unitOfWorkFactory.CreateUnitOfWork("Sales");
-        var snackBaseRepo = ApplicationLoader.ServiceProvider.GetRequiredService<ISnackRepository>();
-        var uuId = Guid.NewGuid();
+        var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
+        var key = Guid.NewGuid();
         var snack = new Snack
                     {
-                        UuId = uuId,
+                        Key = key,
                         Name = "Cafe",
                         CreatedAt = DateTimeOffset.UtcNow,
                         CreatedBy = "System"
                     };
-        await snackBaseRepo.AddAsync(snack);
-        await unitOfWork.SaveChangesAsync();
-        snack.UuId.Should().Be(uuId);
-        var snackGet = await snackBaseRepo.FindOneAsync(x => x.UuId == uuId);
+        await dbContext.Snacks.AddAsync(snack);
+        await dbContext.SaveChangesAsync();
+        snack.Key.Should().Be(key);
+        var snackGet = await dbContext.Snacks.FindAsync(key);
         snackGet.Should().NotBeNull();
-        _testOutputHelper.WriteLine(snackGet.ToString());
+        _testOutputHelper.WriteLine(snackGet!.ToString());
     }
 
     [Fact]
     public async Task Should_Add_SnackMachineEntity()
     {
-        var unitOfWorkFactory = ApplicationLoader.ServiceProvider.GetRequiredService<IUnitOfWorkFactory>();
-        var unitOfWork = unitOfWorkFactory.CreateUnitOfWork("Sales");
-        var snackMachineBaseRepo = ApplicationLoader.ServiceProvider.GetRequiredService<ISnackMachineRepository>();
-        var uuId = Guid.NewGuid();
+        var dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
+        var key = Guid.NewGuid();
         var snackMachine = new SnackMachine
                            {
-                               UuId = uuId,
-                               Yuan1Inside = 10,
-                               Yuan2Inside = 10,
-                               Yuan5Inside = 10,
-                               Yuan10Inside = 10,
-                               Yuan20Inside = 10,
-                               Yuan50Inside = 10,
-                               Yuan100Inside = 10,
+                               Key = key,
+                               MoneyInside = new Money
+                                             {
+                                                 Yuan1 = 10,
+                                                 Yuan2 = 9,
+                                                 Yuan5 = 8,
+                                                 Yuan10 = 7,
+                                                 Yuan20 = 6,
+                                                 Yuan50 = 5,
+                                                 Yuan100 = 4
+                                             },
                                CreatedAt = DateTimeOffset.UtcNow,
                                CreatedBy = "System"
                            };
-        snackMachine.AmountInside = snackMachine.Yuan1Inside * 1m + snackMachine.Yuan2Inside * 2m + snackMachine.Yuan5Inside * 5m + snackMachine.Yuan10Inside * 10m + snackMachine.Yuan20Inside * 20m + snackMachine.Yuan50Inside * 50m
-                                  + snackMachine.Yuan100Inside * 100m;
-        await snackMachineBaseRepo.AddAsync(snackMachine);
-        await unitOfWork.SaveChangesAsync();
-        snackMachine.UuId.Should().Be(uuId);
-        var snackMachineGet = await snackMachineBaseRepo.FindOneAsync(x => x.UuId == uuId);
+        snackMachine.MoneyInside.Amount = snackMachine.MoneyInside.Yuan1 * 1m + snackMachine.MoneyInside.Yuan2 * 2m + snackMachine.MoneyInside.Yuan5 * 5m + snackMachine.MoneyInside.Yuan10 * 10m + snackMachine.MoneyInside.Yuan20 * 20m
+                                        + snackMachine.MoneyInside.Yuan50 * 50m + snackMachine.MoneyInside.Yuan100 * 100m;
+        await dbContext.SnackMachines.AddAsync(snackMachine);
+        await dbContext.SaveChangesAsync();
+        var snacks = await dbContext.Snacks.Take(3).ToListAsync();
+        var snack01 = snacks.Skip(0).Take(1).FirstOrDefault();
+        var snack02 = snacks.Skip(1).Take(1).FirstOrDefault();
+        var snack03 = snacks.Skip(2).Take(1).FirstOrDefault();
+        snackMachine.Slots.Add(new Slot
+                               {
+                                   MachineKey = key,
+                                   Position = 0
+                               });
+        snackMachine.Slots.Add(new Slot
+                               {
+                                   MachineKey = key,
+                                   Position = 1,
+                                   SnackPile = snack01 switch
+                                               {
+                                                   null => null,
+                                                   _ => new SnackPile
+                                                        {
+                                                            SnackKey = snack01.Key,
+                                                            Quantity = 20,
+                                                            Price = 3
+                                                        }
+                                               }
+                               });
+        snackMachine.Slots.Add(new Slot
+                               {
+                                   MachineKey = key,
+                                   Position = 2,
+                                   SnackPile = snack02 switch
+                                               {
+                                                   null => null,
+                                                   _ => new SnackPile
+                                                        {
+                                                            SnackKey = snack02.Key,
+                                                            Quantity = 10,
+                                                            Price = 9
+                                                        }
+                                               }
+                               });
+        snackMachine.Slots.Add(new Slot
+                               {
+                                   MachineKey = key,
+                                   Position = 3,
+                                   SnackPile = snack03 switch
+                                               {
+                                                   null => null,
+                                                   _ => new SnackPile
+                                                        {
+                                                            SnackKey = snack03.Key,
+                                                            Quantity = 15,
+                                                            Price = 6
+                                                        }
+                                               }
+                               });
+        await dbContext.SaveChangesAsync();
+        snackMachine.Key.Should().Be(key);
+        var snackMachineGet = await dbContext.SnackMachines.Include(x => x.Slots).FirstOrDefaultAsync();
         snackMachineGet.Should().NotBeNull();
-        _testOutputHelper.WriteLine(snackMachineGet.ToString());
+        snackMachineGet.Slots.Should().HaveCount(4);
+        _testOutputHelper.WriteLine(snackMachineGet!.ToString());
     }
 }

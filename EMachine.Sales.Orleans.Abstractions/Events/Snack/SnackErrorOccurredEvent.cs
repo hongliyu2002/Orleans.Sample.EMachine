@@ -7,18 +7,18 @@ namespace EMachine.Sales.Orleans.Abstractions.Events;
 [GenerateSerializer]
 public sealed record SnackErrorOccurredEvent : ErrorOccurredEvent
 {
-    public SnackErrorOccurredEvent(Guid uuId, int code, string message, Guid traceId, string operatedBy)
+    public SnackErrorOccurredEvent(Guid key, int code, string message, Guid traceId, string operatedBy)
         : base(code, message, traceId, operatedBy)
     {
-        UuId = Guard.Against.Empty(uuId, nameof(uuId));
+        Key = Guard.Against.Empty(key, nameof(key));
     }
 
-    public SnackErrorOccurredEvent(Guid uuId, int code, string message, string causedBy, Guid traceId, string operatedBy)
+    public SnackErrorOccurredEvent(Guid key, int code, string message, string causedBy, Guid traceId, string operatedBy)
         : base(code, message, causedBy, traceId, operatedBy)
     {
-        UuId = Guard.Against.Empty(uuId, nameof(uuId));
+        Key = Guard.Against.Empty(key, nameof(key));
     }
 
     [Id(0)]
-    public Guid UuId { get; }
+    public Guid Key { get; }
 }

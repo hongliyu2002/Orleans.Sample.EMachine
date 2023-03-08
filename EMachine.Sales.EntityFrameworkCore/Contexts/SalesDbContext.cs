@@ -1,50 +1,30 @@
-﻿using Fluxera.Extensions.Hosting.Modules.Persistence;
-using Fluxera.Repository;
+﻿using EMachine.Sales.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMachine.Sales.EntityFrameworkCore.Contexts;
 
 public sealed class SalesDbContext : DbContext
 {
-    private readonly IDatabaseConnectionStringProvider? _databaseConnectionStringProvider;
-    private readonly IDatabaseNameProvider? _databaseNameProvider;
-
     public SalesDbContext()
     {
     }
 
-    public SalesDbContext(DbContextOptions<SalesDbContext> options, IDatabaseNameProvider? databaseNameProvider = null, IDatabaseConnectionStringProvider? databaseConnectionStringProvider = null)
+    public SalesDbContext(DbContextOptions<SalesDbContext> options)
         : base(options)
     {
-        _databaseNameProvider = databaseNameProvider;
-        _databaseConnectionStringProvider = databaseConnectionStringProvider;
     }
 
-    /// <inheritdoc />
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            var repositoryName = new RepositoryName("Sales");
-            var connectionString = _databaseConnectionStringProvider?.GetConnectionString(repositoryName);
-            connectionString ??= "Data Source=Sales.db";
-            optionsBuilder.UseSqlite(connectionString);
+    public DbSet<Snack> Snacks { get; set; } = null!;
 
-            // var databaseName = _databaseNameProvider?.GetDatabaseName(repositoryName);
-            // var connectionString = _databaseConnectionStringProvider?.GetConnectionString(repositoryName);
-            // connectionString ??= "Server=localhost;Integrated Security=False;User Id=sa;Password=Bosshong2010;TrustServerCertificate=True;";
-            // connectionString = connectionString.EnsureEndsWith(";");
-            // connectionString += $"Database={databaseName ?? "Sales"}";
-            // optionsBuilder.UseSqlServer(connectionString);
-        }
-    }
+    public DbSet<Slot> Slots { get; set; } = null!;
+
+    public DbSet<SnackMachine> SnackMachines { get; set; } = null!;
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Add the domain entities.
-        modelBuilder.AddSnackEntity();
-        modelBuilder.AddSlotEntity();
-        modelBuilder.AddSnackMachineEntity();
+        modelBuilder.AddSnack();
+        modelBuilder.AddSlot();
+        modelBuilder.AddSnackMachine();
     }
 }

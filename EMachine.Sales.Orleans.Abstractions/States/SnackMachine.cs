@@ -8,7 +8,7 @@ namespace EMachine.Sales.Orleans.Abstractions.States;
 public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
 {
     [Id(0)]
-    public Guid UuId { get; set; }
+    public Guid Key { get; set; }
 
     [Id(1)]
     public Money MoneyInside { get; set; } = Money.Zero;
@@ -52,7 +52,7 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"SnackMachine with Id:'{UuId}' MoneyInside:'{MoneyInside}' AmountInTransaction:{AmountInTransaction} Slots:'{string.Join(';', Slots.Select(slot => slot.ToString()))}'";
+        return $"SnackMachine with Id:'{Key}' MoneyInside:'{MoneyInside}' AmountInTransaction:{AmountInTransaction} Slots:'{string.Join(';', Slots.Select(slot => slot.ToString()))}'";
     }
 
     #region Try Get
@@ -69,7 +69,7 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
 
     public void Apply(SnackMachineInitializedEvent evt)
     {
-        UuId = evt.UuId;
+        Key = evt.Key;
         MoneyInside = evt.MoneyInside;
         Slots = evt.Slots.ToList();
         CreatedAt = DateTimeOffset.UtcNow;
