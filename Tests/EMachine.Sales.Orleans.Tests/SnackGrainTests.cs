@@ -23,7 +23,7 @@ public class SnackGrainTests
     [Fact]
     public async Task Can_Initialize_And_Get_Snack()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(999);
+        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(Guid.NewGuid());
         var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Orange", Guid.NewGuid(), "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
         var getResult = await grain.GetNameAsync();
@@ -35,7 +35,7 @@ public class SnackGrainTests
     [Fact]
     public async Task Can_ChangeName_And_Get_Snack()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(1000);
+        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(Guid.NewGuid());
         var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Mongo", Guid.NewGuid(), "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
         var changeNameResult = await grain.ChangeNameAsync(new SnackNameChangeCommand("Candy", Guid.NewGuid(), "Boss"));
@@ -49,7 +49,7 @@ public class SnackGrainTests
     [Fact]
     public async Task Can_Remove_And_Cannot_Get_Snack()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(1001);
+        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(Guid.NewGuid());
         var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("BBQ", Guid.NewGuid(), "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
         var removeResult = await grain.RemoveAsync(new SnackRemoveCommand(Guid.NewGuid(), "Boss"));
@@ -62,7 +62,7 @@ public class SnackGrainTests
     [Fact]
     public async Task Cannot_Reinitialize_Snack()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(1002);
+        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(Guid.NewGuid());
         var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Red Tea", Guid.NewGuid(), "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
         var reInitializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Green Tea", Guid.NewGuid(), "Boss"));
@@ -77,7 +77,7 @@ public class SnackGrainTests
     [Fact]
     public async Task Cannot_Initialize_Snack_When_Deleted()
     {
-        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(1003);
+        var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(Guid.NewGuid());
         var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Cafe", Guid.NewGuid(), "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
         var removeResult = await grain.RemoveAsync(new SnackRemoveCommand(Guid.NewGuid(), "Boss"));

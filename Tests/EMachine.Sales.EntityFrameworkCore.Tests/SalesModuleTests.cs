@@ -1,4 +1,6 @@
-﻿using EMachine.Sales.Domain.Entities;
+﻿using System;
+using System.Threading.Tasks;
+using EMachine.Sales.Domain.Entities;
 using EMachine.Sales.Domain.Repositories;
 using FluentAssertions;
 using Fluxera.Extensions.Hosting.Modules.UnitTesting;
@@ -36,38 +38,41 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
     }
 
     [Fact]
-    public async Task Should_Add_SnackBase()
+    public async Task Should_Add_SnackEntity()
     {
-        var snackBaseRepo = ApplicationLoader.ServiceProvider.GetRequiredService<ISnackBaseRepository>();
-        var snack = new SnackBase
+        var snackBaseRepo = ApplicationLoader.ServiceProvider.GetRequiredService<ISnackRepository>();
+        var uuId = Guid.NewGuid();
+        var snack = new Snack
                     {
+                        UuId = uuId,
                         Name = "Cafe",
                         CreatedAt = DateTimeOffset.UtcNow,
                         CreatedBy = "System"
                     };
         await snackBaseRepo.AddAsync(snack);
         await UnitOfWork.SaveChangesAsync();
-        snack.ID.Should().Be(1);
-        var snackGet = await snackBaseRepo.GetAsync(snack.ID);
+        snack.UuId.Should().Be(uuId);
+        var snackGet = await snackBaseRepo.FindOneAsync(x => x.UuId == uuId);
         snackGet.Should().NotBeNull();
         _testOutputHelper.WriteLine(snackGet.ToString());
     }
 
     [Fact]
-    public async Task Should_Add_SnackMachineBase()
+    public async Task Should_Add_SnackMachineEntity()
     {      
-        var snackMachineBaseRepo = ApplicationLoader.ServiceProvider.GetRequiredService<ISnackMachineBaseRepository>();
-        var id = Guid.NewGuid();
-        var snackMachine = new SnackMachineBase()
+        var snackMachineBaseRepo = ApplicationLoader.ServiceProvider.GetRequiredService<ISnackMachineRepository>();
+        var uuId = Guid.NewGuid();
+        var snackMachine = new SnackMachine()
                            {
-                               InsideYuan10 = 10,
+                               UuId = uuId,
+                               MoneyInside = new Money(){Yuan50 = 10, Yuan100 = 5},
                                CreatedAt = DateTimeOffset.UtcNow,
                                CreatedBy = "System"
                            };
         await snackMachineBaseRepo.AddAsync(snackMachine);
         await UnitOfWork.SaveChangesAsync();
-        snackMachine.ID.Should().Be(id);
-        var snackMachineGet = await snackMachineBaseRepo.GetAsync(id);
+        snackMachine.UuId.Should().Be(uuId);
+        var snackMachineGet = await snackMachineBaseRepo.FindOneAsync(x => x.UuId == uuId);
         snackMachineGet.Should().NotBeNull();
         _testOutputHelper.WriteLine(snackMachineGet.ToString());
 

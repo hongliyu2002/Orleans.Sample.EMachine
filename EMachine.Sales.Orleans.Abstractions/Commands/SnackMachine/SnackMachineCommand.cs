@@ -15,6 +15,7 @@ public abstract record SnackMachineCommand : ITraceable
 
     [Id(0)]
     public Guid TraceId { get; }
+    
     [Id(1)]
     public string OperatedBy { get; } = string.Empty;
 }

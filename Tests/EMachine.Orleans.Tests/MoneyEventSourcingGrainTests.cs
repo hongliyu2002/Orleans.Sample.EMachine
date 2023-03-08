@@ -22,8 +22,8 @@ public class MoneyEventSourcingGrainTests
     [Fact]
     public async Task Can_Get_Money()
     {
-        var id = Guid.NewGuid();
-        var grain = _cluster.GrainFactory.GetGrain<IMoneyEsGrain>(id);
+        var uuId = Guid.NewGuid();
+        var grain = _cluster.GrainFactory.GetGrain<IMoneyEsGrain>(uuId);
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Should().Be(Money.Zero);
@@ -33,8 +33,8 @@ public class MoneyEventSourcingGrainTests
     [Fact]
     public async Task Can_Add_And_Get_Money()
     {
-        var id = Guid.NewGuid();
-        var grain = _cluster.GrainFactory.GetGrain<IMoneyEsGrain>(id);
+        var uuId = Guid.NewGuid();
+        var grain = _cluster.GrainFactory.GetGrain<IMoneyEsGrain>(uuId);
         var result = await grain.AddAsync(Money.FiftyYuan);
         result.IsSuccess.Should().Be(true);
         var getResult = await grain.GetAsync();

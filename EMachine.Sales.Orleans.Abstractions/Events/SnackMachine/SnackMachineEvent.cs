@@ -1,4 +1,5 @@
 ﻿using EMachine.Orleans.Shared.Events;
+using Fluxera.Guards;
 
 namespace EMachine.Sales.Orleans.Abstractions.Events;
 
@@ -6,12 +7,12 @@ namespace EMachine.Sales.Orleans.Abstractions.Events;
 [GenerateSerializer]
 public abstract record SnackMachineEvent : DomainEvent
 {
-    protected SnackMachineEvent(Guid id, Guid traceId, string operatedBy)
+    protected SnackMachineEvent(Guid uuId, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
-        Id = id;
+        UuId = Guard.Against.Empty(uuId, nameof(uuId));
     }
 
     [Id(0)]
-    public Guid Id { get; }
+    public Guid UuId { get; }
 }

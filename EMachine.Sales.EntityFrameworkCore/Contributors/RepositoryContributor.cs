@@ -10,7 +10,7 @@ internal sealed class RepositoryContributor : RepositoryContributorBase
 {
     public override void ConfigureAggregates(IRepositoryAggregatesBuilder builder, IServiceConfigurationContext context)
     {
-        builder.UseFor<SnackBase>();
-        builder.UseFor<SnackMachineBase>();
+        builder.UseFor<Snack>();
+        builder.UseFor<SnackMachine>();
     }
 }

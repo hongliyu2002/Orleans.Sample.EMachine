@@ -8,18 +8,18 @@ namespace EMachine.Sales.EntityFrameworkCore.Contexts;
 [PublicAPI]
 public static class ModelBuilderExtensions
 {
-    public static void AddSnackBase(this ModelBuilder modelBuilder, Action<EntityTypeBuilder<SnackBase>>? callback = null)
+    public static void AddSnackEntity(this ModelBuilder modelBuilder, Action<EntityTypeBuilder<Snack>>? callback = null)
     {
-        modelBuilder.ApplyConfiguration(new SnackBaseConfiguration(callback));
+        modelBuilder.ApplyConfiguration(new SnackEntityConfiguration(callback));
     }
 
-    public static void AddSlotBase(this ModelBuilder modelBuilder, Action<EntityTypeBuilder<SlotBase>>? callback = null)
+    public static void AddSlotEntity(this ModelBuilder modelBuilder, Action<EntityTypeBuilder<Slot>>? callback = null)
     {
-        modelBuilder.ApplyConfiguration(new SlotBaseConfiguration(callback));
+        modelBuilder.ApplyConfiguration(new SlotEntityConfiguration(callback));
     }
 
-    public static void AddSnackMachineBase(this ModelBuilder modelBuilder, Action<EntityTypeBuilder<SnackMachineBase>>? callback = null)
+    public static void AddSnackMachineEntity(this ModelBuilder modelBuilder, Action<EntityTypeBuilder<SnackMachine>>? callback = null)
     {
-        modelBuilder.ApplyConfiguration(new SnackMachineBaseConfiguration(callback));
+        modelBuilder.ApplyConfiguration(new SnackMachineEntityConfiguration(callback));
     }
 }

@@ -9,8 +9,8 @@ namespace EMachine.Sales.Orleans.Abstractions.Events;
 [GenerateSerializer]
 public sealed record SnackMachineInitializedEvent : SnackMachineEvent
 {
-    public SnackMachineInitializedEvent(Guid id, Money moneyInside, IImmutableList<Slot> slots, Guid traceId, string operatedBy)
-        : base(id, traceId, operatedBy)
+    public SnackMachineInitializedEvent(Guid uuId, Money moneyInside, IImmutableList<Slot> slots, Guid traceId, string operatedBy)
+        : base(uuId, traceId, operatedBy)
     {
         MoneyInside = Guard.Against.Null(moneyInside);
         Slots = Guard.Against.Null(slots);

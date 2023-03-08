@@ -7,7 +7,7 @@ namespace EMachine.Sales.Orleans.Abstractions.States;
 public sealed class Snack : ISoftDeleteObject, IAuditedObject
 {
     [Id(0)]
-    public long Id { get; set; }
+    public Guid UuId { get; set; }
 
     [Id(1)]
     public string Name { get; set; } = string.Empty;
@@ -45,14 +45,14 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"Snack with Id:{Id} Name:'{Name}'";
+        return $"Snack with Id:{UuId} Name:'{Name}'";
     }
 
     #region Apply
 
     public void Apply(SnackInitializedEvent evt)
     {
-        Id = evt.Id;
+        UuId = evt.UuId;
         Name = evt.Name;
         CreatedAt = DateTimeOffset.UtcNow;
         CreatedBy = evt.OperatedBy;

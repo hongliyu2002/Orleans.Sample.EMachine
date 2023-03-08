@@ -18,8 +18,8 @@ public sealed class SalesDomainModule : ConfigureServicesModule
         // Add repositories.
         context.Log("AddRepositories", services =>
                                        {
-                                           services.TryAddTransient<ISnackBaseRepository, SnackBaseRepository>();
-                                           services.TryAddTransient<ISnackMachineBaseRepository, SnackMachineBaseRepository>();
+                                           services.TryAddTransient<ISnackRepository, SnackRepository>();
+                                           services.TryAddTransient<ISnackMachineRepository, SnackMachineRepository>();
                                        });
     }
 }

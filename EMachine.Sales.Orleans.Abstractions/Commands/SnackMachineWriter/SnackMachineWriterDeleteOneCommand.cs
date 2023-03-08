@@ -1,15 +1,17 @@
-﻿namespace EMachine.Sales.Orleans.Abstractions.Commands;
+﻿using Fluxera.Guards;
+
+namespace EMachine.Sales.Orleans.Abstractions.Commands;
 
 [Immutable]
 [GenerateSerializer]
 public sealed record SnackMachineWriterDeleteOneCommand : SnackMachineWriterCommand
 {
-    public SnackMachineWriterDeleteOneCommand(Guid id, Guid traceId, string operatedBy)
+    public SnackMachineWriterDeleteOneCommand(Guid uuId, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
-        Id = id;
+        UuId = Guard.Against.Empty(uuId, nameof(uuId));
     }
 
     [Id(0)]
-    public Guid Id { get; }
+    public Guid UuId { get; }
 }

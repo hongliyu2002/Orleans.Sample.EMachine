@@ -46,8 +46,8 @@ public sealed class SalesDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Add the domain entities.
-        modelBuilder.AddSnackBase();
-        modelBuilder.AddSlotBase();
-        modelBuilder.AddSnackMachineBase();
+        modelBuilder.AddSnackEntity();
+        modelBuilder.AddSlotEntity();
+        modelBuilder.AddSnackMachineEntity();
     }
 }

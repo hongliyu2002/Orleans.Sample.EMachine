@@ -5,11 +5,9 @@ using JetBrains.Annotations;
 namespace EMachine.Sales.Domain.Repositories;
 
 [UsedImplicitly]
-internal sealed class SnackBaseRepository : Repository<SnackBase, long>, ISnackBaseRepository
+internal sealed class SnackRepository : Repository<Snack, Guid>, ISnackRepository
 {
-
-    /// <inheritdoc />
-    public SnackBaseRepository(IRepository<SnackBase, long> innerRepository)
+    public SnackRepository(IRepository<Snack, Guid> innerRepository)
         : base(innerRepository)
     {
     }

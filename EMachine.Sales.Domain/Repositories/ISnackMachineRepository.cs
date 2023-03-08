@@ -5,6 +5,6 @@ using JetBrains.Annotations;
 namespace EMachine.Sales.Domain.Repositories;
 
 [PublicAPI]
-public interface ISnackMachineBaseRepository : IRepository<SnackMachineBase, Guid>
+public interface ISnackMachineRepository : IRepository<SnackMachine, Guid>
 {
 }

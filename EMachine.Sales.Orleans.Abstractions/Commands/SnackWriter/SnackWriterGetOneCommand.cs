@@ -1,15 +1,17 @@
-﻿namespace EMachine.Sales.Orleans.Abstractions.Commands;
+﻿using Fluxera.Guards;
+
+namespace EMachine.Sales.Orleans.Abstractions.Commands;
 
 [Immutable]
 [GenerateSerializer]
 public sealed record SnackWriterGetOneCommand : SnackWriterCommand
 {
-    public SnackWriterGetOneCommand(long id, Guid traceId, string operatedBy)
+    public SnackWriterGetOneCommand(Guid uuId, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
-        Id = id;
+        UuId = Guard.Against.Empty(uuId, nameof(uuId));
     }
 
     [Id(0)]
-    public long Id { get; }
+    public Guid UuId { get; }
 }

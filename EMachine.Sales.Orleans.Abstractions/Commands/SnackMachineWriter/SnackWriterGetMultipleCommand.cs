@@ -6,12 +6,12 @@ namespace EMachine.Sales.Orleans.Abstractions.Commands;
 [GenerateSerializer]
 public sealed record SnackMachineWriterGetMultipleCommand : SnackMachineWriterCommand
 {
-    public SnackMachineWriterGetMultipleCommand(Guid[] ids, Guid traceId, string operatedBy)
+    public SnackMachineWriterGetMultipleCommand(Guid[] uuIds, Guid traceId, string operatedBy)
         : base(traceId, operatedBy)
     {
-        Ids = Guard.Against.Null(ids, nameof(ids));
+        UuIds =  Guard.Against.Null(uuIds, nameof(uuIds));
     }
 
     [Id(0)]
-    public Guid[] Ids { get; }
+    public Guid[] UuIds { get; }
 }
