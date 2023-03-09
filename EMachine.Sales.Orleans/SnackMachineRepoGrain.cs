@@ -8,7 +8,7 @@ using Orleans.FluentResults;
 namespace EMachine.Sales.Orleans;
 
 [StatelessWorker]
-public class SnackMachineRepoGrain : Grain, ISnackMachineCrudRepoGrain
+public class SnackMachineRepoGrain : Grain, ISnackMachineRepoGrain
 {
     private readonly ILogger<SnackMachineRepoGrain> _logger;
 
