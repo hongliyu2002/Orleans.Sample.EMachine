@@ -45,7 +45,7 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
                 return ApplyEventAsync(snackEvt);
             // return ApplyEventWithRetryAndFallbackAsync(snackEvt, seq, (e, s, ct) => ApplyEventAsync((SnackNameChangedEvent)e, s, ct));
             case ErrorOccurredEvent errorEvt:
-                _logger.LogWarning(errorEvt.Message);
+                _logger.LogWarning($"Received ErrorOccurredEvent: {string.Join(';', errorEvt.Reasons)}");
                 return Task.CompletedTask;
             default:
                 return Task.CompletedTask;

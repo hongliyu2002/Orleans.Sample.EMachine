@@ -61,7 +61,7 @@ public class DummySnackSubscriberGrain : EventSubscriberGrain
                 _logger.LogInformation("Id: {0} Operator: {1} Name: {2}", snackEvt.Id, snackEvt.OperatedBy, snackEvt.Name);
                 break;
             case ErrorOccurredEvent errorEvt:
-                _logger.LogWarning("Code: {0} Message: {1} Operator: {2}", errorEvt.Code, errorEvt.Message, errorEvt.OperatedBy);
+                _logger.LogWarning("Code: {0} Message: {1} Operator: {2}", errorEvt.Code, string.Join(';', errorEvt.Reasons), errorEvt.OperatedBy);
                 break;
         }
         return Task.CompletedTask;

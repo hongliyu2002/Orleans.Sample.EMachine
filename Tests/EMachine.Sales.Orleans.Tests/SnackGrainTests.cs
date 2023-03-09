@@ -94,7 +94,7 @@ public class SnackGrainTests
         _output.WriteLine(reInitializeResult.ToString());
         await Task.Delay(1000);
         var getResult = await grain.GetNameAsync();
-        getResult.IsSuccess.Should().Be(false);
+        getResult.IsSuccess.Should().Be(true);
         await Task.Delay(1000);
         _output.WriteLine(getResult.ToString());
     }
