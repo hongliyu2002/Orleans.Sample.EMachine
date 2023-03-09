@@ -8,31 +8,31 @@ using Orleans.FluentResults;
 namespace EMachine.Sales.Orleans;
 
 [StatelessWorker]
-public class SnackRepositoryGrain : Grain, ISnackWriterGrain
+public class SnackRepoGrain : Grain, ISnackCrudRepoGrain
 {
-    private readonly ILogger<SnackRepositoryGrain> _logger;
+    private readonly ILogger<SnackRepoGrain> _logger;
 
     /// <inheritdoc />
-    public SnackRepositoryGrain(ILogger<SnackRepositoryGrain> logger)
+    public SnackRepoGrain(ILogger<SnackRepoGrain> logger)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
     }
 
     /// <inheritdoc />
-    public Task<Result<ISnackGrain>> GetAsync(SnackWriterGetOneCommand cmd)
+    public Task<Result<ISnackGrain>> GetAsync(SnackCrudRepoGetOneCommand cmd)
     {
         return Task.FromResult(Result.Ok(GrainFactory.GetGrain<ISnackGrain>(cmd.Id)));
     }
 
     /// <inheritdoc />
-    public Task<Result<ImmutableList<ISnackGrain>>> GetMultipleAsync(SnackWriterGetMultipleCommand cmd)
+    public Task<Result<ImmutableList<ISnackGrain>>> GetMultipleAsync(SnackCrudRepoGetManyCommand cmd)
     {
         var snacks = cmd.Ids.Select(id => GrainFactory.GetGrain<ISnackGrain>(id));
         return Task.FromResult(Result.Ok(snacks.ToImmutableList()));
     }
 
     /// <inheritdoc />
-    public Task<Result<bool>> CreateAsync(SnackWriterCreateOneCommand cmd)
+    public Task<Result<bool>> CreateAsync(SnackCrudRepoCreateOneCommand cmd)
     {
         return Result.Ok<ISnackGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id))
@@ -41,7 +41,7 @@ public class SnackRepositoryGrain : Grain, ISnackWriterGrain
     }
 
     /// <inheritdoc />
-    public Task<Result<bool>> DeleteAsync(SnackWriterDeleteOneCommand cmd)
+    public Task<Result<bool>> DeleteAsync(SnackCrudRepoDeleteOneCommand cmd)
     {
         return Result.Ok<ISnackGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id))

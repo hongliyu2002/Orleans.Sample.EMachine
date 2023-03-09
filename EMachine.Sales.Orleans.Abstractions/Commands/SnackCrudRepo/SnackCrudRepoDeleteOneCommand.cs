@@ -4,5 +4,5 @@ namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackWriterGetMultipleCommand(Guid[] Ids, Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy) 
+public sealed record SnackCrudRepoDeleteOneCommand(Guid Id, Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy) 
     : DomainCommand(TraceId, OperatedAt, OperatedBy);

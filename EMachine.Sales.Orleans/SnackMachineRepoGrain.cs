@@ -8,31 +8,31 @@ using Orleans.FluentResults;
 namespace EMachine.Sales.Orleans;
 
 [StatelessWorker]
-public class SnackMachineRepositoryGrain : Grain, ISnackMachineWriterGrain
+public class SnackMachineRepoGrain : Grain, ISnackMachineCrudRepoGrain
 {
-    private readonly ILogger<SnackMachineRepositoryGrain> _logger;
+    private readonly ILogger<SnackMachineRepoGrain> _logger;
 
     /// <inheritdoc />
-    public SnackMachineRepositoryGrain(ILogger<SnackMachineRepositoryGrain> logger)
+    public SnackMachineRepoGrain(ILogger<SnackMachineRepoGrain> logger)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
     }
 
     /// <inheritdoc />
-    public Task<Result<ISnackMachineGrain>> GetAsync(SnackMachineWriterGetOneCommand cmd)
+    public Task<Result<ISnackMachineGrain>> GetAsync(SnackMachineCrudRepoGetOneCommand cmd)
     {
         return Task.FromResult(Result.Ok(GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id)));
     }
 
     /// <inheritdoc />
-    public Task<Result<ImmutableList<ISnackMachineGrain>>> GetMultipleAsync(SnackMachineWriterGetMultipleCommand cmd)
+    public Task<Result<ImmutableList<ISnackMachineGrain>>> GetMultipleAsync(SnackMachineCrudRepoGetManyCommand cmd)
     {
         var snacks = cmd.Ids.Select(id => GrainFactory.GetGrain<ISnackMachineGrain>(id));
         return Task.FromResult(Result.Ok(snacks.ToImmutableList()));
     }
 
     /// <inheritdoc />
-    public Task<Result<bool>> CreateAsync(SnackMachineWriterCreateOneCommand cmd)
+    public Task<Result<bool>> CreateAsync(SnackMachineCrudRepoCreateOneCommand cmd)
     {
         return Result.Ok()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
@@ -41,7 +41,7 @@ public class SnackMachineRepositoryGrain : Grain, ISnackMachineWriterGrain
     }
 
     /// <inheritdoc />
-    public Task<Result<bool>> DeleteAsync(SnackMachineWriterDeleteOneCommand cmd)
+    public Task<Result<bool>> DeleteAsync(SnackMachineCrudRepoDeleteOneCommand cmd)
     {
         return Result.Ok<ISnackMachineGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
