@@ -4,10 +4,5 @@ namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineUnloadMoneyCommand : DomainCommand
-{
-    public SnackMachineUnloadMoneyCommand(Guid traceId, DateTimeOffset operatedAt, string operatedBy)
-        : base(traceId, operatedAt, operatedBy)
-    {
-    }
-}
+public sealed record SnackMachineUnloadMoneyCommand(Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy) 
+    : DomainCommand(TraceId, OperatedAt, OperatedBy);

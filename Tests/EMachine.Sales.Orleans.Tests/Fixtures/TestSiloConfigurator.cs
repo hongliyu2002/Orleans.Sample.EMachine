@@ -1,4 +1,7 @@
-﻿using Orleans.TestingHost;
+﻿using EMachine.Sales.EntityFrameworkCore.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Orleans.TestingHost;
 
 namespace EMachine.Sales.Orleans.Tests.Fixtures;
 
@@ -13,5 +16,9 @@ public class TestSiloConfigurator : ISiloConfigurator
                    .AddLogStorageBasedLogConsistencyProvider(Constants.LogConsistencyStoreName)
                    .AddStreaming()
                    .AddMemoryStreams(Constants.StreamProviderName);
+        siloBuilder.ConfigureServices(services =>
+                                      {
+                                          services.AddDbContextPool<SalesDbContext>(options => options.UseSqlite("Data Source=Sales.db"));
+                                      });
     }
 }

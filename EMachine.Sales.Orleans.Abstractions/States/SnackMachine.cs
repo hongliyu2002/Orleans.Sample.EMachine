@@ -1,5 +1,4 @@
-﻿using EMachine.Orleans.Shared;
-using EMachine.Sales.Orleans.Events;
+﻿using EMachine.Sales.Orleans.Events;
 using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
 
 namespace EMachine.Sales.Orleans.States;

@@ -4,10 +4,5 @@ namespace EMachine.Sales.Orleans.Commands;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineRemoveCommand : DomainCommand
-{
-    public SnackMachineRemoveCommand(Guid traceId, DateTimeOffset operatedAt, string operatedBy)
-        : base(traceId, operatedAt, operatedBy)
-    {
-    }
-}
+public sealed record SnackMachineRemoveCommand(Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy) 
+    : DomainCommand(TraceId, OperatedAt, OperatedBy);

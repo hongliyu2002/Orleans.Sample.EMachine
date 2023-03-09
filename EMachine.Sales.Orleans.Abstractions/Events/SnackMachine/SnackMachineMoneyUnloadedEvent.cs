@@ -2,10 +2,5 @@
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineMoneyUnloadedEvent : SnackMachineEvent
-{
-    public SnackMachineMoneyUnloadedEvent(Guid id, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
-        : base(id, traceId, operatedAt, operatedBy)
-    {
-    }
-}
+public sealed record SnackMachineMoneyUnloadedEvent(Guid Id, Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy, int Version) 
+    : SnackMachineEvent(Id, TraceId, OperatedAt, OperatedBy, Version);

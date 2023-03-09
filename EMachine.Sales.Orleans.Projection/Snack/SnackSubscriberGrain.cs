@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.Streams;
-using Polly;
 
 namespace EMachine.Sales.Orleans.Projection;
 
@@ -32,21 +31,24 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
     }
 
     /// <inheritdoc />
-    protected override async Task<bool> HandleNextAsync(DomainEvent evt, StreamSequenceToken seq)
+    protected override Task HandleNextAsync(DomainEvent evt, StreamSequenceToken seq)
     {
         switch (evt)
         {
             case SnackInitializedEvent snackEvt:
-                return await ApplyEventWithRetryAndFallbackAsync(snackEvt, seq, (e, s, ct) => ApplyEventAsync((SnackInitializedEvent)e, s, ct));
+                return ApplyEventAsync(snackEvt);
+            // return ApplyEventWithRetryAndFallbackAsync(snackEvt, seq, (e, s, ct) => ApplyEventAsync((SnackInitializedEvent)e, s, ct));
             case SnackRemovedEvent snackEvt:
-                return await ApplyEventWithRetryAndFallbackAsync(snackEvt, seq, (e, s, ct) => ApplyEventAsync((SnackRemovedEvent)e, s, ct));
+                return ApplyEventAsync(snackEvt);
+            // return ApplyEventWithRetryAndFallbackAsync(snackEvt, seq, (e, s, ct) => ApplyEventAsync((SnackRemovedEvent)e, s, ct));
             case SnackNameChangedEvent snackEvt:
-                return await ApplyEventWithRetryAndFallbackAsync(snackEvt, seq, (e, s, ct) => ApplyEventAsync((SnackNameChangedEvent)e, s, ct));
+                return ApplyEventAsync(snackEvt);
+            // return ApplyEventWithRetryAndFallbackAsync(snackEvt, seq, (e, s, ct) => ApplyEventAsync((SnackNameChangedEvent)e, s, ct));
             case ErrorOccurredEvent errorEvt:
                 _logger.LogWarning(errorEvt.Message);
-                return true;
+                return Task.CompletedTask;
             default:
-                return false;
+                return Task.CompletedTask;
         }
     }
 
@@ -66,27 +68,19 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
 
     #region Apply
 
-    private async Task<bool> ApplyEventWithRetryAndFallbackAsync(SnackEvent evt, StreamSequenceToken seq, Func<SnackEvent, StreamSequenceToken, CancellationToken, Task<bool>> applyEvent, CancellationToken cancellationToken = default)
-    {
-        var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(Math.Pow(2, retry)));
-        var fallbackPolicy = Policy.Handle<Exception>().FallbackAsync(async ct => await ApplyFullUpdateAsync(evt, ct));
-        var policy = Policy.WrapAsync(retryPolicy, fallbackPolicy);
-        return await policy.ExecuteAsync(async ct => await applyEvent(evt, seq, ct), cancellationToken);
-    }
-
-    private async Task<bool> ApplyEventAsync(SnackInitializedEvent evt, StreamSequenceToken seq, CancellationToken cancellationToken = default)
+    private async Task<bool> ApplyEventAsync(SnackInitializedEvent evt, CancellationToken cancellationToken = default)
     {
         var snack = await _dbContext.Snacks.FindAsync(evt.Id);
         if (snack == null)
         {
             snack = new Snack
-                        {
-                            Id = evt.Id,
-                            Name = evt.Name,
-                            CreatedAt = evt.OperatedAt,
-                            CreatedBy = evt.OperatedBy,
-                            Version = seq.SequenceNumber
-                        };
+                    {
+                        Id = evt.Id,
+                        Name = evt.Name,
+                        CreatedAt = evt.OperatedAt,
+                        CreatedBy = evt.OperatedBy,
+                        Version = evt.Version
+                    };
             await _dbContext.Snacks.AddAsync(snack, cancellationToken);
         }
         if (_dbContext.Entry(snack).State != EntityState.Added)
@@ -97,7 +91,7 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
         return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    private async Task<bool> ApplyEventAsync(SnackRemovedEvent evt, StreamSequenceToken seq, CancellationToken cancellationToken = default)
+    private async Task<bool> ApplyEventAsync(SnackRemovedEvent evt, CancellationToken cancellationToken = default)
     {
         var snack = await _dbContext.Snacks.FindAsync(evt.Id);
         if (snack == null)
@@ -105,19 +99,19 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
             _logger.LogWarning($"Apply SnackRemovedEvent: Snack {evt.Id} does not exist in the database. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
-        if (snack.Version != seq.SequenceNumber - 1)
+        if (snack.Version != evt.Version - 1)
         {
-            _logger.LogWarning($"Apply SnackRemovedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {seq.SequenceNumber - 1}. Try to execute full update...");
+            _logger.LogWarning($"Apply SnackRemovedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
         snack.DeletedAt = evt.OperatedAt;
         snack.DeletedBy = evt.OperatedBy;
         snack.IsDeleted = true;
-        snack.Version = seq.SequenceNumber;
+        snack.Version = evt.Version;
         return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    private async Task<bool> ApplyEventAsync(SnackNameChangedEvent evt, StreamSequenceToken seq, CancellationToken cancellationToken = default)
+    private async Task<bool> ApplyEventAsync(SnackNameChangedEvent evt, CancellationToken cancellationToken = default)
     {
         var snack = await _dbContext.Snacks.FindAsync(evt.Id);
         if (snack == null)
@@ -125,15 +119,15 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
             _logger.LogWarning($"Apply SnackNameChangedEvent: Snack {evt.Id} does not exist in the database. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
-        if (snack.Version != seq.SequenceNumber - 1)
+        if (snack.Version != evt.Version - 1)
         {
-            _logger.LogWarning($"Apply SnackNameChangedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {seq.SequenceNumber - 1}. Try to execute full update...");
+            _logger.LogWarning($"Apply SnackNameChangedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
         snack.Name = evt.Name;
         snack.LastModifiedAt = evt.OperatedAt;
         snack.LastModifiedBy = evt.OperatedBy;
-        snack.Version = seq.SequenceNumber;
+        snack.Version = evt.Version;
         return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
@@ -169,6 +163,14 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
         snack.Version = snackVersion;
         return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
+
+    // private async Task<bool> ApplyEventWithRetryAndFallbackAsync(SnackEvent evt, StreamSequenceToken seq, Func<SnackEvent, CancellationToken, Task<bool>> applyEvent, CancellationToken cancellationToken = default)
+    // {
+    //     var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(Math.Pow(2, retry)));
+    //     var fallbackPolicy = Policy.Handle<Exception>().FallbackAsync(async ct => await ApplyFullUpdateAsync(evt, ct));
+    //     var policy = Policy.WrapAsync(retryPolicy, fallbackPolicy);
+    //     return await policy.ExecuteAsync(async ct => await applyEvent(evt, ct), cancellationToken);
+    // }
 
     #endregion
 

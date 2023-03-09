@@ -34,7 +34,12 @@ public sealed record SnackPile
 
     public static Result<SnackPile> Create(Snack snack, int quantity, decimal price)
     {
-        return Result.Ok().Verify(snack != null, "Snack cannot be null.").Verify(quantity >= 0, "Quantity cannot be negative.").Verify(price >= 0, "Price cannot be negative.").Verify(price % 0.01m == 0, "The decimal portion of the price cannot be less than 0.01.").MapTry(() => new SnackPile(snack!, quantity, price));
+        return Result.Ok()
+                     .Verify(snack != null, "Snack cannot be null.")
+                     .Verify(quantity >= 0, "Quantity cannot be negative.")
+                     .Verify(price >= 0, "Price cannot be negative.")
+                     .Verify(price % 0.01m == 0, "The decimal portion of the price cannot be less than 0.01.")
+                     .MapTry(() => new SnackPile(snack!, quantity, price));
     }
 
     #endregion

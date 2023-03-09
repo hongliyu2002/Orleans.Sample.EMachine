@@ -21,13 +21,10 @@ public interface IMoneyEsGrain : IGrainWithGuidKey
 [StorageProvider(ProviderName = "MoneyStore")]
 public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
 {
-    private readonly ILogger<MoneyEsGrain> _logger;
-
     /// <inheritdoc />
-    public MoneyEsGrain(ILogger<MoneyEsGrain> logger)
-        : base("Default", "Tests")
+    public MoneyEsGrain()
+        : base(Constants.StreamProviderName, "Tests")
     {
-        _logger = Guard.Against.Null(logger);
     }
 
     /// <inheritdoc />
@@ -39,7 +36,7 @@ public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
     /// <inheritdoc />
     public Task<Result<bool>> AddAsync(Money money)
     {
-        return PublishAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        return PublishAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo", 1));
     }
 }
 
@@ -59,8 +56,8 @@ public sealed class MoneyEsState
 [GenerateSerializer]
 public sealed record MoneyEsAddedEvent : DomainEvent
 {
-    public MoneyEsAddedEvent(Money money, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
-        : base(traceId, operatedAt, operatedBy)
+    public MoneyEsAddedEvent(Money money, Guid traceId, DateTimeOffset operatedAt, string operatedBy, int version)
+        : base(traceId, operatedAt, operatedBy, version)
     {
         Money = Guard.Against.Null(money, nameof(money));
     }

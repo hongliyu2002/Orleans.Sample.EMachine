@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.EntityFramew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Orleans.Projection", "EMachine.Sales.Orleans.Projection\EMachine.Sales.Orleans.Projection.csproj", "{AB7490E7-3E50-4D75-BAD3-3718FC3D0960}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Hosting", "EMachine.Sales.Hosting\EMachine.Sales.Hosting.csproj", "{A9A1B974-57F5-440D-9A57-A5987C4EA8B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{AB7490E7-3E50-4D75-BAD3-3718FC3D0960}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB7490E7-3E50-4D75-BAD3-3718FC3D0960}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB7490E7-3E50-4D75-BAD3-3718FC3D0960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A1B974-57F5-440D-9A57-A5987C4EA8B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A1B974-57F5-440D-9A57-A5987C4EA8B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A1B974-57F5-440D-9A57-A5987C4EA8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A1B974-57F5-440D-9A57-A5987C4EA8B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EE4315D0-6388-4CA9-B198-C681556666CE} = {823B0948-3D76-4C0F-A0CF-35E7EC66FB87}
@@ -97,5 +103,6 @@ Global
 		{79BF5225-06C0-4E0D-8E2F-6D7F9B562B17} = {A5CF66D3-3633-4CE8-A147-49434DC99F83}
 		{BEAFC322-4059-4000-970D-71746D195BE9} = {243261AD-4512-4FB6-8D06-0E43C72B54B6}
 		{AB7490E7-3E50-4D75-BAD3-3718FC3D0960} = {A5CF66D3-3633-4CE8-A147-49434DC99F83}
+		{A9A1B974-57F5-440D-9A57-A5987C4EA8B8} = {A5CF66D3-3633-4CE8-A147-49434DC99F83}
 	EndGlobalSection
 EndGlobal

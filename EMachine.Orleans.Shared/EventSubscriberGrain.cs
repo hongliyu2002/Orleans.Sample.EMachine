@@ -1,19 +1,20 @@
 ﻿using EMachine.Orleans.Shared.Events;
 using Fluxera.Guards;
 using Microsoft.Extensions.DependencyInjection;
+using Orleans.Runtime;
 using Orleans.Streams;
 
 namespace EMachine.Orleans.Shared;
 
-public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
+public abstract class EventSubscriberGrain : Grain, IGrainWithGuidKey
 {
-    protected readonly string _provider;
-    protected readonly string _nameSpace;
+    private readonly string _nameSpace;
+    private readonly string _provider;
+    private IAsyncStream<DomainEvent> _stream = null!;
+    private IStreamProvider _streamProvider = null!;
+    private StreamSubscriptionHandle<DomainEvent>? _streamSubscription;
     protected readonly IServiceScopeFactory _scopeFactory;
     protected AsyncServiceScope _scope;
-    protected IAsyncStream<DomainEvent> _stream = null!;
-    protected IStreamProvider _streamProvider = null!;
-    protected StreamSubscriptionHandle<DomainEvent>? _streamSubscription;
 
     /// <inheritdoc />
     protected EventSubscriberGrain(string provider, string nameSpace, IServiceScopeFactory scopeFactory)
@@ -29,7 +30,7 @@ public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
         await base.OnActivateAsync(cancellationToken);
         _scope = _scopeFactory.CreateAsyncScope();
         _streamProvider = this.GetStreamProvider(_provider);
-        _stream = _streamProvider.GetStream<DomainEvent>(_nameSpace, this.GetPrimaryKey());
+        _stream = _streamProvider.GetStream<DomainEvent>(StreamId.Create(_nameSpace, this.GetPrimaryKey()));
         _streamSubscription = await _stream.SubscribeAsync(HandleNextAsync, HandleExceptionAsync, HandCompleteAsync);
     }
 
@@ -41,7 +42,7 @@ public abstract class EventSubscriberGrain : Grain, IEventSubscriberGrain
         await base.OnDeactivateAsync(reason, cancellationToken);
     }
 
-    protected abstract Task<bool> HandleNextAsync(DomainEvent evt, StreamSequenceToken token);
+    protected abstract Task HandleNextAsync(DomainEvent evt, StreamSequenceToken token);
 
     protected abstract Task HandleExceptionAsync(Exception exception);
 

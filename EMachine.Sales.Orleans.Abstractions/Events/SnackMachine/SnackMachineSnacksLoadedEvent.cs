@@ -1,22 +1,8 @@
 ﻿using EMachine.Sales.Orleans.States;
-using Fluxera.Guards;
 
 namespace EMachine.Sales.Orleans.Events;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackMachineSnacksLoadedEvent : SnackMachineEvent
-{
-    public SnackMachineSnacksLoadedEvent(Guid id, int position, SnackPile snackPile, Guid traceId, DateTimeOffset operatedAt, string operatedBy)
-        : base(id, traceId, operatedAt, operatedBy)
-    {
-        Position = Guard.Against.Negative(position);
-        SnackPile = Guard.Against.Null(snackPile);
-    }
-
-    [Id(0)]
-    public int Position { get; }
-
-    [Id(1)]
-    public SnackPile SnackPile { get; }
-}
+public sealed record SnackMachineSnacksLoadedEvent(Guid Id, int Position, SnackPile SnackPile, Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy, int Version) 
+    : SnackMachineEvent(Id, TraceId, OperatedAt, OperatedBy, Version);
