@@ -32,16 +32,16 @@ public class SnackRepositoryGrain : Grain, ISnackWriterGrain
     }
 
     /// <inheritdoc />
-    public Task<Result<ISnackGrain>> CreateAsync(SnackWriterCreateOneCommand cmd)
+    public Task<Result<bool>> CreateAsync(SnackWriterCreateOneCommand cmd)
     {
         return Result.Ok<ISnackGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id))
                      .EnsureAsync(grain => grain.CanInitializeAsync(), $"Snack {cmd.Id} already exists or has been deleted.")
-                     .TapTryAsync(grain => grain.InitializeAsync(new SnackInitializeCommand(cmd.Name, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
+                     .BindTryAsync(grain => grain.InitializeAsync(new SnackInitializeCommand(cmd.Name, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
     }
 
     /// <inheritdoc />
-    public Task<Result> DeleteAsync(SnackWriterDeleteOneCommand cmd)
+    public Task<Result<bool>> DeleteAsync(SnackWriterDeleteOneCommand cmd)
     {
         return Result.Ok<ISnackGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id))

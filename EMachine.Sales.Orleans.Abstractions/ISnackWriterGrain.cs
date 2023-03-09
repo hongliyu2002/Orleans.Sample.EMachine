@@ -9,11 +9,11 @@ public interface ISnackWriterGrain : IGrainWithGuidKey
 {
     [AlwaysInterleave]
     Task<Result<ISnackGrain>> GetAsync(SnackWriterGetOneCommand command);
-    
+
     [AlwaysInterleave]
     Task<Result<ImmutableList<ISnackGrain>>> GetMultipleAsync(SnackWriterGetMultipleCommand command);
 
-    Task<Result<ISnackGrain>> CreateAsync(SnackWriterCreateOneCommand cmd);
+    Task<Result<bool>> CreateAsync(SnackWriterCreateOneCommand cmd);
 
-    Task<Result> DeleteAsync(SnackWriterDeleteOneCommand cmd);
+    Task<Result<bool>> DeleteAsync(SnackWriterDeleteOneCommand cmd);
 }

@@ -1,6 +1,4 @@
 ﻿using EMachine.Orleans.Shared.Events;
-using FlakeId;
-using FlakeId.Extensions;
 using Fluxera.Guards;
 using Orleans.EventSourcing;
 using Orleans.FluentResults;
@@ -32,33 +30,17 @@ public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, Domain
         _stream = _streamProvider.GetStream<DomainEvent>(_nameSpace, this.GetPrimaryKey());
     }
 
-    protected async Task<Result> PublishAsync(DomainEvent evt)
+    protected Task<Result<bool>> PublishAsync(DomainEvent evt)
     {
-        try
-        {
-            if (!await RaiseConditionalEvent(evt))
-            {
-                return Result.Fail("Raise conditional event failed.");
-            }
-            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Version));
-            return Result.Ok();
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail(new ExceptionalError("Error has occurred during save and publish event.", ex));
-        }
+        return Result.Ok()
+                     .MapTryAsync(() => RaiseConditionalEvent(evt))
+                     .EnsureAsync(success => success, "Raise conditional event failed.")
+                     .TapTryAsync(() => _stream.OnNextAsync(evt, new EventSequenceTokenV2(Version)));
     }
 
-    protected async Task<Result> PublishErrorAsync(ErrorOccurredEvent evt)
+    protected Task<Result> PublishErrorAsync(ErrorOccurredEvent evt)
     {
-        try
-        {
-            await _stream.OnNextAsync(evt, new EventSequenceTokenV2(Version));
-            return Result.Ok();
-        }
-        catch (Exception ex)
-        {
-            return Result.Fail(new ExceptionalError("Error has occurred during publish error event.", ex));
-        }
+        return Result.Ok()
+                     .TapTryAsync(() => _stream.OnNextAsync(evt, new EventSequenceTokenV2(Version)));
     }
 }

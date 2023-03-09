@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using EMachine.Orleans.Shared;
 using EMachine.Sales.Orleans.Commands;
 using EMachine.Sales.Orleans.States;
 using Orleans.Concurrency;
@@ -24,40 +23,40 @@ public interface ISnackMachineGrain : IGrainWithGuidKey
     [AlwaysInterleave]
     Task<bool> CanInitializeAsync();
 
-    Task<Result> InitializeAsync(SnackMachineInitializeCommand cmd);
+    Task<Result<bool>> InitializeAsync(SnackMachineInitializeCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanRemoveAsync();
 
-    Task<Result> RemoveAsync(SnackMachineRemoveCommand cmd);
+    Task<Result<bool>> RemoveAsync(SnackMachineRemoveCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanLoadMoneyAsync();
 
-    Task<Result> LoadMoneyAsync(SnackMachineLoadMoneyCommand cmd);
+    Task<Result<bool>> LoadMoneyAsync(SnackMachineLoadMoneyCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanUnloadMoneyAsync();
 
-    Task<Result> UnloadMoneyAsync(SnackMachineUnloadMoneyCommand cmd);
+    Task<Result<bool>> UnloadMoneyAsync(SnackMachineUnloadMoneyCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanInsertMoneyAsync();
 
-    Task<Result> InsertMoneyAsync(SnackMachineInsertMoneyCommand cmd);
+    Task<Result<bool>> InsertMoneyAsync(SnackMachineInsertMoneyCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanReturnMoneyAsync();
 
-    Task<Result> ReturnMoneyAsync(SnackMachineReturnMoneyCommand cmd);
+    Task<Result<bool>> ReturnMoneyAsync(SnackMachineReturnMoneyCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanLoadSnacksAsync();
 
-    Task<Result> LoadSnacksAsync(SnackMachineLoadSnacksCommand cmd);
+    Task<Result<bool>> LoadSnacksAsync(SnackMachineLoadSnacksCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanBuySnackAsync();
 
-    Task<Result> BuySnackAsync(SnackMachineBuySnackCommand cmd);
+    Task<Result<bool>> BuySnackAsync(SnackMachineBuySnackCommand cmd);
 }

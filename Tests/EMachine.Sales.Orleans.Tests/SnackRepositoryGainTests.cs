@@ -26,12 +26,15 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
         var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Apple", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         createResult.IsSuccess.Should().Be(true);
-        createResult.Value.GetPrimaryKey().Should().Be(id);
         _testOutputHelper.WriteLine(createResult.ToString());
-        var result = await createResult.Value.GetNameAsync();
+        
+        var getResult = await grain.GetAsync(new SnackWriterGetOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        getResult.IsSuccess.Should().BeTrue();
+        getResult.Value.GetPrimaryKey().Should().Be(id);
+        var result = await getResult.Value.GetNameAsync();
         result.IsSuccess.Should().Be(true);
         result.Value.Should().Be("Apple");
-        _testOutputHelper.WriteLine(createResult.ToString());
+        _testOutputHelper.WriteLine(result.ToString());
     }
 
     [Fact]
@@ -41,11 +44,18 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
         var grain = _cluster.GrainFactory.GetGrain<ISnackWriterGrain>(Guid.Empty);
         var createResult = await grain.CreateAsync(new SnackWriterCreateOneCommand(id, "Lemon", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         createResult.IsSuccess.Should().Be(true);
-        createResult.Value.GetPrimaryKey().Should().Be(id);
         _testOutputHelper.WriteLine(createResult.ToString());
+        
         var deleteResult = await grain.DeleteAsync(new SnackWriterDeleteOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         deleteResult.IsSuccess.Should().Be(true);
         _testOutputHelper.WriteLine(deleteResult.ToString());
+        
+        var getResult = await grain.GetAsync(new SnackWriterGetOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        getResult.IsSuccess.Should().Be(true);
+        getResult.Value.GetPrimaryKey().Should().Be(id);
+        var result = await getResult.Value.GetNameAsync();
+        result.IsSuccess.Should().Be(false);
+        _testOutputHelper.WriteLine(result.ToString());
     }
 
     [Fact]
@@ -58,6 +68,7 @@ public class SnackRepositoryGainTests : IClassFixture<SnackRepositoryFixture>
         getResult.Value.GetPrimaryKey().Should().Be(id);
         var result = await getResult.Value.GetNameAsync();
         result.Value.Should().Be("Cafe");
+        _testOutputHelper.WriteLine(result.ToString());
     }
 
     [Fact]

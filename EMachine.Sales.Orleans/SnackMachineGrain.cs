@@ -60,7 +60,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> InitializeAsync(SnackMachineInitializeCommand cmd)
+    public Task<Result<bool>> InitializeAsync(SnackMachineInitializeCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -78,7 +78,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> RemoveAsync(SnackMachineRemoveCommand cmd)
+    public Task<Result<bool>> RemoveAsync(SnackMachineRemoveCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -98,7 +98,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> LoadMoneyAsync(SnackMachineLoadMoneyCommand cmd)
+    public Task<Result<bool>> LoadMoneyAsync(SnackMachineLoadMoneyCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -116,7 +116,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> UnloadMoneyAsync(SnackMachineUnloadMoneyCommand cmd)
+    public Task<Result<bool>> UnloadMoneyAsync(SnackMachineUnloadMoneyCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -136,7 +136,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> InsertMoneyAsync(SnackMachineInsertMoneyCommand cmd)
+    public Task<Result<bool>> InsertMoneyAsync(SnackMachineInsertMoneyCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -156,7 +156,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> ReturnMoneyAsync(SnackMachineReturnMoneyCommand cmd)
+    public Task<Result<bool>> ReturnMoneyAsync(SnackMachineReturnMoneyCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -178,7 +178,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> LoadSnacksAsync(SnackMachineLoadSnacksCommand cmd)
+    public Task<Result<bool>> LoadSnacksAsync(SnackMachineLoadSnacksCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -198,7 +198,7 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result> BuySnackAsync(SnackMachineBuySnackCommand cmd)
+    public Task<Result<bool>> BuySnackAsync(SnackMachineBuySnackCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()

@@ -14,7 +14,7 @@ public interface IMoneyEsGrain : IGrainWithGuidKey
     [AlwaysInterleave]
     Task<Result<Money>> GetAsync();
 
-    Task<Result> AddAsync(Money money);
+    Task<Result<bool>> AddAsync(Money money);
 }
 
 [LogConsistencyProvider(ProviderName = "MoneyEventStore")]
@@ -37,7 +37,7 @@ public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
     }
 
     /// <inheritdoc />
-    public Task<Result> AddAsync(Money money)
+    public Task<Result<bool>> AddAsync(Money money)
     {
         return PublishAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
     }

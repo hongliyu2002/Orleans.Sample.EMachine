@@ -26,4 +26,6 @@ public sealed class SnackMachine
     public string? DeletedBy { get; set; }
 
     public bool IsDeleted { get; set; }
+    
+    public int Version { get; set; }
 }

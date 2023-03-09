@@ -45,7 +45,7 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
     }
 
     /// <inheritdoc />
-    public Task<Result> InitializeAsync(SnackInitializeCommand cmd)
+    public Task<Result<bool>> InitializeAsync(SnackInitializeCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -63,7 +63,7 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
     }
 
     /// <inheritdoc />
-    public Task<Result> RemoveAsync(SnackRemoveCommand cmd)
+    public Task<Result<bool>> RemoveAsync(SnackRemoveCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()
@@ -81,7 +81,7 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
     }
 
     /// <inheritdoc />
-    public Task<Result> ChangeNameAsync(SnackChangeNameCommand cmd)
+    public Task<Result<bool>> ChangeNameAsync(SnackChangeNameCommand cmd)
     {
         var id = this.GetPrimaryKey();
         return Result.Ok()

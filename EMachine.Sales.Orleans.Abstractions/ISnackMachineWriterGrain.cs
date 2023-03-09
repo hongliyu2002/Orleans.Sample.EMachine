@@ -13,7 +13,7 @@ public interface ISnackMachineWriterGrain : IGrainWithGuidKey
     [AlwaysInterleave]
     Task<Result<ImmutableList<ISnackMachineGrain>>> GetMultipleAsync(SnackMachineWriterGetMultipleCommand command);
 
-    Task<Result<ISnackMachineGrain>> CreateAsync(SnackMachineWriterCreateOneCommand cmd);
+    Task<Result<bool>> CreateAsync(SnackMachineWriterCreateOneCommand cmd);
 
-    Task<Result> DeleteAsync(SnackMachineWriterDeleteOneCommand cmd);
+    Task<Result<bool>> DeleteAsync(SnackMachineWriterDeleteOneCommand cmd);
 }

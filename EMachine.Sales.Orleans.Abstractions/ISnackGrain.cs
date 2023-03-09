@@ -16,15 +16,15 @@ public interface ISnackGrain : IGrainWithGuidKey
     [AlwaysInterleave]
     Task<bool> CanInitializeAsync();
 
-    Task<Result> InitializeAsync(SnackInitializeCommand cmd);
+    Task<Result<bool>> InitializeAsync(SnackInitializeCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanRemoveAsync();
 
-    Task<Result> RemoveAsync(SnackRemoveCommand cmd);
+    Task<Result<bool>> RemoveAsync(SnackRemoveCommand cmd);
 
     [AlwaysInterleave]
     Task<bool> CanChangeNameAsync();
     
-    Task<Result> ChangeNameAsync(SnackChangeNameCommand cmd);
+    Task<Result<bool>> ChangeNameAsync(SnackChangeNameCommand cmd);
 }
