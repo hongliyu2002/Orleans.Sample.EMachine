@@ -8,6 +8,7 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09709e26_002Dd69d_002D43ec_002Da78e_002D7dbbe6c4da57/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_Add_SnackBase" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::BEAFC322-4059-4000-970D-71746D195BE9::net7.0::EMachine.Sales.EntityFrameworkCore.Tests.SalesModuleTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackRepositoryGainTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

@@ -28,14 +28,23 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
     public Task<Result<Snack>> GetAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok(State).Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.").Ensure(State.IsCreated, $"Snack {id} is not initialized."));
+        return Task.FromResult(Result.Ok(State)
+                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized."));
     }
 
     /// <inheritdoc />
     public Task<Result<string>> GetNameAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack {id} has already been removed.").Ensure(State.IsCreated, $"Snack {id} is not initialized.").Map(() => State.Name));
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
+                                     .Map(() => State.Name));
+    }
+
+    /// <inheritdoc />
+    public Task<Result<long>> GetVersionAsync()
+    {
+        return Task.FromResult(Result.Ok((long)Version));
     }
 
     /// <inheritdoc />

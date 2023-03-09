@@ -31,7 +31,8 @@ namespace EMachine.Sales.EntityFrameworkCore.Migrations
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     LastModifiedBy = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     DeletedBy = table.Column<string>(type: "TEXT", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Version = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +51,8 @@ namespace EMachine.Sales.EntityFrameworkCore.Migrations
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     LastModifiedBy = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     DeletedBy = table.Column<string>(type: "TEXT", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Version = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

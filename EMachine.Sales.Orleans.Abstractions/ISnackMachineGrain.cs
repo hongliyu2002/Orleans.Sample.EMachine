@@ -21,6 +21,9 @@ public interface ISnackMachineGrain : IGrainWithGuidKey
     Task<Result<ImmutableList<Slot>>> GetSlotsAsync();
 
     [AlwaysInterleave]
+    Task<Result<long>> GetVersionAsync();
+
+    [AlwaysInterleave]
     Task<bool> CanInitializeAsync();
 
     Task<Result<bool>> InitializeAsync(SnackMachineInitializeCommand cmd);

@@ -9,9 +9,12 @@ public interface ISnackGrain : IGrainWithGuidKey
 {
     [AlwaysInterleave]
     Task<Result<Snack>> GetAsync();
-    
+
     [AlwaysInterleave]
     Task<Result<string>> GetNameAsync();
+
+    [AlwaysInterleave]
+    Task<Result<long>> GetVersionAsync();
 
     [AlwaysInterleave]
     Task<bool> CanInitializeAsync();
@@ -25,6 +28,6 @@ public interface ISnackGrain : IGrainWithGuidKey
 
     [AlwaysInterleave]
     Task<bool> CanChangeNameAsync();
-    
+
     Task<Result<bool>> ChangeNameAsync(SnackChangeNameCommand cmd);
 }

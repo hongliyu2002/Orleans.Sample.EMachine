@@ -23,5 +23,5 @@ public sealed class Snack
 
     public bool IsDeleted { get; set; }
 
-    public int Version { get; set; }
+    public long Version { get; set; }
 }

@@ -29,28 +29,41 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     public Task<Result<SnackMachine>> GetAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok(State).Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
+        return Task.FromResult(Result.Ok(State)
+                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
     }
 
     /// <inheritdoc />
     public Task<Result<Money>> GetMoneyInsideAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.MoneyInside));
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized.")
+                                     .Map(() => State.MoneyInside));
     }
 
     /// <inheritdoc />
     public Task<Result<decimal>> GetAmountInTransactionAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.AmountInTransaction));
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized.")
+                                     .Map(() => State.AmountInTransaction));
     }
 
     /// <inheritdoc />
     public Task<Result<ImmutableList<Slot>>> GetSlotsAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok().Ensure(State.IsDeleted == false, $"Snack machine {id} has already been removed.").Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.Slots.ToImmutableList()));
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized.")
+                                     .Map(() => State.Slots.ToImmutableList()));
+    }
+
+    /// <inheritdoc />
+    public Task<Result<long>> GetVersionAsync()
+    {
+        return Task.FromResult(Result.Ok((long)Version));
     }
 
     /// <inheritdoc />
