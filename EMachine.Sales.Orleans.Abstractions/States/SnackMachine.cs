@@ -106,33 +106,36 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
 
     public void Apply(SnackMachineMoneyReturnedEvent evt)
     {
-        if (MoneyInside.TryAllocate(AmountInTransaction, out var moneyAllocated))
+        if (!MoneyInside.TryAllocate(AmountInTransaction, out var moneyAllocated))
         {
-            MoneyInside -= moneyAllocated;
-            LastModifiedAt = evt.OperatedAt;
-            LastModifiedBy = evt.OperatedBy;
+            return;
         }
+        MoneyInside -= moneyAllocated;
+        LastModifiedAt = evt.OperatedAt;
+        LastModifiedBy = evt.OperatedBy;
     }
 
     public void Apply(SnackMachineSnacksLoadedEvent evt)
     {
-        if (TryGetSlot(evt.Position, out var slot) && slot is { SnackPile: { } })
+        if (!TryGetSlot(evt.Position, out var slot) || slot == null)
         {
-            slot.SnackPile = evt.SnackPile;
-            LastModifiedAt = evt.OperatedAt;
-            LastModifiedBy = evt.OperatedBy;
+            return;
         }
+        slot.SnackPile = evt.SnackPile;
+        LastModifiedAt = evt.OperatedAt;
+        LastModifiedBy = evt.OperatedBy;
     }
 
     public void Apply(SnackMachineSnackBoughtEvent evt)
     {
-        if (TryGetSlot(evt.Position, out var slot) && slot is { SnackPile: { } } && slot.SnackPile.TryPopOne(out var snackPilePopped) && snackPilePopped is { })
+        if (!TryGetSlot(evt.Position, out var slot) || slot?.SnackPile == null || !slot.SnackPile.TryPopOne(out var snackPilePopped) || snackPilePopped == null)
         {
-            slot.SnackPile = snackPilePopped;
-            AmountInTransaction -= snackPilePopped.Price;
-            LastModifiedAt = evt.OperatedAt;
-            LastModifiedBy = evt.OperatedBy;
+            return;
         }
+        slot.SnackPile = snackPilePopped;
+        AmountInTransaction -= snackPilePopped.Price;
+        LastModifiedAt = evt.OperatedAt;
+        LastModifiedBy = evt.OperatedBy;
     }
 
     #endregion
