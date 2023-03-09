@@ -9,11 +9,11 @@ namespace EMachine.Sales.Orleans.Tests;
 [Collection(MoneyCollectionFixture.Name)]
 public class MoneyTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly ITestOutputHelper _output;
 
-    public MoneyTests(ITestOutputHelper testOutputHelper)
+    public MoneyTests(ITestOutputHelper output)
     {
-        _testOutputHelper = testOutputHelper;
+        _output = output;
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class MoneyTests
         var action = () =>
                      {
                          var money = new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100);
-                         _testOutputHelper.WriteLine(money.ToString());
+                         _output.WriteLine(money.ToString());
                      };
         action.Should().Throw<ArgumentException>();
     }
@@ -106,7 +106,7 @@ public class MoneyTests
         var action = () =>
                      {
                          var money = money1 - money2;
-                         _testOutputHelper.WriteLine(money.ToString());
+                         _output.WriteLine(money.ToString());
                      };
         action.Should().Throw<InvalidOperationException>();
     }
@@ -124,6 +124,6 @@ public class MoneyTests
         var moneyResult = Money.Create(-1, 2, -3, 4, -5, 6, -7);
         moneyResult.IsFailed.Should().BeTrue();
         moneyResult.Errors.Should().HaveCount(4);
-        _testOutputHelper.WriteLine(moneyResult.ToString());
+        _output.WriteLine(moneyResult.ToString());
     }
 }

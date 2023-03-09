@@ -11,8 +11,8 @@ using Orleans.Providers;
 
 namespace EMachine.Sales.Orleans;
 
-[LogConsistencyProvider(ProviderName = "EventStore")]
-[StorageProvider(ProviderName = "SalesStore")]
+[LogConsistencyProvider(ProviderName = Constants.LogConsistencyStoreName)]
+[StorageProvider(ProviderName = Constants.SalesStoreName)]
 public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
 {
     private readonly ILogger<SnackGrain> _logger;
@@ -28,17 +28,14 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
     public Task<Result<Snack>> GetAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok(State)
-                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized."));
+        return Task.FromResult(Result.Ok(State).Ensure(State.IsCreated, $"Snack {id} is not initialized."));
     }
 
     /// <inheritdoc />
     public Task<Result<string>> GetNameAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsCreated, $"Snack {id} is not initialized.")
-                                     .Map(() => State.Name));
+        return Task.FromResult(Result.Ok().Ensure(State.IsCreated, $"Snack {id} is not initialized.").Map(() => State.Name));
     }
 
     /// <inheritdoc />

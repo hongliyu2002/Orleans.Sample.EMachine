@@ -1,26 +1,21 @@
 ﻿using Orleans.TestingHost;
-using Xunit;
 
 namespace EMachine.Sales.Orleans.Tests.Fixtures;
 
-public class ClusterFixture : IAsyncLifetime
+public class ClusterFixture : IDisposable
 {
     public ClusterFixture()
     {
-        Cluster = new TestClusterBuilder().AddClientBuilderConfigurator<TestClientBuilderConfigurator>().AddSiloBuilderConfigurator<TestSiloConfigurator>().Build();
+        Cluster = new TestClusterBuilder().AddSiloBuilderConfigurator<TestSiloConfigurator>()
+                                          .AddClientBuilderConfigurator<TestClientBuilderConfigurator>()
+                                          .Build();
+        Cluster.Deploy();
     }
 
     public TestCluster Cluster { get; }
 
-    /// <inheritdoc />
-    public Task InitializeAsync()
+    public void Dispose()
     {
-        return Cluster.DeployAsync();
-    }
-
-    /// <inheritdoc />
-    public Task DisposeAsync()
-    {
-        return Cluster.DisposeAsync().AsTask();
+        Cluster.Dispose();
     }
 }

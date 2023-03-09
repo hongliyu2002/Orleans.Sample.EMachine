@@ -11,11 +11,11 @@ namespace EMachine.Sales.Orleans.Tests;
 public class MoneyGrainTests
 {
     private readonly TestCluster _cluster;
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly ITestOutputHelper _output;
 
-    public MoneyGrainTests(ClusterFixture fixture, ITestOutputHelper testOutputHelper)
+    public MoneyGrainTests(ClusterFixture fixture, ITestOutputHelper output)
     {
-        _testOutputHelper = testOutputHelper;
+        _output = output;
         _cluster = fixture.Cluster;
     }
 
@@ -36,7 +36,7 @@ public class MoneyGrainTests
         var action = async () =>
                      {
                          var money = await MoneyGrain.Get();
-                         _testOutputHelper.WriteLine(money.ToString());
+                         _output.WriteLine(money.ToString());
                      };
         await action.Should().NotThrowAsync();
     }

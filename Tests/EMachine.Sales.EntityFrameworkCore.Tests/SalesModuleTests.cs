@@ -14,11 +14,11 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
 {
 
     private readonly SalesDbContext _dbContext;
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly ITestOutputHelper _output;
 
-    public SalesModuleTests(ITestOutputHelper testOutputHelper)
+    public SalesModuleTests(ITestOutputHelper output)
     {
-        _testOutputHelper = testOutputHelper;
+        _output = output;
         StartApplication();
         _dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
         // _dbContext.Database.EnsureDeleted();
@@ -47,7 +47,7 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         snack.Id.Should().Be(id);
         var snackGet = await _dbContext.Snacks.FindAsync(id);
         snackGet.Should().NotBeNull();
-        _testOutputHelper.WriteLine(snackGet!.ToString());
+        _output.WriteLine(snackGet!.ToString());
     }
 
     [Fact]
@@ -133,6 +133,6 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         var snackMachineGet = await _dbContext.SnackMachines.Include(x => x.Slots).FirstOrDefaultAsync();
         snackMachineGet.Should().NotBeNull();
         snackMachineGet!.Slots.Should().HaveCount(4);
-        _testOutputHelper.WriteLine(snackMachineGet.ToString());
+        _output.WriteLine(snackMachineGet.ToString());
     }
 }

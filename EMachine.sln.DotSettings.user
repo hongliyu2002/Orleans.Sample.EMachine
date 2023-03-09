@@ -5,10 +5,17 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming\7.1.0\lib\net7.0\Orleans.Streaming.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\orleans.fluentresults\7.1.0.3\lib\net7.0\Orleans.FluentResults.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09709e26_002Dd69d_002D43ec_002Da78e_002D7dbbe6c4da57/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_Add_SnackBase" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09709e26_002Dd69d_002D43ec_002Da78e_002D7dbbe6c4da57/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Should_Add_SnackBase" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::BEAFC322-4059-4000-970D-71746D195BE9::net7.0::EMachine.Sales.EntityFrameworkCore.Tests.SalesModuleTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackRepositoryGainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.Projections.SnackProjectionTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackGrainTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=803f1c25_002Db606_002D44df_002Daf4a_002Df49228b894fa/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_Get_IdGenerator" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.Projections.SnackProjectionTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

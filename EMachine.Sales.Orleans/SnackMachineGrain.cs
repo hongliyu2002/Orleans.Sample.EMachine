@@ -12,8 +12,8 @@ using Orleans.Providers;
 
 namespace EMachine.Sales.Orleans;
 
-[LogConsistencyProvider(ProviderName = "EventStore")]
-[StorageProvider(ProviderName = "SalesStore")]
+[LogConsistencyProvider(ProviderName = Constants.LogConsistencyStoreName)]
+[StorageProvider(ProviderName = Constants.SalesStoreName)]
 public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnackMachineGrain
 {
     private readonly ILogger<SnackMachineGrain> _logger;
@@ -29,35 +29,28 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     public Task<Result<SnackMachine>> GetAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok(State)
-                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
+        return Task.FromResult(Result.Ok(State).Ensure(State.IsCreated, $"Snack machine {id} is not initialized."));
     }
 
     /// <inheritdoc />
     public Task<Result<Money>> GetMoneyInsideAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized.")
-                                     .Map(() => State.MoneyInside));
+        return Task.FromResult(Result.Ok().Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.MoneyInside));
     }
 
     /// <inheritdoc />
     public Task<Result<decimal>> GetAmountInTransactionAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized.")
-                                     .Map(() => State.AmountInTransaction));
+        return Task.FromResult(Result.Ok().Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.AmountInTransaction));
     }
 
     /// <inheritdoc />
     public Task<Result<ImmutableList<Slot>>> GetSlotsAsync()
     {
         var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok()
-                                     .Ensure(State.IsCreated, $"Snack machine {id} is not initialized.")
-                                     .Map(() => State.Slots.ToImmutableList()));
+        return Task.FromResult(Result.Ok().Ensure(State.IsCreated, $"Snack machine {id} is not initialized.").Map(() => State.Slots.ToImmutableList()));
     }
 
     /// <inheritdoc />

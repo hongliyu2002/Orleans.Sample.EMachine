@@ -4,15 +4,14 @@ namespace EMachine.Sales.Orleans.Tests.Fixtures;
 
 public class TestSiloConfigurator : ISiloConfigurator
 {
-
-    /// <inheritdoc />
     public void Configure(ISiloBuilder siloBuilder)
     {
-        siloBuilder.AddMemoryGrainStorage("PubSubStore")
-                   .AddMemoryGrainStorage("SalesStore")
-                   .AddMemoryGrainStorage("ManagementStore")
-                   .AddMemoryGrainStorage("BankingStore")
-                   .AddLogStorageBasedLogConsistencyProvider("EventStore")
+        siloBuilder.AddMemoryGrainStorage(Constants.PubSubStoreName)
+                   .AddMemoryGrainStorage(Constants.SalesStoreName)
+                   .AddMemoryGrainStorage(Constants.ManagementStoreName)
+                   .AddMemoryGrainStorage(Constants.BankingStoreName)
+                   .AddLogStorageBasedLogConsistencyProvider(Constants.LogConsistencyStoreName)
+                   .AddStreaming()
                    .AddMemoryStreams(Constants.StreamProviderName);
     }
 }

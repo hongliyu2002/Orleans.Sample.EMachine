@@ -11,11 +11,11 @@ namespace EMachine.Sales.Orleans.Tests;
 public class MoneyEventSourcingGrainTests
 {
     private readonly TestCluster _cluster;
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly ITestOutputHelper _output;
 
-    public MoneyEventSourcingGrainTests(ClusterFixture fixture, ITestOutputHelper testOutputHelper)
+    public MoneyEventSourcingGrainTests(ClusterFixture fixture, ITestOutputHelper output)
     {
-        _testOutputHelper = testOutputHelper;
+        _output = output;
         _cluster = fixture.Cluster;
     }
 
@@ -27,7 +27,7 @@ public class MoneyEventSourcingGrainTests
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Should().Be(Money.Zero);
-        _testOutputHelper.WriteLine(getResult.ToString());
+        _output.WriteLine(getResult.ToString());
     }
 
     [Fact]
@@ -40,6 +40,6 @@ public class MoneyEventSourcingGrainTests
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Should().Be(Money.FiftyYuan);
-        _testOutputHelper.WriteLine(getResult.ToString());
+        _output.WriteLine(getResult.ToString());
     }
 }
