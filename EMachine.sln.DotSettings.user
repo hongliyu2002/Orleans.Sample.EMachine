@@ -3,7 +3,8 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\system.reactive\5.0.0\lib\net5.0\System.Reactive.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\system.linq.async\6.0.1\ref\net6.0\System.Linq.Async.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming\7.1.0\lib\net7.0\Orleans.Streaming.dll" /&gt;&#xD;
-  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\orleans.fluentresults\7.1.0.3\lib\net7.0\Orleans.FluentResults.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.entityframeworkcore.dynamiclinq\7.3.1\lib\net7.0\Microsoft.EntityFrameworkCore.DynamicLinq.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\system.linq.dynamic.core\1.3.1\lib\net7.0\System.Linq.Dynamic.Core.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09709e26_002Dd69d_002D43ec_002Da78e_002D7dbbe6c4da57/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Should_Add_SnackBase" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;

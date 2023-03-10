@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using EMachine.Orleans.Shared.Queries;
 
-namespace E.Sales.Orleans.Queries;
+namespace EMachine.Sales.Orleans.Queries;
 
 [Immutable]
 [GenerateSerializer]

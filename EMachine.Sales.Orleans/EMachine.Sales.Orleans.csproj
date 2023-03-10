@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\EMachine.Sales.EntityFrameworkCore\EMachine.Sales.EntityFrameworkCore.csproj" />
         <ProjectReference Include="..\EMachine.Sales.Orleans.Abstractions\EMachine.Sales.Orleans.Abstractions.csproj" />
         <ProjectReference Include="..\EMachine.Orleans.Shared\EMachine.Orleans.Shared.csproj" />
     </ItemGroup>

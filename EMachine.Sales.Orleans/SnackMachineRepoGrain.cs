@@ -1,6 +1,15 @@
 ﻿using System.Collections.Immutable;
+using System.Linq.Dynamic.Core;
+using EMachine.Orleans.Shared;
+using EMachine.Orleans.Shared.Extensions;
+using EMachine.Sales.Domain;
+using EMachine.Sales.EntityFrameworkCore.Contexts;
 using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.Queries;
 using Fluxera.Guards;
+using Fluxera.Utilities.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.Concurrency;
 using Orleans.FluentResults;
@@ -8,15 +17,44 @@ using Orleans.FluentResults;
 namespace EMachine.Sales.Orleans;
 
 [StatelessWorker]
-public class SnackMachineRepoGrain : Grain, ISnackMachineRepoGrain
+public class SnackMachineRepoGrain : RepoGrain, ISnackMachineRepoGrain
 {
     private readonly ILogger<SnackMachineRepoGrain> _logger;
+    private SalesDbContext _dbContext = null!;
 
     /// <inheritdoc />
-    public SnackMachineRepoGrain(ILogger<SnackMachineRepoGrain> logger)
+    public SnackMachineRepoGrain(IServiceScopeFactory scopeFactory, ILogger<SnackMachineRepoGrain> logger)
+        : base(scopeFactory)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
     }
+
+    /// <inheritdoc />
+    public override async Task OnActivateAsync(CancellationToken cancellationToken)
+    {
+        await base.OnActivateAsync(cancellationToken);
+        _dbContext = _scope.ServiceProvider.GetRequiredService<SalesDbContext>();
+    }
+
+    #region Query Repo
+
+    /// <inheritdoc />
+    public Task<Result<ImmutableList<SnackMachineBaseView>>> ListPagedAsync(SnackMachinePagedListQuery query)
+    {
+        return Result.Ok(_dbContext.SnackMachines.AsNoTracking().Where(x => x.IsDeleted == false))
+                     .MapIf(query.IncludeSlots, snackMachines => snackMachines.Include(x => x.Slots))
+                     .MapIf(query.Sorts.IsNotNullOrEmpty(), snackMachines => snackMachines.OrderBy(query.Sorts.ToSortStrinng()))
+                     .Ensure(query.SkipCount >= 0, "Skip count should not be negative.")
+                     .Map(snackMachines => snackMachines.Skip(query.SkipCount))
+                     .Ensure(query.MaxResultCount >= 1, "Max result count should not be negative or zero.")
+                     .Map(snackMachines => snackMachines.Take(query.MaxResultCount))
+                     .Map(snackMachines => snackMachines.Select(x => SnackMachineBaseView.Create(x.Id, x.MoneyInside, x.AmountInTransaction, x.Slots, x.SlotsCount, x.TotalPrice)))
+                     .MapTryAsync(snackMachines => snackMachines.ToImmutableListAsync());
+    }
+
+    #endregion
+
+    #region CRUD Repo
 
     /// <inheritdoc />
     public Task<Result<ISnackMachineGrain>> GetAsync(SnackMachineCrudRepoGetOneCommand cmd)
@@ -27,8 +65,8 @@ public class SnackMachineRepoGrain : Grain, ISnackMachineRepoGrain
     /// <inheritdoc />
     public Task<Result<ImmutableList<ISnackMachineGrain>>> GetMultipleAsync(SnackMachineCrudRepoGetManyCommand cmd)
     {
-        var snacks = cmd.Ids.Select(id => GrainFactory.GetGrain<ISnackMachineGrain>(id));
-        return Task.FromResult(Result.Ok(snacks.ToImmutableList()));
+        var snackMachines = cmd.Ids.Select(id => GrainFactory.GetGrain<ISnackMachineGrain>(id));
+        return Task.FromResult(Result.Ok(snackMachines.ToImmutableList()));
     }
 
     /// <inheritdoc />
@@ -36,7 +74,7 @@ public class SnackMachineRepoGrain : Grain, ISnackMachineRepoGrain
     {
         return Result.Ok()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
-                     .EnsureAsync(grain => grain.CanInitializeAsync(), $"SnackMachine {cmd.Id} already exists or has been deleted.")
+                     .EnsureAsync(grain => grain.CanInitializeAsync(), $"Snack machine {cmd.Id} already exists or has been deleted.")
                      .BindTryAsync(grain => grain.InitializeAsync(new SnackMachineInitializeCommand(cmd.MoneyInside, cmd.Slots, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
     }
 
@@ -45,7 +83,10 @@ public class SnackMachineRepoGrain : Grain, ISnackMachineRepoGrain
     {
         return Result.Ok<ISnackMachineGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
-                     .EnsureAsync(grain => grain.CanRemoveAsync(), $"SnackMachine {cmd.Id} does not exists or has been deleted.")
+                     .EnsureAsync(grain => grain.CanRemoveAsync(), $"Snack machine {cmd.Id} does not exists or has been deleted.")
                      .BindTryAsync(grain => grain.RemoveAsync(new SnackMachineRemoveCommand(cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
     }
+
+    #endregion
+
 }
