@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using EMachine.Sales.Orleans.Queries;
-using EMachine.Sales.Domain;
+using EMachine.Sales.Orleans.Views;
 using Orleans.Concurrency;
 using Orleans.FluentResults;
 
@@ -9,8 +9,8 @@ namespace EMachine.Sales.Orleans;
 public interface ISnackQueryRepoGrain : IGrainWithGuidKey
 {
     [AlwaysInterleave]
-    Task<Result<ImmutableList<SnackBaseView>>> ListPagedAsync(SnackPagedListQuery query);
+    Task<Result<ImmutableList<SnackBasic>>> ListPagedAsync(SnackPagedListQuery query);
 
     [AlwaysInterleave]
-    Task<Result<ImmutableList<SnackBaseView>>> SearchPagedAsync(SnackSearchPagedListQuery query);
+    Task<Result<ImmutableList<SnackBasic>>> SearchPagedAsync(SnackSearchPagedListQuery query);
 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Immutable;
 using System.Linq.Dynamic.Core;
-using EMachine.Sales.Orleans.Queries;
 using EMachine.Orleans.Shared;
 using EMachine.Orleans.Shared.Extensions;
-using EMachine.Sales.Domain;
 using EMachine.Sales.EntityFrameworkCore.Contexts;
 using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.Queries;
+using EMachine.Sales.Orleans.Views;
 using Fluxera.Guards;
 using Fluxera.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +39,7 @@ public class SnackRepoGrain : RepoGrain, ISnackRepoGrain
     #region Query Repo
 
     /// <inheritdoc />
-    public Task<Result<ImmutableList<SnackBaseView>>> ListPagedAsync(SnackPagedListQuery query)
+    public Task<Result<ImmutableList<SnackBasic>>> ListPagedAsync(SnackPagedListQuery query)
     {
         return Result.Ok(_dbContext.Snacks.AsNoTracking().Where(x => x.IsDeleted == false))
                      .MapIf(query.Sorts.IsNotNullOrEmpty(), snacks => snacks.OrderBy(query.Sorts.ToSortStrinng()))
@@ -47,12 +47,12 @@ public class SnackRepoGrain : RepoGrain, ISnackRepoGrain
                      .Map(snacks => snacks.Skip(query.SkipCount))
                      .Ensure(query.MaxResultCount >= 1, "Max result count should not be negative or zero.")
                      .Map(snacks => snacks.Take(query.MaxResultCount))
-                     .Map(snacks => snacks.Select(x => SnackBaseView.Create(x.Id, x.Name)))
+                     .Map(snacks => snacks.Select(x => new SnackBasic(x.Id, x.Name)))
                      .MapTryAsync(snacks => snacks.ToImmutableListAsync());
     }
 
     /// <inheritdoc />
-    public Task<Result<ImmutableList<SnackBaseView>>> SearchPagedAsync(SnackSearchPagedListQuery query)
+    public Task<Result<ImmutableList<SnackBasic>>> SearchPagedAsync(SnackSearchPagedListQuery query)
     {
         return Result.Ok(_dbContext.Snacks.AsNoTracking().Where(x => x.IsDeleted == false))
                      .Ensure(query.Criteria.IsNotNullOrEmpty(), "Criteria should not be empty.")
@@ -62,7 +62,7 @@ public class SnackRepoGrain : RepoGrain, ISnackRepoGrain
                      .Map(snacks => snacks.Skip(query.SkipCount))
                      .Ensure(query.MaxResultCount >= 1, "Max result count should not be negative or zero.")
                      .Map(snacks => snacks.Take(query.MaxResultCount))
-                     .Map(snacks => snacks.Select(x => SnackBaseView.Create(x.Id, x.Name)))
+                     .Map(snacks => snacks.Select(x => new SnackBasic(x.Id, x.Name)))
                      .MapTryAsync(snacks => snacks.ToImmutableListAsync());
     }
 

@@ -3,6 +3,7 @@ using EMachine.Orleans.Shared.Events;
 using EMachine.Sales.Domain;
 using EMachine.Sales.EntityFrameworkCore.Contexts;
 using EMachine.Sales.Orleans.Events;
+using EMachine.Sales.Orleans.Mappers;
 using Fluxera.Guards;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,62 +76,10 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
 
     #region Try Get
 
-    public bool TryGetSlot(SnackMachine snackMachine, int position, out Slot? slot)
+    private static bool TryGetSlot(SnackMachine snackMachine, int position, out Slot? slot)
     {
         slot = snackMachine.Slots.FirstOrDefault(x => x.Position == position);
         return slot != null;
-    }
-
-    #endregion
-
-    #region Map
-
-    private Money? Map(States.Money? money)
-    {
-        return money switch
-               {
-                   null => null,
-                   _ => new Money
-                        {
-                            Yuan1 = money.Yuan1,
-                            Yuan2 = money.Yuan2,
-                            Yuan5 = money.Yuan5,
-                            Yuan10 = money.Yuan10,
-                            Yuan20 = money.Yuan20,
-                            Yuan50 = money.Yuan50,
-                            Yuan100 = money.Yuan100,
-                            Amount = money.Amount
-                        }
-               };
-    }
-
-    private SnackPile? Map(States.SnackPile? snackPile)
-    {
-        return snackPile switch
-               {
-                   null => null,
-                   _ => new SnackPile
-                        {
-                            SnackId = snackPile.SnackId,
-                            Quantity = snackPile.Quantity,
-                            Price = snackPile.Price,
-                            TotalPrice = snackPile.TotalPrice
-                        }
-               };
-    }
-
-    private Slot? Map(States.Slot? slot, Guid machineId)
-    {
-        return slot switch
-               {
-                   null => null,
-                   _ => new Slot
-                        {
-                            MachineId = machineId,
-                            Position = slot.Position,
-                            SnackPile = Map(slot.SnackPile)
-                        }
-               };
     }
 
     #endregion
@@ -145,8 +94,8 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             snackMachine = new SnackMachine
                            {
                                Id = evt.Id,
-                               MoneyInside = Map(evt.MoneyInside)!,
-                               Slots = evt.Slots.Select(x => Map(x, evt.Id)!).ToList(),
+                               MoneyInside = evt.MoneyInside.Map(),
+                               Slots = evt.Slots.Select(x => x.Map(evt.Id)).ToList(),
                                SlotsCount = evt.Slots.Count,
                                TotalPrice = evt.Slots.Where(s => s.SnackPile != null).Select(s => s.SnackPile!).Sum(sp => sp.TotalPrice),
                                CreatedAt = evt.OperatedAt,
@@ -196,7 +145,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             _logger.LogWarning($"Apply SnackMachineMoneyLoadedEvent: Snack machine {evt.Id} version {snackMachine.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
-        snackMachine.MoneyInside += Map(evt.Money)!;
+        snackMachine.MoneyInside += evt.Money.Map();
         snackMachine.LastModifiedAt = evt.OperatedAt;
         snackMachine.LastModifiedBy = evt.OperatedBy;
         snackMachine.Version = evt.Version;
@@ -237,7 +186,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
         snackMachine.AmountInTransaction += evt.Money.Amount;
-        snackMachine.MoneyInside += Map(evt.Money)!;
+        snackMachine.MoneyInside += evt.Money.Map();
         snackMachine.LastModifiedAt = evt.OperatedAt;
         snackMachine.LastModifiedBy = evt.OperatedBy;
         snackMachine.Version = evt.Version;
@@ -287,7 +236,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             _logger.LogWarning($"Apply SnackMachineSnacksLoadedEvent: Snack machine {evt.Id} slot at position {evt.Position} could not be found. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
-        slot.SnackPile = Map(evt.SnackPile);
+        slot.SnackPile = evt.SnackPile.Map();
         snackMachine.TotalPrice = snackMachine.Slots.Where(s => s.SnackPile != null).Select(s => s.SnackPile!).Sum(sp => sp.TotalPrice);
         snackMachine.LastModifiedAt = evt.OperatedAt;
         snackMachine.LastModifiedBy = evt.OperatedBy;
@@ -342,9 +291,9 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             await _dbContext.SnackMachines.AddAsync(snackMachine, cancellationToken);
         }
         snackMachine.Id = snackMachineInGrain.Id;
-        snackMachine.MoneyInside = Map(snackMachineInGrain.MoneyInside)!;
+        snackMachine.MoneyInside = snackMachineInGrain.MoneyInside.Map();
         snackMachine.AmountInTransaction = snackMachineInGrain.AmountInTransaction;
-        snackMachine.Slots = snackMachineInGrain.Slots.Select(x => Map(x, snackMachineInGrain.Id)!).ToList();
+        snackMachine.Slots = snackMachineInGrain.Slots.Select(x => x.Map(snackMachineInGrain.Id)).ToList();
         snackMachine.SlotsCount = snackMachineInGrain.Slots.Count;
         snackMachine.TotalPrice = snackMachineInGrain.TotalPrice;
         snackMachine.CreatedAt = snackMachineInGrain.CreatedAt;

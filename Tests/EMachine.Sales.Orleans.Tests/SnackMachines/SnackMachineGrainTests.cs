@@ -50,11 +50,10 @@ public class SnackMachineGrainTests : IClassFixture<SnackMachineFixture>
         var slots = ImmutableList.Create(new Slot(0), new Slot(1, new SnackPile(cafeSnackId, 10, 5)), new Slot(2), new Slot(3, new SnackPile(chocolateSnackId, 20, 8)));
         var initializeResult = await grain.InitializeAsync(new SnackMachineInitializeCommand(Money.OneHundredYuan, slots, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         initializeResult.IsSuccess.Should().Be(true);
-        await Task.Delay(1000);
         var reInitializeResult = await grain.InitializeAsync(new SnackMachineInitializeCommand(new Money(70, 60, 50, 40, 30, 20, 10), slots, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         reInitializeResult.IsSuccess.Should().Be(false);
-        await Task.Delay(1000);
         _output.WriteLine(reInitializeResult.ToString());
+        await Task.Delay(1000);
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Id.Should().Be(id);
@@ -80,6 +79,7 @@ public class SnackMachineGrainTests : IClassFixture<SnackMachineFixture>
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Id.Should().Be(id);
         getResult.Value.Slots.Should().BeEquivalentTo(slots);
+        getResult.Value.IsDeleted.Should().Be(true);
         await Task.Delay(1000);
         _output.WriteLine(getResult.ToString());
     }

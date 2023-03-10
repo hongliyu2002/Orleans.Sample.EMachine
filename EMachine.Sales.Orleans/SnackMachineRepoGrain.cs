@@ -2,10 +2,11 @@
 using System.Linq.Dynamic.Core;
 using EMachine.Orleans.Shared;
 using EMachine.Orleans.Shared.Extensions;
-using EMachine.Sales.Domain;
 using EMachine.Sales.EntityFrameworkCore.Contexts;
 using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.Mappers;
 using EMachine.Sales.Orleans.Queries;
+using EMachine.Sales.Orleans.Views;
 using Fluxera.Guards;
 using Fluxera.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ public class SnackMachineRepoGrain : RepoGrain, ISnackMachineRepoGrain
     #region Query Repo
 
     /// <inheritdoc />
-    public Task<Result<ImmutableList<SnackMachineBaseView>>> ListPagedAsync(SnackMachinePagedListQuery query)
+    public Task<Result<ImmutableList<SnackMachineBasic>>> ListPagedAsync(SnackMachinePagedListQuery query)
     {
         return Result.Ok(_dbContext.SnackMachines.AsNoTracking().Where(x => x.IsDeleted == false))
                      .MapIf(query.IncludeSlots, snackMachines => snackMachines.Include(x => x.Slots))
@@ -48,7 +49,7 @@ public class SnackMachineRepoGrain : RepoGrain, ISnackMachineRepoGrain
                      .Map(snackMachines => snackMachines.Skip(query.SkipCount))
                      .Ensure(query.MaxResultCount >= 1, "Max result count should not be negative or zero.")
                      .Map(snackMachines => snackMachines.Take(query.MaxResultCount))
-                     .Map(snackMachines => snackMachines.Select(x => SnackMachineBaseView.Create(x.Id, x.MoneyInside, x.AmountInTransaction, x.Slots, x.SlotsCount, x.TotalPrice)))
+                     .Map(snackMachines => snackMachines.Select(x => new SnackMachineBasic(x.Id, x.MoneyInside.Map(), x.AmountInTransaction, x.SlotsCount, x.TotalPrice, x.Slots.Select(s => s.Map(x.Id)).ToImmutableList())))
                      .MapTryAsync(snackMachines => snackMachines.ToImmutableListAsync());
     }
 

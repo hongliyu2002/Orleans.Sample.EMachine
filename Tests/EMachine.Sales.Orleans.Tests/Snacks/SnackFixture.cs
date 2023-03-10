@@ -7,12 +7,12 @@ using Xunit;
 
 namespace EMachine.Sales.Orleans.Tests;
 
-public class SnackRepoFixture : IAsyncLifetime
+public class SnackFixture : IAsyncLifetime
 {
     private readonly TestCluster _cluster;
     private SalesDbContext _dbContext = null!;
 
-    public SnackRepoFixture(ClusterFixture fixture)
+    public SnackFixture(ClusterFixture fixture)
     {
         _cluster = fixture.Cluster;
     }
@@ -33,6 +33,7 @@ public class SnackRepoFixture : IAsyncLifetime
     /// <inheritdoc />
     public async Task DisposeAsync()
     {
+        await Task.Delay(1000);
         await _dbContext.DisposeAsync();
     }
 }
