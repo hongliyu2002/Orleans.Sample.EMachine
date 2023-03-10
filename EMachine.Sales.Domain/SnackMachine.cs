@@ -15,6 +15,8 @@ public sealed class SnackMachine
 
     public int SlotsCount { get; set; }
 
+    public decimal TotalPrice { get; set; }
+
     public DateTimeOffset? CreatedAt { get; set; }
 
     public DateTimeOffset? LastModifiedAt { get; set; }

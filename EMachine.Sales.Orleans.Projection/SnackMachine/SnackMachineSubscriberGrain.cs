@@ -113,7 +113,8 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
                         {
                             SnackId = snackPile.SnackId,
                             Quantity = snackPile.Quantity,
-                            Price = snackPile.Price
+                            Price = snackPile.Price,
+                            TotalPrice = snackPile.TotalPrice
                         }
                };
     }
@@ -147,6 +148,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
                                MoneyInside = Map(evt.MoneyInside)!,
                                Slots = evt.Slots.Select(x => Map(x, evt.Id)!).ToList(),
                                SlotsCount = evt.Slots.Count,
+                               TotalPrice = evt.Slots.Where(s => s.SnackPile != null).Select(s => s.SnackPile!).Sum(sp => sp.TotalPrice),
                                CreatedAt = evt.OperatedAt,
                                CreatedBy = evt.OperatedBy,
                                Version = evt.Version
@@ -234,6 +236,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             _logger.LogWarning($"Apply SnackMachineMoneyInsertedEvent: Snack machine {evt.Id} version {snackMachine.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
+        snackMachine.AmountInTransaction += evt.Money.Amount;
         snackMachine.MoneyInside += Map(evt.Money)!;
         snackMachine.LastModifiedAt = evt.OperatedAt;
         snackMachine.LastModifiedBy = evt.OperatedBy;
@@ -285,6 +288,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
         slot.SnackPile = Map(evt.SnackPile);
+        snackMachine.TotalPrice = snackMachine.Slots.Where(s => s.SnackPile != null).Select(s => s.SnackPile!).Sum(sp => sp.TotalPrice);
         snackMachine.LastModifiedAt = evt.OperatedAt;
         snackMachine.LastModifiedBy = evt.OperatedBy;
         snackMachine.Version = evt.Version;
@@ -309,6 +313,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
             _logger.LogWarning($"Apply SnackMachineSnackBoughtEvent: Snack machine {evt.Id} slot at position {evt.Position} could not be found or snack pile is empty. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
+        snackMachine.TotalPrice = snackMachine.Slots.Where(s => s.SnackPile != null).Select(s => s.SnackPile!).Sum(sp => sp.TotalPrice);
         snackMachine.AmountInTransaction -= slot.SnackPile.Price;
         snackMachine.LastModifiedAt = evt.OperatedAt;
         snackMachine.LastModifiedBy = evt.OperatedBy;
@@ -341,6 +346,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
         snackMachine.AmountInTransaction = snackMachineInGrain.AmountInTransaction;
         snackMachine.Slots = snackMachineInGrain.Slots.Select(x => Map(x, snackMachineInGrain.Id)!).ToList();
         snackMachine.SlotsCount = snackMachineInGrain.Slots.Count;
+        snackMachine.TotalPrice = snackMachineInGrain.TotalPrice;
         snackMachine.CreatedAt = snackMachineInGrain.CreatedAt;
         snackMachine.LastModifiedAt = snackMachineInGrain.LastModifiedAt;
         snackMachine.DeletedAt = snackMachineInGrain.DeletedAt;

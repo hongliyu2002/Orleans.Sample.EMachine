@@ -18,6 +18,10 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
     [Id(3)]
     public IList<Slot> Slots { get; set; } = new List<Slot>();
 
+    public int SlotsCount => Slots.Count;
+
+    public decimal TotalPrice => Slots.Where(s => s.SnackPile != null).Select(s => s.SnackPile!).Sum(sp => sp.TotalPrice);
+
     public bool IsCreated => CreatedAt != null;
 
     /// <inheritdoc />
@@ -54,7 +58,7 @@ public sealed class SnackMachine : ISoftDeleteObject, IAuditedObject
         return $"SnackMachine with Id:'{Id}' MoneyInside:'{MoneyInside}' AmountInTransaction:{AmountInTransaction} Slots:'{string.Join(';', Slots.Select(slot => slot.ToString()))}'";
     }
 
-    #region Try Get
+    #region Get Slot
 
     public bool TryGetSlot(int position, out Slot? slot)
     {

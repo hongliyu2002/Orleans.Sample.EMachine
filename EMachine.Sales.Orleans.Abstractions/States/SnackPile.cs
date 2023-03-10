@@ -24,10 +24,12 @@ public sealed record SnackPile
     [Id(2)]
     public decimal Price { get; }
 
+    public decimal TotalPrice => Quantity * Price;
+
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"SnackPile with SnackId:'{SnackId}' Quantity:{Quantity} Price:{Price}";
+        return $"SnackPile with SnackId:'{SnackId}' Quantity:{Quantity} Price:{Price} TotalPrice:{TotalPrice}";
     }
 
     #region Create
