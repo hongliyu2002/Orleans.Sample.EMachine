@@ -77,7 +77,7 @@ public sealed record Money
 
     #endregion
 
-    #region Try Allocate
+    #region Allocate
 
     public bool TryAllocate(decimal amount, out Money moneyAllocated)
     {

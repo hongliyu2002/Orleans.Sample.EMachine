@@ -1,15 +1,18 @@
-﻿using EMachine.Sales.Orleans.Commands;
+﻿using EMachine.Sales.EntityFrameworkCore.Contexts;
+using EMachine.Sales.Orleans.Commands;
 using EMachine.Sales.Orleans.Tests.Fixtures;
+using Microsoft.Extensions.DependencyInjection;
 using Orleans.TestingHost;
 using Xunit;
 
 namespace EMachine.Sales.Orleans.Tests;
 
-public class SnackRepositoryFixture : IAsyncLifetime
+public class SnackMachineFixture : IAsyncLifetime
 {
     private readonly TestCluster _cluster;
+    private SalesDbContext _dbContext = null!;
 
-    public SnackRepositoryFixture(ClusterFixture fixture)
+    public SnackMachineFixture(ClusterFixture fixture)
     {
         _cluster = fixture.Cluster;
     }
@@ -17,6 +20,9 @@ public class SnackRepositoryFixture : IAsyncLifetime
     /// <inheritdoc />
     public async Task InitializeAsync()
     {
+        _dbContext = _cluster.ServiceProvider.GetRequiredService<SalesDbContext>();
+        await _dbContext.Database.EnsureDeletedAsync();
+        await _dbContext.Database.EnsureCreatedAsync();
         var grain = _cluster.GrainFactory.GetGrain<ISnackCrudRepoGrain>(Guid.Empty);
         await Task.WhenAll(grain.CreateAsync(new SnackCrudRepoCreateOneCommand(new Guid("ae9e8d38-8289-47fe-8084-99df2b894556"), "Cafe", Guid.NewGuid(), DateTimeOffset.UtcNow, "System")),
                            grain.CreateAsync(new SnackCrudRepoCreateOneCommand(new Guid("23697d49-75f1-4e3c-aa0d-5a98cf3ad122"), "Chocolate", Guid.NewGuid(), DateTimeOffset.UtcNow, "System")),
@@ -25,8 +31,9 @@ public class SnackRepositoryFixture : IAsyncLifetime
     }
 
     /// <inheritdoc />
-    public Task DisposeAsync()
+    public async Task DisposeAsync()
     {
-        return Task.CompletedTask;
+        await Task.Delay(1000);
+        // await _dbContext.DisposeAsync();
     }
 }

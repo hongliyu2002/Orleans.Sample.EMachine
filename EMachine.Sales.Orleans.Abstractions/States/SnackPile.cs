@@ -7,16 +7,16 @@ namespace EMachine.Sales.Orleans.States;
 [GenerateSerializer]
 public sealed record SnackPile
 {
-    public SnackPile(Snack snack, int quantity, decimal price)
+    public SnackPile(Guid snackId, int quantity, decimal price)
     {
-        Snack = Guard.Against.Null(snack, nameof(snack));
+        SnackId = Guard.Against.Empty(snackId, nameof(snackId));
         Quantity = Guard.Against.Negative(quantity, nameof(quantity));
         Price = Guard.Against.Negative(price, nameof(price));
-        Price = Guard.Against.InvalidInput(price, x => x % 0.01m > 0, nameof(price));
+        Price = Guard.Against.InvalidInput(price, x => x % 0.01m == 0, nameof(price));
     }
 
     [Id(0)]
-    public Snack Snack { get; }
+    public Guid SnackId { get; }
 
     [Id(1)]
     public int Quantity { get; }
@@ -27,24 +27,24 @@ public sealed record SnackPile
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"SnackPile with Snack:'{Snack}' Quantity:{Quantity} Price:{Price}";
+        return $"SnackPile with SnackId:'{SnackId}' Quantity:{Quantity} Price:{Price}";
     }
 
     #region Create
 
-    public static Result<SnackPile> Create(Snack snack, int quantity, decimal price)
+    public static Result<SnackPile> Create(Guid snackId, int quantity, decimal price)
     {
         return Result.Ok()
-                     .Verify(snack != null, "Snack cannot be null.")
+                     .Verify(snackId != Guid.Empty, "Snack id cannot be empty.")
                      .Verify(quantity >= 0, "Quantity cannot be negative.")
                      .Verify(price >= 0, "Price cannot be negative.")
                      .Verify(price % 0.01m == 0, "The decimal portion of the price cannot be less than 0.01.")
-                     .MapTry(() => new SnackPile(snack!, quantity, price));
+                     .MapTry(() => new SnackPile(snackId, quantity, price));
     }
 
     #endregion
 
-    #region Try Pop
+    #region Pop
 
     public bool TryPopOne(out SnackPile? snackPile)
     {
@@ -53,7 +53,7 @@ public sealed record SnackPile
             snackPile = null;
             return false;
         }
-        snackPile = new SnackPile(Snack, Quantity - 1, Price);
+        snackPile = new SnackPile(SnackId, Quantity - 1, Price);
         return true;
     }
 

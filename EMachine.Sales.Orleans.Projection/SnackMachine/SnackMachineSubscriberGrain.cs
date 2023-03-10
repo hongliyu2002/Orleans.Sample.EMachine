@@ -14,11 +14,11 @@ namespace EMachine.Sales.Orleans.Projection;
 [ImplicitStreamSubscription(Constants.SnackMachineNamespace)]
 public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
 {
-    private readonly ILogger<SnackSubscriberGrain> _logger;
+    private readonly ILogger<SnackMachineSubscriberGrain> _logger;
     private SalesDbContext _dbContext = null!;
 
-    public SnackMachineSubscriberGrain(IServiceScopeFactory scopeFactory, ILogger<SnackSubscriberGrain> logger)
-        : base(Constants.StreamProviderName, Constants.SnackNamespace, scopeFactory)
+    public SnackMachineSubscriberGrain(IServiceScopeFactory scopeFactory, ILogger<SnackMachineSubscriberGrain> logger)
+        : base(Constants.StreamProviderName, Constants.SnackMachineNamespace, scopeFactory)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
     }
@@ -69,7 +69,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
     /// <inheritdoc />
     protected override Task HandCompleteAsync()
     {
-        _logger.LogInformation($"Stream {Constants.SnackNamespace} is completed.");
+        _logger.LogInformation($"Stream {Constants.SnackMachineNamespace} is completed.");
         return Task.CompletedTask;
     }
 
@@ -111,7 +111,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
                    null => null,
                    _ => new SnackPile
                         {
-                            SnackId = snackPile.Snack.Id,
+                            SnackId = snackPile.SnackId,
                             Quantity = snackPile.Quantity,
                             Price = snackPile.Price
                         }
@@ -146,6 +146,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
                                Id = evt.Id,
                                MoneyInside = Map(evt.MoneyInside)!,
                                Slots = evt.Slots.Select(x => Map(x, evt.Id)!).ToList(),
+                               SlotsCount = evt.Slots.Count,
                                CreatedAt = evt.OperatedAt,
                                CreatedBy = evt.OperatedBy,
                                Version = evt.Version
@@ -339,6 +340,7 @@ public sealed class SnackMachineSubscriberGrain : EventSubscriberGrain
         snackMachine.MoneyInside = Map(snackMachineInGrain.MoneyInside)!;
         snackMachine.AmountInTransaction = snackMachineInGrain.AmountInTransaction;
         snackMachine.Slots = snackMachineInGrain.Slots.Select(x => Map(x, snackMachineInGrain.Id)!).ToList();
+        snackMachine.SlotsCount = snackMachineInGrain.Slots.Count;
         snackMachine.CreatedAt = snackMachineInGrain.CreatedAt;
         snackMachine.LastModifiedAt = snackMachineInGrain.LastModifiedAt;
         snackMachine.DeletedAt = snackMachineInGrain.DeletedAt;

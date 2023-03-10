@@ -17,6 +17,8 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackGrainTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.Projections.DummySnackProjectionTests.Should_Be_SN&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackRepoGainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackMachineGrainTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=89e8a25e_002D7918_002D4f8c_002D9f48_002Db66ca951c76a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Can_Initialize_And_Get_Snack" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -24,6 +26,8 @@
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackGrainTests.Can_Initialize_And_Get_Snack&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.Projections.SnackProjectionTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.Projections.DummySnackProjectionTests.Should_Get_IdGenerator&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackGrainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackRepoGainTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

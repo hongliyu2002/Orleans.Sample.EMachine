@@ -7,6 +7,7 @@ public sealed class ErrorCodes : Enumeration<ErrorCodes, int>
     public static readonly ErrorCodes SnackNotInitialized = new(101, nameof(SnackNotInitialized));
     public static readonly ErrorCodes SnackExists = new(102, nameof(SnackExists));
     public static readonly ErrorCodes SnackRemoved = new(103, nameof(SnackRemoved));
+    public static readonly ErrorCodes SnackNameTooLong = new(104, nameof(SnackNameTooLong));
 
     public static readonly ErrorCodes SnackMachineNotInitialized = new(201, nameof(SnackMachineNotInitialized));
     public static readonly ErrorCodes SnackMachineExists = new(202, nameof(SnackMachineExists));

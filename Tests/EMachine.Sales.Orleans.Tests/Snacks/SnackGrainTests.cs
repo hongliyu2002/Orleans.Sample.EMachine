@@ -1,6 +1,8 @@
-﻿using EMachine.Sales.Orleans.Commands;
+﻿using EMachine.Sales.EntityFrameworkCore.Contexts;
+using EMachine.Sales.Orleans.Commands;
 using EMachine.Sales.Orleans.Tests.Fixtures;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Orleans.TestingHost;
 using Xunit;
 using Xunit.Abstractions;
@@ -8,15 +10,25 @@ using Xunit.Abstractions;
 namespace EMachine.Sales.Orleans.Tests;
 
 [Collection(SnackCollectionFixture.Name)]
-public class SnackGrainTests
+public class SnackGrainTests : IDisposable
 {
     private readonly TestCluster _cluster;
+    private readonly SalesDbContext _dbContext;
     private readonly ITestOutputHelper _output;
 
     public SnackGrainTests(ClusterFixture fixture, ITestOutputHelper output)
     {
         _output = output;
         _cluster = fixture.Cluster;
+        _dbContext = _cluster.ServiceProvider.GetRequiredService<SalesDbContext>();
+        // _dbContext.Database.EnsureDeleted();
+        _dbContext.Database.EnsureCreated();
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        _dbContext.Dispose();
     }
 
     [Fact]

@@ -21,7 +21,27 @@ public sealed class Money
 
     public decimal Amount { get; set; }
 
-    #region Try Allocate
+    #region Create
+
+    public static Money Create(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
+    {
+        var money = new Money
+                    {
+                        Yuan1 = yuan1,
+                        Yuan2 = yuan2,
+                        Yuan5 = yuan5,
+                        Yuan10 = yuan10,
+                        Yuan20 = yuan20,
+                        Yuan50 = yuan50,
+                        Yuan100 = yuan100
+                    };
+        money.Amount = CalculateAmount(money);
+        return money;
+    }
+
+    #endregion
+
+    #region Allocate
 
     public bool TryAllocate(decimal amount, out Money moneyAllocated)
     {
@@ -50,18 +70,7 @@ public sealed class Money
         amount -= yuan2 * 2m;
         var yuan1 = Math.Min((int)(amount / 1m), Yuan1);
         // amount -= yuan1 * 1m;
-        var money = new Money
-                    {
-                        Yuan1 = yuan1,
-                        Yuan2 = yuan2,
-                        Yuan5 = yuan5,
-                        Yuan10 = yuan10,
-                        Yuan20 = yuan20,
-                        Yuan50 = yuan50,
-                        Yuan100 = yuan100
-                    };
-        money.Amount = CalculateAmount(money);
-        return money;
+        return Create(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100);
     }
 
     #endregion
@@ -75,50 +84,17 @@ public sealed class Money
 
     public static Money operator +(Money money1, Money money2)
     {
-        var money = new Money
-                    {
-                        Yuan1 = money1.Yuan1 + money2.Yuan1,
-                        Yuan2 = money1.Yuan2 + money2.Yuan2,
-                        Yuan5 = money1.Yuan5 + money2.Yuan5,
-                        Yuan10 = money1.Yuan10 + money2.Yuan10,
-                        Yuan20 = money1.Yuan20 + money2.Yuan20,
-                        Yuan50 = money1.Yuan50 + money2.Yuan50,
-                        Yuan100 = money1.Yuan100 + money2.Yuan100
-                    };
-        money.Amount = CalculateAmount(money);
-        return money;
+        return Create(money1.Yuan1 + money2.Yuan1, money1.Yuan2 + money2.Yuan2, money1.Yuan5 + money2.Yuan5, money1.Yuan10 + money2.Yuan10, money1.Yuan20 + money2.Yuan20, money1.Yuan50 + money2.Yuan50, money1.Yuan100 + money2.Yuan100);
     }
 
     public static Money operator -(Money money1, Money money2)
     {
-        var money = new Money
-                    {
-                        Yuan1 = money1.Yuan1 - money2.Yuan1,
-                        Yuan2 = money1.Yuan2 - money2.Yuan2,
-                        Yuan5 = money1.Yuan5 - money2.Yuan5,
-                        Yuan10 = money1.Yuan10 - money2.Yuan10,
-                        Yuan20 = money1.Yuan20 - money2.Yuan20,
-                        Yuan50 = money1.Yuan50 - money2.Yuan50,
-                        Yuan100 = money1.Yuan100 - money2.Yuan100
-                    };
-        money.Amount = CalculateAmount(money);
-        return money;
+        return Create(money1.Yuan1 - money2.Yuan1, money1.Yuan2 - money2.Yuan2, money1.Yuan5 - money2.Yuan5, money1.Yuan10 - money2.Yuan10, money1.Yuan20 - money2.Yuan20, money1.Yuan50 - money2.Yuan50, money1.Yuan100 - money2.Yuan100);
     }
 
     public static Money operator *(Money money1, int multiplier)
     {
-        var money = new Money
-                    {
-                        Yuan1 = money1.Yuan1 * multiplier,
-                        Yuan2 = money1.Yuan2 * multiplier,
-                        Yuan5 = money1.Yuan5 * multiplier,
-                        Yuan10 = money1.Yuan10 * multiplier,
-                        Yuan20 = money1.Yuan20 * multiplier,
-                        Yuan50 = money1.Yuan50 * multiplier,
-                        Yuan100 = money1.Yuan100 * multiplier
-                    };
-        money.Amount = CalculateAmount(money);
-        return money;
+        return Create(money1.Yuan1 * multiplier, money1.Yuan2 * multiplier, money1.Yuan5 * multiplier, money1.Yuan10 * multiplier, money1.Yuan20 * multiplier, money1.Yuan50 * multiplier, money1.Yuan100 * multiplier);
     }
 
     #endregion

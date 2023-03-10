@@ -13,6 +13,8 @@ public sealed class SnackMachine
 
     public IList<Slot> Slots { get; set; } = new List<Slot>();
 
+    public int SlotsCount { get; set; }
+
     public DateTimeOffset? CreatedAt { get; set; }
 
     public DateTimeOffset? LastModifiedAt { get; set; }
@@ -26,6 +28,6 @@ public sealed class SnackMachine
     public string? DeletedBy { get; set; }
 
     public bool IsDeleted { get; set; }
-    
+
     public long Version { get; set; }
 }
