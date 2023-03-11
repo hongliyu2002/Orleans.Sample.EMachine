@@ -12,7 +12,7 @@ using Xunit.Abstractions;
 
 namespace EMachine.Sales.Orleans.Tests.Projections;
 
-[Collection(SnackProjectionCollectionFixture.Name)]
+[Collection(TestCollectionFixture.Name)]
 public class DummySnackProjectionTests
 {
     private readonly TestCluster _cluster;

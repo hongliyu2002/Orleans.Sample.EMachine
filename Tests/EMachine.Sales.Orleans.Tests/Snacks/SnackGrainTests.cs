@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 
 namespace EMachine.Sales.Orleans.Tests;
 
-[Collection(SnackCollectionFixture.Name)]
+[Collection(TestCollectionFixture.Name)]
 public class SnackGrainTests : IClassFixture<SnackFixture>
 {
     private readonly TestCluster _cluster;

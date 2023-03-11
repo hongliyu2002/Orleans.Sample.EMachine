@@ -1,12 +1,12 @@
-﻿using EMachine.Orleans.Shared;
-using EMachine.Sales.Orleans.States;
+﻿using EMachine.Sales.Orleans.States;
+using EMachine.Sales.Orleans.Tests.Fixtures;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace EMachine.Sales.Orleans.Tests;
 
-[Collection(MoneyCollectionFixture.Name)]
+[Collection(TestCollectionFixture.Name)]
 public class MoneyTests
 {
     private readonly ITestOutputHelper _output;
