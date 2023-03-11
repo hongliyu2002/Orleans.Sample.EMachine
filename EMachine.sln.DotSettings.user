@@ -5,6 +5,18 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming\7.1.0\lib\net7.0\Orleans.Streaming.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.entityframeworkcore.dynamiclinq\7.3.1\lib\net7.0\Microsoft.EntityFrameworkCore.DynamicLinq.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\system.linq.dynamic.core\1.3.1\lib\net7.0\System.Linq.Dynamic.Core.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.clustering.redis\7.1.0-beta1\lib\net7.0\Orleans.Clustering.Redis.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.clustering.azurestorage\7.1.0\lib\net7.0\Orleans.Clustering.AzureStorage.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.graindirectory.azurestorage\7.1.0\lib\net7.0\Orleans.GrainDirectory.AzureStorage.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.persistence.azurestorage\7.1.0\lib\net7.0\Orleans.Persistence.AzureStorage.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.reminders.azurestorage\7.1.0\lib\net7.0\Orleans.Reminders.AzureStorage.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming.azurestorage\7.1.0\lib\net7.0\Orleans.Streaming.AzureStorage.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.streaming.eventhubs\7.1.0\lib\net7.0\Orleans.Streaming.EventHubs.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.transactions.azurestorage\7.1.0\lib\net7.0\Orleans.Transactions.AzureStorage.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.graindirectory.redis\7.1.0-beta1\lib\net7.0\Orleans.GrainDirectory.Redis.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.persistence.redis\7.1.0-beta1\lib\net7.0\Orleans.Persistence.Redis.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.reminders.redis\7.1.0-beta1\lib\net7.0\Orleans.Reminders.Redis.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\stackexchange.redis\2.6.96\lib\net5.0\StackExchange.Redis.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=16f034ec_002Dc74d_002D4a56_002Db0cc_002D3db89fd48ea8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SalesModuleTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
@@ -24,6 +36,7 @@
     &lt;TestId&gt;xUnit::BEAFC322-4059-4000-970D-71746D195BE9::net7.0::EMachine.Sales.EntityFrameworkCore.Tests.SalesModuleTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
 	
 	
 	

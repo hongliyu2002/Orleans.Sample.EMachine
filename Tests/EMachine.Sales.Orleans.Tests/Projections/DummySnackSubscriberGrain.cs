@@ -1,5 +1,5 @@
-﻿// using EMachine.Orleans.Shared;
-// using EMachine.Orleans.Shared.Events;
+﻿// using EMachine.Orleans.Server.Shared;
+// using EMachine.Orleans.Server.Shared.Events;
 // using EMachine.Sales.Orleans.Events;
 // using Microsoft.Extensions.DependencyInjection;
 // using Microsoft.Extensions.Logging;

@@ -4,13 +4,15 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>EMachine.Domain.Shared</RootNamespace>
+        <RootNamespace>EMachine.Orleans.Shared</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FlakeId" Version="1.1.0" />
         <PackageReference Include="Fluxera.Enumeration" Version="7.1.1" />
         <PackageReference Include="Fluxera.Extensions.Hosting.Abstractions" Version="7.1.2" />
+        <PackageReference Include="Fluxera.Extensions.Hosting.Modules.Configuration" Version="7.1.4" />
+        <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.0" />
+        <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
         <PackageReference Include="Microsoft.Orleans.BroadcastChannel" Version="7.1.0" />
         <PackageReference Include="Microsoft.Orleans.EventSourcing" Version="7.1.0" />
         <PackageReference Include="Microsoft.Orleans.Reminders" Version="7.1.0" />

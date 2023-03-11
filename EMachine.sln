@@ -40,11 +40,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Orleans.Proj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Hosting", "EMachine.Sales.Hosting\EMachine.Sales.Hosting.csproj", "{A9A1B974-57F5-440D-9A57-A5987C4EA8B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans", "EMachine.Orleans\EMachine.Orleans.csproj", "{E1EDC8F7-B28C-46D3-9E5E-960E552E6F90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Server", "EMachine.Orleans.Server\EMachine.Orleans.Server.csproj", "{E1EDC8F7-B28C-46D3-9E5E-960E552E6F90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Providers.AdoNet", "EMachine.Orleans.Providers.AdoNet\EMachine.Orleans.Providers.AdoNet.csproj", "{A23E6E3C-6CEB-44FC-BE65-5A42AD2568EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Server.Providers.AdoNet", "EMachine.Orleans.Server.Providers.AdoNet\EMachine.Orleans.Server.Providers.AdoNet.csproj", "{A23E6E3C-6CEB-44FC-BE65-5A42AD2568EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Providers.Azure", "EMachine.Orleans.Providers.Azure\EMachine.Orleans.Providers.Azure.csproj", "{5CBF9BF2-6634-47CD-A795-98630C45CC8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Server.Providers.Azure", "EMachine.Orleans.Server.Providers.Azure\EMachine.Orleans.Server.Providers.Azure.csproj", "{5CBF9BF2-6634-47CD-A795-98630C45CC8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Client", "EMachine.Orleans.Client\EMachine.Orleans.Client.csproj", "{734B1E92-782B-46B4-9563-B15883D37F08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Server.Providers.Redis", "EMachine.Orleans.Server.Providers.Redis\EMachine.Orleans.Server.Providers.Redis.csproj", "{A82FD7CC-7D1D-4E0D-A93A-E349B597380D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Providers.Azure", "EMachine.Providers.Azure\EMachine.Providers.Azure.csproj", "{1A84D940-4D2A-4793-9D52-E3068BA153A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Providers.StackExchangeRedis", "EMachine.Providers.StackExchangeRedis\EMachine.Providers.StackExchangeRedis.csproj", "{5F684354-D974-49EC-922D-839011B92AF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +112,22 @@ Global
 		{5CBF9BF2-6634-47CD-A795-98630C45CC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CBF9BF2-6634-47CD-A795-98630C45CC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CBF9BF2-6634-47CD-A795-98630C45CC8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734B1E92-782B-46B4-9563-B15883D37F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734B1E92-782B-46B4-9563-B15883D37F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734B1E92-782B-46B4-9563-B15883D37F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734B1E92-782B-46B4-9563-B15883D37F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A82FD7CC-7D1D-4E0D-A93A-E349B597380D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A82FD7CC-7D1D-4E0D-A93A-E349B597380D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A82FD7CC-7D1D-4E0D-A93A-E349B597380D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A82FD7CC-7D1D-4E0D-A93A-E349B597380D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A84D940-4D2A-4793-9D52-E3068BA153A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A84D940-4D2A-4793-9D52-E3068BA153A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A84D940-4D2A-4793-9D52-E3068BA153A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A84D940-4D2A-4793-9D52-E3068BA153A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F684354-D974-49EC-922D-839011B92AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F684354-D974-49EC-922D-839011B92AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F684354-D974-49EC-922D-839011B92AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F684354-D974-49EC-922D-839011B92AF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A5CF66D3-3633-4CE8-A147-49434DC99F83} = {823B0948-3D76-4C0F-A0CF-35E7EC66FB87}
@@ -125,5 +149,9 @@ Global
 		{E1EDC8F7-B28C-46D3-9E5E-960E552E6F90} = {959D928E-D148-47DB-83C8-9D5966631859}
 		{A23E6E3C-6CEB-44FC-BE65-5A42AD2568EB} = {959D928E-D148-47DB-83C8-9D5966631859}
 		{5CBF9BF2-6634-47CD-A795-98630C45CC8D} = {959D928E-D148-47DB-83C8-9D5966631859}
+		{734B1E92-782B-46B4-9563-B15883D37F08} = {959D928E-D148-47DB-83C8-9D5966631859}
+		{A82FD7CC-7D1D-4E0D-A93A-E349B597380D} = {959D928E-D148-47DB-83C8-9D5966631859}
+		{1A84D940-4D2A-4793-9D52-E3068BA153A8} = {959D928E-D148-47DB-83C8-9D5966631859}
+		{5F684354-D974-49EC-922D-839011B92AF2} = {959D928E-D148-47DB-83C8-9D5966631859}
 	EndGlobalSection
 EndGlobal
