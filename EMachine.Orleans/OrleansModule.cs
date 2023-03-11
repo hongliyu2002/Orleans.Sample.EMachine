@@ -13,7 +13,7 @@ public class OrleansModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void PreConfigureServices(IServiceConfigurationContext context)
     {
-        context.Services.AddConfigureOptionsContributor<ClusterConfigureOptionsContributor>();
-        context.Services.AddConfigureOptionsContributor<EndpointConfigureOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureClusterOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureEndpointOptionsContributor>();
     }
 }

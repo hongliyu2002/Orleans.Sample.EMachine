@@ -25,6 +25,7 @@ public static class HostBuilderExtensions
     {
         return builder.UseOrleans((context, silo) =>
                                   {
+                                      silo.AddAdoNetGrainStorage("Test");
                                       configureAction.Invoke(context, silo);
                                   });
     }

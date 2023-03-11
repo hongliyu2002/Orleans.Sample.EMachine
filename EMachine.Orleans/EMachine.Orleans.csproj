@@ -29,4 +29,10 @@
         <ProjectReference Include="..\EMachine.Sales.Orleans.Abstractions\EMachine.Sales.Orleans.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Contributors\AdoNet" />
+      <Folder Include="Contributors\Azure" />
+      <Folder Include="Contributors\Redis" />
+    </ItemGroup>
+
 </Project>

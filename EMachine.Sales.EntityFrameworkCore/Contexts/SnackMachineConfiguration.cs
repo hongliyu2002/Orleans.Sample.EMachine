@@ -22,6 +22,7 @@ public sealed class SnackMachineEntityConfiguration : IEntityTypeConfiguration<S
         builder.Property(x => x.CreatedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
+        builder.Property(x => x.ETag).IsConcurrencyToken();
         _callback?.Invoke(builder);
     }
 }

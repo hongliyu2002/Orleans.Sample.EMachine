@@ -3,7 +3,7 @@ using Orleans.Configuration;
 
 namespace EMachine.Orleans.Contributors;
 
-internal sealed class EndpointConfigureOptionsContributor : ConfigureOptionsContributorBase<EndpointOptions>
+internal sealed class ConfigureEndpointOptionsContributor : ConfigureOptionsContributorBase<EndpointOptions>
 {
     /// <inheritdoc />
     public override string SectionName => "Orleans:Endpoint";

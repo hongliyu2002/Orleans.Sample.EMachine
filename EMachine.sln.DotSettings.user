@@ -6,7 +6,14 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.entityframeworkcore.dynamiclinq\7.3.1\lib\net7.0\Microsoft.EntityFrameworkCore.DynamicLinq.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\system.linq.dynamic.core\1.3.1\lib\net7.0\System.Linq.Dynamic.Core.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a0b6e506_002Ddb7e_002D4fb5_002D815e_002D0a97a87b0d3a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SnackQueryRepoGrainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=16f034ec_002Dc74d_002D4a56_002Db0cc_002D3db89fd48ea8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SalesModuleTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::BEAFC322-4059-4000-970D-71746D195BE9::net7.0::EMachine.Sales.EntityFrameworkCore.Tests.SalesModuleTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackQueryRepoGrainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackGrainTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a0b6e506_002Ddb7e_002D4fb5_002D815e_002D0a97a87b0d3a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="SnackQueryRepoGrainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackQueryRepoGrainTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
@@ -14,6 +21,7 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d9f5d933_002Dd7a0_002D4746_002Da9e7_002D64974a667aff/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="SnackRepoGainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackQueryRepoGrainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::BEAFC322-4059-4000-970D-71746D195BE9::net7.0::EMachine.Sales.EntityFrameworkCore.Tests.SalesModuleTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

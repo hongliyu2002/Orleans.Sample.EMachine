@@ -21,18 +21,20 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         _output = output;
         StartApplication();
         _dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
-        // _dbContext.Database.EnsureDeleted();
+        _dbContext.Database.EnsureDeleted();
         _dbContext.Database.EnsureCreated();
     }
 
     /// <inheritdoc />
     public void Dispose()
     {
+        Thread.Sleep(2000);
+        _dbContext.Dispose();
         StopApplication();
     }
 
     [Fact]
-    public async Task Should_Add_SnackEntity()
+    public async Task Should_Add_Snack()
     {
         var id = Guid.NewGuid();
         var snack = new Snack
@@ -47,11 +49,60 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         snack.Id.Should().Be(id);
         var snackGet = await _dbContext.Snacks.FindAsync(id);
         snackGet.Should().NotBeNull();
-        _output.WriteLine(snackGet!.ToString());
+        _output.WriteLine(snackGet?.ToString());
+    }
+    
+    [Fact]
+    public async Task Should_Update_Snack()
+    {
+        var snack = await _dbContext.Snacks.FirstOrDefaultAsync();
+        if (snack != null)
+        {
+            snack.Name = "Coke";
+            snack.ETag = Guid.NewGuid().ToByteArray();
+            var success = await _dbContext.SaveChangesAsync();
+            success.Should().BeGreaterThan(0);
+            _output.WriteLine(snack.ToString());
+        }
+    }
+    
+        
+    [Fact]
+    public async Task Should_Add_And_Update_Snack()
+    {
+        var id = Guid.NewGuid();
+        var snack = new Snack
+                    {
+                        Id = id,
+                        Name = "Cafe",
+                        CreatedAt = DateTimeOffset.UtcNow,
+                        CreatedBy = "System"
+                    };
+        await _dbContext.Snacks.AddAsync(snack);
+        await _dbContext.SaveChangesAsync();
+        snack.Id.Should().Be(id);
+        var snackForUpdate = await _dbContext.Snacks.FindAsync(id);
+        snackForUpdate.Should().NotBeNull();
+        if (snackForUpdate != null)
+        {
+            snackForUpdate.Name = "Coke";
+            snackForUpdate.ETag = Guid.NewGuid().ToByteArray();
+            var success = await _dbContext.SaveChangesAsync();
+            success.Should().BeGreaterThan(0);
+            _output.WriteLine(snackForUpdate.ToString());
+        }
+        if (snackForUpdate != null)
+        {
+            snackForUpdate.Name = "Coke";
+            snackForUpdate.ETag = Guid.NewGuid().ToByteArray();
+            var success = await _dbContext.SaveChangesAsync();
+            success.Should().BeGreaterThan(0);
+            _output.WriteLine(snackForUpdate.ToString());
+        }
     }
 
     [Fact]
-    public async Task Should_Add_SnackMachineEntity()
+    public async Task Should_Add_SnackMachine()
     {
         var id = Guid.NewGuid();
         var snackMachine = new SnackMachine

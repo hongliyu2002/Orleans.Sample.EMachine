@@ -70,98 +70,146 @@ public sealed class SnackSubscriberGrain : EventSubscriberGrain
 
     private async Task<bool> ApplyEventAsync(SnackInitializedEvent evt, CancellationToken cancellationToken = default)
     {
-        var snack = await _dbContext.Snacks.FindAsync(evt.Id);
-        if (snack == null)
+        try
         {
-            snack = new Snack
-                    {
-                        Id = evt.Id,
-                        Name = evt.Name,
-                        CreatedAt = evt.OperatedAt,
-                        CreatedBy = evt.OperatedBy,
-                        Version = evt.Version
-                    };
-            await _dbContext.Snacks.AddAsync(snack, cancellationToken);
+            var snack = await _dbContext.Snacks.FindAsync(evt.Id);
+            if (snack == null)
+            {
+                snack = new Snack
+                        {
+                            Id = evt.Id,
+                            Name = evt.Name,
+                            CreatedAt = evt.OperatedAt,
+                            CreatedBy = evt.OperatedBy,
+                            Version = evt.Version
+                        };
+                await _dbContext.Snacks.AddAsync(snack, cancellationToken);
+            }
+            if (_dbContext.Entry(snack).State != EntityState.Added)
+            {
+                _logger.LogWarning($"Apply SnackInitializedEvent: Snack {evt.Id} is already in the database. Try to execute full update...");
+                return await ApplyFullUpdateAsync(evt, cancellationToken);
+            }
+            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
         }
-        if (_dbContext.Entry(snack).State != EntityState.Added)
+        catch (Exception ex)
         {
-            _logger.LogWarning($"Apply SnackInitializedEvent: Snack {evt.Id} is already in the database. Try to execute full update...");
+            _logger.LogError(ex, "Apply SnackInitializedEvent: Exception is occurred when try to write data to the database. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
-        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
     private async Task<bool> ApplyEventAsync(SnackRemovedEvent evt, CancellationToken cancellationToken = default)
     {
-        var snack = await _dbContext.Snacks.FindAsync(evt.Id);
-        if (snack == null)
+        try
         {
-            _logger.LogWarning($"Apply SnackRemovedEvent: Snack {evt.Id} does not exist in the database. Try to execute full update...");
+            var snack = await _dbContext.Snacks.FindAsync(evt.Id);
+            if (snack == null)
+            {
+                _logger.LogWarning($"Apply SnackRemovedEvent: Snack {evt.Id} does not exist in the database. Try to execute full update...");
+                return await ApplyFullUpdateAsync(evt, cancellationToken);
+            }
+            if (snack.Version != evt.Version - 1)
+            {
+                _logger.LogWarning($"Apply SnackRemovedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
+                return await ApplyFullUpdateAsync(evt, cancellationToken);
+            }
+            snack.DeletedAt = evt.OperatedAt;
+            snack.DeletedBy = evt.OperatedBy;
+            snack.IsDeleted = true;
+            snack.Version = evt.Version;
+            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Apply SnackRemovedEvent: Exception is occurred when try to write data to the database. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
-        if (snack.Version != evt.Version - 1)
-        {
-            _logger.LogWarning($"Apply SnackRemovedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
-            return await ApplyFullUpdateAsync(evt, cancellationToken);
-        }
-        snack.DeletedAt = evt.OperatedAt;
-        snack.DeletedBy = evt.OperatedBy;
-        snack.IsDeleted = true;
-        snack.Version = evt.Version;
-        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
     private async Task<bool> ApplyEventAsync(SnackNameChangedEvent evt, CancellationToken cancellationToken = default)
     {
-        var snack = await _dbContext.Snacks.FindAsync(evt.Id);
-        if (snack == null)
+        try
         {
-            _logger.LogWarning($"Apply SnackNameChangedEvent: Snack {evt.Id} does not exist in the database. Try to execute full update...");
+            var snack = await _dbContext.Snacks.FindAsync(evt.Id);
+            if (snack == null)
+            {
+                _logger.LogWarning($"Apply SnackNameChangedEvent: Snack {evt.Id} does not exist in the database. Try to execute full update...");
+                return await ApplyFullUpdateAsync(evt, cancellationToken);
+            }
+            if (snack.Version != evt.Version - 1)
+            {
+                _logger.LogWarning($"Apply SnackNameChangedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
+                return await ApplyFullUpdateAsync(evt, cancellationToken);
+            }
+            snack.Name = evt.Name;
+            snack.LastModifiedAt = evt.OperatedAt;
+            snack.LastModifiedBy = evt.OperatedBy;
+            snack.Version = evt.Version;
+            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Apply SnackNameChangedEvent: Exception is occurred when try to write data to the database. Try to execute full update...");
             return await ApplyFullUpdateAsync(evt, cancellationToken);
         }
-        if (snack.Version != evt.Version - 1)
-        {
-            _logger.LogWarning($"Apply SnackNameChangedEvent: Snack {evt.Id} version {snack.Version}) in the database should be {evt.Version - 1}. Try to execute full update...");
-            return await ApplyFullUpdateAsync(evt, cancellationToken);
-        }
-        snack.Name = evt.Name;
-        snack.LastModifiedAt = evt.OperatedAt;
-        snack.LastModifiedBy = evt.OperatedBy;
-        snack.Version = evt.Version;
-        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
     private async Task<bool> ApplyFullUpdateAsync(SnackEvent evt, CancellationToken cancellationToken = default)
     {
-        var snackGrain = GrainFactory.GetGrain<ISnackGrain>(evt.Id);
-        var snackInGrain = (await snackGrain.GetAsync()).ValueOrDefault;
-        var snackVersion = (await snackGrain.GetVersionAsync()).ValueOrDefault;
-        var snack = await _dbContext.Snacks.FindAsync(evt.Id);
-        if (snackInGrain == null)
+        var attempts = 0;
+        bool retryNeeded;
+        do
         {
-            if (snack == null)
+            try
             {
-                return true;
+                var snackGrain = GrainFactory.GetGrain<ISnackGrain>(evt.Id);
+                var snackInGrain = (await snackGrain.GetAsync()).ValueOrDefault;
+                var snackVersion = (await snackGrain.GetVersionAsync()).ValueOrDefault;
+                var snack = await _dbContext.Snacks.FindAsync(evt.Id);
+                if (snackInGrain == null)
+                {
+                    if (snack == null)
+                    {
+                        return true;
+                    }
+                    _dbContext.Remove(snack);
+                    return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+                }
+                if (snack == null)
+                {
+                    snack = new Snack();
+                    await _dbContext.Snacks.AddAsync(snack, cancellationToken);
+                }
+                snack.Id = snackInGrain.Id;
+                snack.Name = snackInGrain.Name;
+                snack.CreatedAt = snackInGrain.CreatedAt;
+                snack.LastModifiedAt = snackInGrain.LastModifiedAt;
+                snack.DeletedAt = snackInGrain.DeletedAt;
+                snack.CreatedBy = snackInGrain.CreatedBy;
+                snack.LastModifiedBy = snackInGrain.LastModifiedBy;
+                snack.DeletedBy = snackInGrain.DeletedBy;
+                snack.IsDeleted = snackInGrain.IsDeleted;
+                snack.Version = snackVersion;
+                return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
             }
-            _dbContext.Remove(snack);
-            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+            catch (DbUpdateConcurrencyException)
+            {
+                retryNeeded = ++attempts <= 3;
+                if (retryNeeded)
+                {
+                    _logger.LogWarning($"Apply FullUpdate: DbUpdateConcurrencyException is occurred when try to write data to the database. Retrying {attempts}...");
+                    await Task.Delay(TimeSpan.FromSeconds(Math.Pow(1.5, attempts)), cancellationToken);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Apply FullUpdate: Exception is occurred when try to write data to the database.");
+                retryNeeded = false;
+            }
         }
-        if (snack == null)
-        {
-            snack = new Snack();
-            await _dbContext.Snacks.AddAsync(snack, cancellationToken);
-        }
-        snack.Id = snackInGrain.Id;
-        snack.Name = snackInGrain.Name;
-        snack.CreatedAt = snackInGrain.CreatedAt;
-        snack.LastModifiedAt = snackInGrain.LastModifiedAt;
-        snack.DeletedAt = snackInGrain.DeletedAt;
-        snack.CreatedBy = snackInGrain.CreatedBy;
-        snack.LastModifiedBy = snackInGrain.LastModifiedBy;
-        snack.DeletedBy = snackInGrain.DeletedBy;
-        snack.IsDeleted = snackInGrain.IsDeleted;
-        snack.Version = snackVersion;
-        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        while (retryNeeded);
+        return false;
     }
 
     // private async Task<bool> ApplyEventWithRetryAndFallbackAsync(SnackEvent evt, StreamSequenceToken seq, Func<SnackEvent, CancellationToken, Task<bool>> applyEvent, CancellationToken cancellationToken = default)
