@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using EMachine.Orleans;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules.AspNetCore.HealthChecks;
 using Fluxera.Extensions.Hosting.Modules.Serilog;
@@ -49,6 +50,7 @@ internal sealed class SalesApplicationHost : WebApplicationHost<SalesHostingModu
                                   {
                                       loggerConfig.ReadFrom.Configuration(context.Configuration);
                                   });
+        builder.AddOrleans();
     }
 
     /// <inheritdoc />

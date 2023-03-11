@@ -1,10 +1,9 @@
 ﻿using EMachine.Sales.Orleans.Events;
-using Fluxera.Extensions.Hosting.Modules.Domain.Shared.Model;
 
 namespace EMachine.Sales.Orleans.States;
 
 [GenerateSerializer]
-public sealed class Snack : ISoftDeleteObject, IAuditedObject
+public sealed class Snack
 {
     [Id(0)]
     public Guid Id { get; set; }
@@ -14,35 +13,27 @@ public sealed class Snack : ISoftDeleteObject, IAuditedObject
 
     public bool IsCreated => CreatedAt != null;
 
-    /// <inheritdoc />
     [Id(2)]
     public DateTimeOffset? CreatedAt { get; set; }
 
-    /// <inheritdoc />
     [Id(3)]
     public DateTimeOffset? LastModifiedAt { get; set; }
 
-    /// <inheritdoc />
     [Id(4)]
     public DateTimeOffset? DeletedAt { get; set; }
 
-    /// <inheritdoc />
     [Id(5)]
     public string CreatedBy { get; set; } = string.Empty;
 
-    /// <inheritdoc />
     [Id(6)]
     public string LastModifiedBy { get; set; } = string.Empty;
 
-    /// <inheritdoc />
     [Id(7)]
     public string DeletedBy { get; set; } = string.Empty;
 
-    /// <inheritdoc />
     [Id(8)]
     public bool IsDeleted { get; set; }
 
-    /// <inheritdoc />
     public override string ToString()
     {
         return $"Snack with Id:{Id} Name:'{Name}'";

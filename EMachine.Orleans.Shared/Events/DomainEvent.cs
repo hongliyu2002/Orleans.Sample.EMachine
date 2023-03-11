@@ -1,8 +1,5 @@
-﻿using Fluxera.Entity.DomainEvents;
-
-namespace EMachine.Orleans.Shared.Events;
+﻿namespace EMachine.Orleans.Shared.Events;
 
 [Immutable]
 [GenerateSerializer]
-public abstract record DomainEvent(Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy, int Version) 
-    : IDomainEvent, ITraceable;
+public abstract record DomainEvent(Guid TraceId, DateTimeOffset OperatedAt, string OperatedBy, int Version) : ITraceable;
