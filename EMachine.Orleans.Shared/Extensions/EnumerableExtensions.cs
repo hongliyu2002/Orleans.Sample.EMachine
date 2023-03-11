@@ -19,6 +19,6 @@ public static class EnumerableExtensions
 
     public static string ToSortStrinng(this IEnumerable<KeyValuePair<string, bool>> sorts)
     {
-        return string.Join(',', sorts.Select(x => $"{x.Key}{(x.Value ? "" : " DESC")}"));
+        return string.Join(',', sorts.Select(x => $"{x.Key}{(x.Value ? " DESC" : "")}"));
     }
 }

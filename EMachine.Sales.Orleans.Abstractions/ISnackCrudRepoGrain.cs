@@ -8,12 +8,12 @@ namespace EMachine.Sales.Orleans;
 public interface ISnackCrudRepoGrain : IGrainWithGuidKey
 {
     [AlwaysInterleave]
-    Task<Result<ISnackGrain>> GetAsync(SnackCrudRepoGetOneCommand command);
+    Task<Result<ISnackGrain>> GetAsync(SnackRepoGetCommand command);
 
     [AlwaysInterleave]
-    Task<Result<ImmutableList<ISnackGrain>>> GetMultipleAsync(SnackCrudRepoGetManyCommand command);
+    Task<Result<ImmutableList<ISnackGrain>>> GetMultipleAsync(SnackRepoGetManyCommand command);
 
-    Task<Result<bool>> CreateAsync(SnackCrudRepoCreateOneCommand cmd);
+    Task<Result<bool>> CreateAsync(SnackRepoCreateCommand cmd);
 
-    Task<Result<bool>> DeleteAsync(SnackCrudRepoDeleteOneCommand cmd);
+    Task<Result<bool>> DeleteAsync(SnackRepoDeleteCommand cmd);
 }

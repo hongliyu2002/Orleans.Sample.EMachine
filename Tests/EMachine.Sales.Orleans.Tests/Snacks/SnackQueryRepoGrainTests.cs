@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 namespace EMachine.Sales.Orleans.Tests;
 
 [Collection(SnackRepoCollectionFixture.Name)]
-public class SnackQueryRepoGrainTests : IClassFixture<SnackCrudRepoFixture>
+public class SnackQueryRepoGrainTests : IClassFixture<SnackQueryRepoFixture>
 {
     private readonly TestCluster _cluster;
     private readonly ITestOutputHelper _output;
@@ -21,12 +21,32 @@ public class SnackQueryRepoGrainTests : IClassFixture<SnackCrudRepoFixture>
     }
 
     [Fact]
-    public async Task Can_List_Snacks()
+    public async Task Can_List_All_Snacks()
     {
         var repoGrain = _cluster.GrainFactory.GetGrain<ISnackQueryRepoGrain>(Guid.Empty);
-        var listPagedResult = await repoGrain.ListPagedAsync(new SnackPagedListQuery(0, 100, ImmutableArray<KeyValuePair<string, bool>>.Empty.Add(new KeyValuePair<string, bool>("Name", false)), Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        var listPagedResult = await repoGrain.ListPagedAsync(new SnackPagedListQuery(0, 100, ImmutableArray<KeyValuePair<string, bool>>.Empty.Add(new("Name", false)), Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         listPagedResult.IsSuccess.Should().BeTrue();
         listPagedResult.Value.Count.Should().Be(12);
         listPagedResult.Value.ForEach(view => _output.WriteLine(view.ToString()));
+    }
+    
+    [Fact]
+    public async Task Can_List_2nd_Page_Snacks()
+    {
+        var repoGrain = _cluster.GrainFactory.GetGrain<ISnackQueryRepoGrain>(Guid.Empty);
+        var listPagedResult = await repoGrain.ListPagedAsync(new SnackPagedListQuery(5, 5, ImmutableArray<KeyValuePair<string, bool>>.Empty.Add(new("Name", false)), Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        listPagedResult.IsSuccess.Should().BeTrue();
+        listPagedResult.Value.Count.Should().Be(5);
+        listPagedResult.Value.ForEach(view => _output.WriteLine(view.ToString()));
+    }
+    
+    [Fact]
+    public async Task Can_Search_Snacks()
+    {
+        var repoGrain = _cluster.GrainFactory.GetGrain<ISnackQueryRepoGrain>(Guid.Empty);
+        var searchPagedResult = await repoGrain.SearchPagedAsync(new SnackSearchPagedListQuery("er", 0, 100, ImmutableArray<KeyValuePair<string, bool>>.Empty.Add(new("Name", false)), Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        searchPagedResult.IsSuccess.Should().BeTrue();
+        searchPagedResult.Value.Count.Should().Be(3);
+        searchPagedResult.Value.ForEach(view => _output.WriteLine(view.ToString()));
     }
 }

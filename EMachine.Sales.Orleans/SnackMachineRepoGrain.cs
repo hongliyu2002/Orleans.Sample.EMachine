@@ -58,20 +58,20 @@ public class SnackMachineRepoGrain : RepoGrain, ISnackMachineRepoGrain
     #region CRUD Repo
 
     /// <inheritdoc />
-    public Task<Result<ISnackMachineGrain>> GetAsync(SnackMachineCrudRepoGetOneCommand cmd)
+    public Task<Result<ISnackMachineGrain>> GetAsync(SnackMachineRepoGetCommand cmd)
     {
         return Task.FromResult(Result.Ok(GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id)));
     }
 
     /// <inheritdoc />
-    public Task<Result<ImmutableList<ISnackMachineGrain>>> GetMultipleAsync(SnackMachineCrudRepoGetManyCommand cmd)
+    public Task<Result<ImmutableList<ISnackMachineGrain>>> GetMultipleAsync(SnackMachineRepoGetManyCommand cmd)
     {
         var snackMachines = cmd.Ids.Select(id => GrainFactory.GetGrain<ISnackMachineGrain>(id));
         return Task.FromResult(Result.Ok(snackMachines.ToImmutableList()));
     }
 
     /// <inheritdoc />
-    public Task<Result<bool>> CreateAsync(SnackMachineCrudRepoCreateOneCommand cmd)
+    public Task<Result<bool>> CreateAsync(SnackMachineRepoCreateCommand cmd)
     {
         return Result.Ok()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))
@@ -80,7 +80,7 @@ public class SnackMachineRepoGrain : RepoGrain, ISnackMachineRepoGrain
     }
 
     /// <inheritdoc />
-    public Task<Result<bool>> DeleteAsync(SnackMachineCrudRepoDeleteOneCommand cmd)
+    public Task<Result<bool>> DeleteAsync(SnackMachineRepoDeleteCommand cmd)
     {
         return Result.Ok<ISnackMachineGrain>()
                      .MapTry(() => GrainFactory.GetGrain<ISnackMachineGrain>(cmd.Id))

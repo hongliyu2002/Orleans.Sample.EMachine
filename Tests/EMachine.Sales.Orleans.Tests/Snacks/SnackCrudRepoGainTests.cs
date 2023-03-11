@@ -24,11 +24,11 @@ public class SnackCrudRepoGainTests : IClassFixture<SnackCrudRepoFixture>
     {
         var id = Guid.NewGuid();
         var repoGrain = _cluster.GrainFactory.GetGrain<ISnackCrudRepoGrain>(Guid.Empty);
-        var createResult = await repoGrain.CreateAsync(new SnackCrudRepoCreateOneCommand(id, "Apple", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        var createResult = await repoGrain.CreateAsync(new SnackRepoCreateCommand(id, "Apple", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         createResult.IsSuccess.Should().Be(true);
         _output.WriteLine(createResult.ToString());
         await Task.Delay(1000);
-        var getResult = await repoGrain.GetAsync(new SnackCrudRepoGetOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        var getResult = await repoGrain.GetAsync(new SnackRepoGetCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.GetPrimaryKey().Should().Be(id);
         var result = await getResult.Value.GetAsync();
@@ -44,14 +44,14 @@ public class SnackCrudRepoGainTests : IClassFixture<SnackCrudRepoFixture>
     {
         var id = Guid.NewGuid();
         var repoGrain = _cluster.GrainFactory.GetGrain<ISnackCrudRepoGrain>(Guid.Empty);
-        var createResult = await repoGrain.CreateAsync(new SnackCrudRepoCreateOneCommand(id, "Lemon", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        var createResult = await repoGrain.CreateAsync(new SnackRepoCreateCommand(id, "Lemon", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
         createResult.IsSuccess.Should().Be(true);
         _output.WriteLine(createResult.ToString());
-        var deleteResult = await repoGrain.DeleteAsync(new SnackCrudRepoDeleteOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        var deleteResult = await repoGrain.DeleteAsync(new SnackRepoDeleteCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         deleteResult.IsSuccess.Should().Be(true);
         _output.WriteLine(deleteResult.ToString());
         await Task.Delay(1000);
-        var getResult = await repoGrain.GetAsync(new SnackCrudRepoGetOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        var getResult = await repoGrain.GetAsync(new SnackRepoGetCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.GetPrimaryKey().Should().Be(id);
         var result = await getResult.Value.GetAsync();
@@ -68,7 +68,7 @@ public class SnackCrudRepoGainTests : IClassFixture<SnackCrudRepoFixture>
     {
         var id = new Guid("ae9e8d38-8289-47fe-8084-99df2b894556");
         var repoGrain = _cluster.GrainFactory.GetGrain<ISnackCrudRepoGrain>(Guid.Empty);
-        var getResult = await repoGrain.GetAsync(new SnackCrudRepoGetOneCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        var getResult = await repoGrain.GetAsync(new SnackRepoGetCommand(id, Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
         getResult.IsSuccess.Should().BeTrue();
         getResult.Value.GetPrimaryKey().Should().Be(id);
         var result = await getResult.Value.GetAsync();
@@ -83,7 +83,7 @@ public class SnackCrudRepoGainTests : IClassFixture<SnackCrudRepoFixture>
     public async Task Can_Get_Snacks()
     {
         var repoGrain = _cluster.GrainFactory.GetGrain<ISnackCrudRepoGrain>(Guid.Empty);
-        var getResult = await repoGrain.GetMultipleAsync(new SnackCrudRepoGetManyCommand(new[]
+        var getResult = await repoGrain.GetMultipleAsync(new SnackRepoGetManyCommand(new[]
                                                                                          {
                                                                                              new Guid("23697d49-75f1-4e3c-aa0d-5a98cf3ad122"),
                                                                                              new Guid("5b4103f4-7d90-4680-afc1-70dc48b96629"),
