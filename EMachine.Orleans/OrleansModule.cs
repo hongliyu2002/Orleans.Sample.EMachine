@@ -13,7 +13,14 @@ public class OrleansModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void PreConfigureServices(IServiceConfigurationContext context)
     {
+        context.Services.AddConfigureOptionsContributor<ConfigureActivationCountBasedPlacementOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureClusterMembershipOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureClusterOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureConsistentRingOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureEndpointOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureGrainCollectionOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureGrainVersioningOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureLoadSheddingOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureSiloOptionsContributor>();
     }
 }
