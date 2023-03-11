@@ -1,5 +1,4 @@
 ﻿using Fluxera.Extensions.Hosting.Modules.Configuration;
-using Orleans.Persistence;
 
 namespace EMachine.Orleans.Server.Providers.Redis.Contributors;
 
