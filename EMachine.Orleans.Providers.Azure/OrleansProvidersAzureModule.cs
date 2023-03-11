@@ -20,5 +20,9 @@ public class OrleansProvidersAzureModule : ConfigureServicesModule
         context.Services.AddConfigureOptionsContributor<ConfigureAzureTableStorageOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureAzureTableStreamCheckpointerOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureAzureTableTransactionalStateOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureEventDataGeneratorStreamOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureEventHubOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureEventHubReceiverOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureEventHubStreamCachePressureOptionsContributor>();
     }
 }

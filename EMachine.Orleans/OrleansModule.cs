@@ -16,7 +16,12 @@ public class OrleansModule : ConfigureServicesModule
         context.Services.AddConfigureOptionsContributor<ConfigureActivationCountBasedPlacementOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureClusterMembershipOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureClusterOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureConnectionOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureConsistentRingOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureCustomStorageLogConsistencyOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureDeploymentBasedQueueBalancerOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureDeploymentLoadPublisherOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureDevelopmentClusterMembershipOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureEndpointOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureGrainCollectionOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureGrainVersioningOptionsContributor>();
