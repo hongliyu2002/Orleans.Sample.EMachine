@@ -10,6 +10,8 @@
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.10.0" />
+        <PackageReference Include="Fluxera.Extensions.DependencyInjection" Version="7.1.1" />
+        <PackageReference Include="Fluxera.Extensions.Hosting.Modules.Caching.Redis" Version="7.1.4" />
         <PackageReference Include="Fluxera.Extensions.Hosting.Modules.Serilog" Version="7.1.4" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />

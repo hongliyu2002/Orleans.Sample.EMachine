@@ -1,0 +1,18 @@
+2023-03-12T22:57:41.3274908+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T22:58:33.2629969+08:00 [INF] (/BOSSHONG/1) Running host using "ConsoleLifetime".
+2023-03-12T22:58:33.2657718+08:00 [INF] (/BOSSHONG/1) Host configured in 52818 ms.
+2023-03-12T22:59:32.6076061+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:27:01.0379494+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:27:19.3756573+08:00 [INF] (/BOSSHONG/1) Running host using "ConsoleLifetime".
+2023-03-12T23:27:19.3785198+08:00 [INF] (/BOSSHONG/1) Host configured in 19075 ms.
+2023-03-12T23:30:00.5797998+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:32:20.7265780+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:36:41.1923831+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:42:24.9158308+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:49:32.4431737+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:49:55.8577789+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:50:32.5416932+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-12T23:54:37.7158989+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-13T00:01:47.7542867+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-13T00:07:33.2438629+08:00 [INF] (/BOSSHONG/1) Host configuration starting.
+2023-03-13T00:08:04.8605131+08:00 [INF] (/BOSSHONG/1) Host configuration starting.

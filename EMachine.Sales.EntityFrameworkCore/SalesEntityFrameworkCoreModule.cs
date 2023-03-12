@@ -1,4 +1,6 @@
 ﻿using EMachine.Sales.EntityFrameworkCore.Contributors;
+using Fluxera.Extensions.DataManagement;
+using Fluxera.Extensions.DependencyInjection;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
@@ -25,6 +27,8 @@ public class SalesEntityFrameworkCoreModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void PostConfigureServices(IServiceConfigurationContext context)
     {
-        context.Log("AddDbContextPoolForSales", services => services.AddDbContextPoolForSales());
+        var options = context.Services.GetOptions<EfCoreDatabaseOptions>();
+        options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
+        context.Log("AddDbContextPoolForSales", services => services.AddDbContextPoolForSales(options));
     }
 }

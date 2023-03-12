@@ -9,6 +9,14 @@ namespace EMachine.Sales.EntityFrameworkCore;
 public sealed class EfCoreDatabaseOptions
 {
     /// <summary>
+    ///     Creates a new instance of the <see cref="EfCoreDatabaseOptions" /> type.
+    /// </summary>
+    public EfCoreDatabaseOptions()
+    {
+        ConnectionStrings = new ConnectionStrings();
+    }
+
+    /// <summary>
     ///     Gets or sets the name of the connection string.
     /// </summary>
     public string ConnectionStringName { get; set; } = "SalesDatabase";
@@ -22,7 +30,7 @@ public sealed class EfCoreDatabaseOptions
     /// <summary>
     /// </summary>
     public string? MigrationsHistoryTable { get; set; }
-    
+
     /// <summary>
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -31,7 +39,7 @@ public sealed class EfCoreDatabaseOptions
     /// <summary>
     /// </summary>
     public int MaxRetry { get; set; } = 3;
-    
+
     /// <summary>
     /// </summary>
     public int MaxRetryDelay { get; set; } = 1000;
@@ -39,5 +47,5 @@ public sealed class EfCoreDatabaseOptions
     /// <summary>
     ///     Gets the connection strings.
     /// </summary>
-    public ConnectionStrings ConnectionStrings { get; internal set; } = new();
+    public ConnectionStrings ConnectionStrings { get; internal set; }
 }

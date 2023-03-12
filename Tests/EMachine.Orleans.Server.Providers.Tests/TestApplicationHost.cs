@@ -1,12 +1,7 @@
 ﻿using System.Reflection;
 using EMachine.Orleans.Server.Providers.Redis;
-using EMachine.Sales.EntityFrameworkCore;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules.AspNetCore.HealthChecks;
-using Fluxera.Extensions.Hosting.Modules.Configuration;
-using Fluxera.Extensions.Hosting.Modules.DataManagement;
-using Fluxera.Extensions.Hosting.Modules.HealthChecks;
-using Fluxera.Extensions.Hosting.Modules.OpenTelemetry;
 using Fluxera.Extensions.Hosting.Modules.Serilog;
 using Fluxera.Extensions.Hosting.Plugins;
 using JetBrains.Annotations;
@@ -63,11 +58,6 @@ internal sealed class TestApplicationHost : WebApplicationHost<TestHostingModule
         base.ConfigureApplicationPlugins(context);
         context.AddPlugin<SerilogModule>();
         context.AddPlugin<HealthChecksEndpointsModule>();
-        context.AddPlugin<HealthChecksModule>();
-        context.AddPlugin<DataManagementModule>();
-        context.AddPlugin<OpenTelemetryModule>();
-        context.AddPlugin<ConfigurationModule>();
         context.AddPlugin<OrleansServerProvidersRedisModule>();
-        // context.AddPlugin<SalesEntityFrameworkCoreModule>();
     }
 }

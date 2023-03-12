@@ -27,7 +27,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\EMachine.Orleans.Server.Providers.Redis\EMachine.Orleans.Server.Providers.Redis.csproj" />
-        <ProjectReference Include="..\..\EMachine.Sales.EntityFrameworkCore\EMachine.Sales.EntityFrameworkCore.csproj" />
     </ItemGroup>
 
     <ItemGroup>

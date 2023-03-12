@@ -17,6 +17,7 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.persistence.redis\7.1.0-beta1\lib\net7.0\Orleans.Persistence.Redis.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.reminders.redis\7.1.0-beta1\lib\net7.0\Orleans.Reminders.Redis.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\stackexchange.redis\2.6.96\lib\net5.0\StackExchange.Redis.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\fluxera.extensions.hosting.modules.datamanagement\7.1.4\lib\net7.0\Fluxera.Extensions.Hosting.Modules.DataManagement.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=16f034ec_002Dc74d_002D4a56_002Db0cc_002D3db89fd48ea8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SalesModuleTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
@@ -24,6 +25,7 @@
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackQueryRepoGrainTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackGrainTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::C1473A8F-BD43-4A04-80E0-A69C7BB52F52::net7.0::EMachine.Sales.Orleans.Tests.SnackCrudRepoGainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::BEAFC322-4059-4000-970D-71746D195BE9::net7.0::EMachine.Sales.EntityFrameworkCore.Tests.RedisCachingModuleTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
