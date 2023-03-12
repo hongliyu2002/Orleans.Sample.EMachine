@@ -6,7 +6,6 @@ namespace EMachine.Orleans.Server.Providers.Redis.Contributors;
 
 internal sealed class TracerProviderContributor : ITracerProviderContributor
 {
-
     /// <inheritdoc />
     public void Configure(TracerProviderBuilder builder, IServiceConfigurationContext context)
     {

@@ -17,14 +17,23 @@ public static class ServiceCollectionExtensions
                                            siloBuilder.UseAdoNetClustering(clustering =>
                                                                            {
                                                                                clustering.ConnectionString = connectionString;
-                                                                               clustering.Invariant = options.DatabaseProvider switch
-                                                                                                      {
-                                                                                                          AdoNetDatabaseProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                          AdoNetDatabaseProvider.PostgreSql => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                          AdoNetDatabaseProvider.MySql => AdoNetInvariants.InvariantNameMySql,
-                                                                                                          AdoNetDatabaseProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                          _ => throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), ProviderNotSupport)
-                                                                                                      };
+                                                                               switch (options.DatabaseProvider)
+                                                                               {
+                                                                                   case AdoNetDatabaseProvider.SqlServer:
+                                                                                       clustering.Invariant = AdoNetInvariants.InvariantNameSqlServer;
+                                                                                       break;
+                                                                                   case AdoNetDatabaseProvider.PostgreSql:
+                                                                                       clustering.Invariant = AdoNetInvariants.InvariantNamePostgreSql;
+                                                                                       break;
+                                                                                   case AdoNetDatabaseProvider.MySql:
+                                                                                       clustering.Invariant = AdoNetInvariants.InvariantNameMySql;
+                                                                                       break;
+                                                                                   case AdoNetDatabaseProvider.Oracle:
+                                                                                       clustering.Invariant = AdoNetInvariants.InvariantNameOracleDatabase;
+                                                                                       break;
+                                                                                   default:
+                                                                                       throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), ProviderNotSupport);
+                                                                               }
                                                                            });
                                        }
                                    });
@@ -39,14 +48,23 @@ public static class ServiceCollectionExtensions
                                            siloBuilder.UseAdoNetReminderService(reminder =>
                                                                                 {
                                                                                     reminder.ConnectionString = connectionString;
-                                                                                    reminder.Invariant = options.DatabaseProvider switch
-                                                                                                         {
-                                                                                                             AdoNetDatabaseProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                             AdoNetDatabaseProvider.PostgreSql => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                             AdoNetDatabaseProvider.MySql => AdoNetInvariants.InvariantNameMySql,
-                                                                                                             AdoNetDatabaseProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                             _ => throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), ProviderNotSupport)
-                                                                                                         };
+                                                                                    switch (options.DatabaseProvider)
+                                                                                    {
+                                                                                        case AdoNetDatabaseProvider.SqlServer:
+                                                                                            reminder.Invariant = AdoNetInvariants.InvariantNameSqlServer;
+                                                                                            break;
+                                                                                        case AdoNetDatabaseProvider.PostgreSql:
+                                                                                            reminder.Invariant = AdoNetInvariants.InvariantNamePostgreSql;
+                                                                                            break;
+                                                                                        case AdoNetDatabaseProvider.MySql:
+                                                                                            reminder.Invariant = AdoNetInvariants.InvariantNameMySql;
+                                                                                            break;
+                                                                                        case AdoNetDatabaseProvider.Oracle:
+                                                                                            reminder.Invariant = AdoNetInvariants.InvariantNameOracleDatabase;
+                                                                                            break;
+                                                                                        default:
+                                                                                            throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), ProviderNotSupport);
+                                                                                    }
                                                                                 });
                                        }
                                    });
@@ -63,14 +81,23 @@ public static class ServiceCollectionExtensions
                                                siloBuilder.AddAdoNetGrainStorage(connectionStringName, persistence =>
                                                                                                        {
                                                                                                            persistence.ConnectionString = connectionString;
-                                                                                                           persistence.Invariant = options.DatabaseProvider switch
-                                                                                                                                   {
-                                                                                                                                       AdoNetDatabaseProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                                                       AdoNetDatabaseProvider.PostgreSql => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                                                       AdoNetDatabaseProvider.MySql => AdoNetInvariants.InvariantNameMySql,
-                                                                                                                                       AdoNetDatabaseProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                                                       _ => throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), ProviderNotSupport)
-                                                                                                                                   };
+                                                                                                           switch (options.DatabaseProvider)
+                                                                                                           {
+                                                                                                               case AdoNetDatabaseProvider.SqlServer:
+                                                                                                                   persistence.Invariant = AdoNetInvariants.InvariantNameSqlServer;
+                                                                                                                   break;
+                                                                                                               case AdoNetDatabaseProvider.PostgreSql:
+                                                                                                                   persistence.Invariant = AdoNetInvariants.InvariantNamePostgreSql;
+                                                                                                                   break;
+                                                                                                               case AdoNetDatabaseProvider.MySql:
+                                                                                                                   persistence.Invariant = AdoNetInvariants.InvariantNameMySql;
+                                                                                                                   break;
+                                                                                                               case AdoNetDatabaseProvider.Oracle:
+                                                                                                                   persistence.Invariant = AdoNetInvariants.InvariantNameOracleDatabase;
+                                                                                                                   break;
+                                                                                                               default:
+                                                                                                                   throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), ProviderNotSupport);
+                                                                                                           }
                                                                                                        });
                                            }
                                        }
