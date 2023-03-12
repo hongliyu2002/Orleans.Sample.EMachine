@@ -22,6 +22,8 @@ public class SalesEntityFrameworkCoreModule : ConfigureServicesModule
     public override void PreConfigureServices(IServiceConfigurationContext context)
     {
         context.Services.AddConfigureOptionsContributor<ConfigureEfCoreDatabaseOptionsContributor>();
+        context.Services.AddHealthCheckContributor<HealthChecksContributor>();
+        context.Services.AddTracerProviderContributor<TracerProviderContributor>();
     }
 
     /// <inheritdoc />
