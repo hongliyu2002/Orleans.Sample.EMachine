@@ -7,6 +7,7 @@ using Fluxera.Extensions.Hosting.Plugins;
 using JetBrains.Annotations;
 using Serilog;
 using Serilog.Extensions.Logging;
+using StackExchange.Redis;
 
 namespace EMachine.Orleans.Server.Providers.Tests;
 
@@ -50,6 +51,7 @@ internal sealed class TestApplicationHost : WebApplicationHost<TestHostingModule
                                   {
                                       loggerConfig.ReadFrom.Configuration(context.Configuration);
                                   });
+        var options = ConfigurationOptions.Parse("localhost:6379");
     }
 
     /// <inheritdoc />

@@ -1,4 +1,6 @@
 ﻿using EMachine.Orleans.Server.Providers.Redis.Contributors;
+using Fluxera.Extensions.DataManagement;
+using Fluxera.Extensions.DependencyInjection;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
@@ -31,11 +33,20 @@ public class OrleansServerProvidersRedisModule : ConfigureServicesModule
     }
 
     /// <inheritdoc />
-    public override void PostConfigureServices(IServiceConfigurationContext context)
+    public override void ConfigureServices(IServiceConfigurationContext context)
     {
-        context.Log("AddOrleansRedisClustering", services => services.AddOrleansRedisClustering());
-        context.Log("AddOrleansRedisGrainDirectory", services => services.AddOrleansRedisGrainDirectory());
-        context.Log("AddOrleansRedisReminder", services => services.AddOrleansRedisReminder());
-        context.Log("AddOrleansRedisStorage", services => services.AddOrleansRedisStorage());
+        var connectionStrings = context.Services.GetObject<ConnectionStrings>();
+        var clusteringOptions = context.Services.GetOptions<RedisClusteringOptions>();
+        clusteringOptions.ConnectionStrings = connectionStrings;
+        context.Log("AddOrleansRedisClustering", services => services.AddOrleansRedisClustering(clusteringOptions));
+        var grainDirectoryOptions = context.Services.GetOptions<RedisGrainDirectoryOptions>();
+        grainDirectoryOptions.ConnectionStrings = connectionStrings;
+        context.Log("AddOrleansRedisGrainDirectory", services => services.AddOrleansRedisGrainDirectory(grainDirectoryOptions));
+        var reminderTableOptions = context.Services.GetOptions<RedisReminderTableOptions>();
+        reminderTableOptions.ConnectionStrings = connectionStrings;
+        context.Log("AddOrleansRedisReminder", services => services.AddOrleansRedisReminder(reminderTableOptions));
+        var storageOptions = context.Services.GetOptions<RedisStorageOptions>();
+        storageOptions.ConnectionStrings = connectionStrings;
+        context.Log("AddOrleansRedisStorage", services => services.AddOrleansRedisStorage(storageOptions));
     }
 }

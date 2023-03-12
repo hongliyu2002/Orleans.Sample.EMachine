@@ -14,11 +14,11 @@ internal sealed class RedisStorageHealthChecksContributor : IHealthChecksContrib
     /// <inheritdoc />
     public void ConfigureHealthChecks(IHealthChecksBuilder builder, IServiceConfigurationContext context)
     {
-        var redisOptions = context.Services.GetOptions<RedisStorageOptions>();
-        redisOptions.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
-        foreach (var connectionStringName in redisOptions.ConnectionStringNames)
+        var options = context.Services.GetOptions<RedisStorageOptions>();
+        options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
+        foreach (var connectionStringName in options.ConnectionStringNames)
         {
-            if (redisOptions.ConnectionStrings.TryGetValue(connectionStringName, out var connectionString))
+            if (options.ConnectionStrings.TryGetValue(connectionStringName, out var connectionString))
             {
                 builder.AddRedis(connectionString, $"RedisStorage-{connectionStringName}", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
             }

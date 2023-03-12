@@ -27,7 +27,7 @@ public class SalesEntityFrameworkCoreModule : ConfigureServicesModule
     }
 
     /// <inheritdoc />
-    public override void PostConfigureServices(IServiceConfigurationContext context)
+    public override void ConfigureServices(IServiceConfigurationContext context)
     {
         var options = context.Services.GetOptions<EfCoreDatabaseOptions>();
         options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();

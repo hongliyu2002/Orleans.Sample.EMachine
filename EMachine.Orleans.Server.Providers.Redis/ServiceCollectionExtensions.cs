@@ -1,7 +1,4 @@
-﻿using Fluxera.Extensions.DataManagement;
-using Fluxera.Extensions.DependencyInjection;
-using Fluxera.Extensions.Hosting.Modules.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 
@@ -9,56 +6,49 @@ namespace EMachine.Orleans.Server.Providers.Redis;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddOrleansRedisGrainDirectory(this IServiceCollection services)
+
+    public static IServiceCollection AddOrleansRedisClustering(this IServiceCollection services, RedisClusteringOptions options)
     {
         return services.AddOrleans(siloBuilder =>
                                    {
-                                       var redisOptions = services.GetOptions<RedisGrainDirectoryOptions>();
-                                       redisOptions.ConnectionStrings = services.GetObject<ConnectionStrings>();
-                                       if (redisOptions.ConnectionStrings.TryGetValue(redisOptions.ConnectionStringName, out var connectionString))
+                                       if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
                                        {
-                                           siloBuilder.UseRedisGrainDirectoryAsDefault(options => options.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                           siloBuilder.UseRedisClustering(clusteringOptions => clusteringOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
                                        }
                                    });
     }
 
-    public static IServiceCollection AddOrleansRedisClustering(this IServiceCollection services)
+    public static IServiceCollection AddOrleansRedisGrainDirectory(this IServiceCollection services, RedisGrainDirectoryOptions options)
     {
         return services.AddOrleans(siloBuilder =>
                                    {
-                                       var redisOptions = services.GetOptions<RedisClusteringOptions>();
-                                       redisOptions.ConnectionStrings = services.GetObject<ConnectionStrings>();
-                                       if (redisOptions.ConnectionStrings.TryGetValue(redisOptions.ConnectionStringName, out var connectionString))
+                                       if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
                                        {
-                                           siloBuilder.UseRedisClustering(options => options.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                           siloBuilder.UseRedisGrainDirectoryAsDefault(grainDirectoryOptions => grainDirectoryOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
                                        }
                                    });
     }
 
-    public static IServiceCollection AddOrleansRedisReminder(this IServiceCollection services)
+    public static IServiceCollection AddOrleansRedisReminder(this IServiceCollection services, RedisReminderTableOptions options)
     {
         return services.AddOrleans(siloBuilder =>
                                    {
-                                       var redisOptions = services.GetOptions<RedisReminderTableOptions>();
-                                       redisOptions.ConnectionStrings = services.GetObject<ConnectionStrings>();
-                                       if (redisOptions.ConnectionStrings.TryGetValue(redisOptions.ConnectionStringName, out var connectionString))
+                                       if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
                                        {
-                                           siloBuilder.UseRedisReminderService(options => options.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                           siloBuilder.UseRedisReminderService(reminderTableOptions => reminderTableOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
                                        }
                                    });
     }
 
-    public static IServiceCollection AddOrleansRedisStorage(this IServiceCollection services)
+    public static IServiceCollection AddOrleansRedisStorage(this IServiceCollection services, RedisStorageOptions options)
     {
         return services.AddOrleans(siloBuilder =>
                                    {
-                                       var redisOptions = services.GetOptions<RedisStorageOptions>();
-                                       redisOptions.ConnectionStrings = services.GetObject<ConnectionStrings>();
-                                       foreach (var connectionStringName in redisOptions.ConnectionStringNames)
+                                       foreach (var connectionStringName in options.ConnectionStringNames)
                                        {
-                                           if (redisOptions.ConnectionStrings.TryGetValue(connectionStringName, out var connectionString))
+                                           if (options.ConnectionStrings.TryGetValue(connectionStringName, out var connectionString))
                                            {
-                                               siloBuilder.AddRedisGrainStorage(connectionStringName, options => options.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                               siloBuilder.AddRedisGrainStorage(connectionStringName, storageOptions => storageOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
                                            }
                                        }
                                    });

@@ -14,9 +14,9 @@ internal sealed class RedisGrainDirectoryHealthChecksContributor : IHealthChecks
     /// <inheritdoc />
     public void ConfigureHealthChecks(IHealthChecksBuilder builder, IServiceConfigurationContext context)
     {
-        var redisOptions = context.Services.GetOptions<RedisGrainDirectoryOptions>();
-        redisOptions.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
-        if (redisOptions.ConnectionStrings.TryGetValue(redisOptions.ConnectionStringName, out var connectionString))
+        var options = context.Services.GetOptions<RedisGrainDirectoryOptions>();
+        options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
+        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
         {
             builder.AddRedis(connectionString, "RedisGrainDirectory", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
         }

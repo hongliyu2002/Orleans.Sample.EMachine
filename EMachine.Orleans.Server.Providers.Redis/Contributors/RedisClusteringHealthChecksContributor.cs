@@ -14,9 +14,9 @@ internal sealed class RedisClusteringHealthChecksContributor : IHealthChecksCont
     /// <inheritdoc />
     public void ConfigureHealthChecks(IHealthChecksBuilder builder, IServiceConfigurationContext context)
     {
-        var redisOptions = context.Services.GetOptions<RedisClusteringOptions>();
-        redisOptions.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
-        if (redisOptions.ConnectionStrings.TryGetValue(redisOptions.ConnectionStringName, out var connectionString))
+        var options = context.Services.GetOptions<RedisClusteringOptions>();
+        options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
+        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
         {
             builder.AddRedis(connectionString, "RedisClustering", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
         }
