@@ -7,7 +7,7 @@ public class RedisReminderTableOptions
     /// <summary>
     ///     Gets or sets the name of the connection string.
     /// </summary>
-    public string ConnectionStringName { get; set; } = "RedisGrainDirectory";
+    public string ConnectionStringName { get; set; } = "Reminder";
 
     /// <summary>
     ///     Gets the connection strings.

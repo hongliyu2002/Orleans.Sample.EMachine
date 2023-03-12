@@ -16,9 +16,6 @@ public class TestSiloConfigurator : ISiloConfigurator
                    .AddLogStorageBasedLogConsistencyProvider(Constants.LogConsistencyStoreName)
                    .AddStreaming()
                    .AddMemoryStreams(Constants.StreamProviderName);
-        siloBuilder.ConfigureServices(services =>
-                                      {
-                                          services.AddDbContextPool<SalesDbContext>(options => options.UseSqlite("Data Source=Sales.db"));
-                                      });
+        siloBuilder.Services.AddDbContextPool<SalesDbContext>(options => options.UseSqlite("Data Source=Sales.db"));
     }
 }

@@ -1,7 +1,10 @@
-﻿using Fluxera.Extensions.DataManagement;
+﻿using EMachine.Orleans.Server.Providers.Redis.Contributors;
+using Fluxera.Extensions.DataManagement;
 using Fluxera.Extensions.DependencyInjection;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 
@@ -14,6 +17,10 @@ public static class HostBuilderExtensions
     {
         return builder.UseOrleans((context, silo) =>
                                   {
+                                      silo.ConfigureServices(services =>
+                                                             {
+                                                                 services.ForEach(service => silo.Services.TryAdd(service));
+                                                             });
                                       var redisGrainDirectoryOptions = silo.Services.GetOptions<RedisGrainDirectoryOptions>();
                                       redisGrainDirectoryOptions.ConnectionStrings = silo.Services.GetObject<ConnectionStrings>();
                                       silo.UseRedisGrainDirectoryAsDefault(options => options.ConfigurationOptions = ConfigurationOptions.Parse(redisGrainDirectoryOptions.ConnectionStrings[redisGrainDirectoryOptions.ConnectionStringName]));
@@ -25,17 +32,26 @@ public static class HostBuilderExtensions
     {
         return builder.UseOrleans((context, silo) =>
                                   {
+                                      silo.ConfigureServices(services =>
+                                                             {
+                                                                 services.ForEach(service => silo.Services.TryAdd(service));
+                                                             });
                                       var redisClusteringOptions = silo.Services.GetOptions<RedisClusteringOptions>();
                                       redisClusteringOptions.ConnectionStrings = silo.Services.GetObject<ConnectionStrings>();
                                       silo.UseRedisClustering(options => options.ConfigurationOptions = ConfigurationOptions.Parse(redisClusteringOptions.ConnectionStrings[redisClusteringOptions.ConnectionStringName]));
                                       configureAction?.Invoke(context, silo);
+
                                   });
     }
 
-    public static IHostBuilder AddOrleansRedisGrainStorage(this IHostBuilder builder, Action<HostBuilderContext, ISiloBuilder>? configureAction = null)
+    public static IHostBuilder AddOrleansRedisStorage(this IHostBuilder builder, Action<HostBuilderContext, ISiloBuilder>? configureAction = null)
     {
         return builder.UseOrleans((context, silo) =>
                                   {
+                                      silo.ConfigureServices(services =>
+                                                             {
+                                                                 services.ForEach(service => silo.Services.TryAdd(service));
+                                                             });
                                       var redisStorageOptions = silo.Services.GetOptions<RedisStorageOptions>();
                                       redisStorageOptions.ConnectionStrings = silo.Services.GetObject<ConnectionStrings>();
                                       foreach (var connectionStringName in redisStorageOptions.ConnectionStringNames)
@@ -43,6 +59,7 @@ public static class HostBuilderExtensions
                                           silo.AddRedisGrainStorage(connectionStringName, options => options.ConfigurationOptions = ConfigurationOptions.Parse(redisStorageOptions.ConnectionStrings[connectionStringName]));
                                       }
                                       configureAction?.Invoke(context, silo);
+
                                   });
     }
 
@@ -50,6 +67,10 @@ public static class HostBuilderExtensions
     {
         return builder.UseOrleans((context, silo) =>
                                   {
+                                      silo.ConfigureServices(services =>
+                                                             {
+                                                                 services.ForEach(service => silo.Services.TryAdd(service));
+                                                             });
                                       var redisReminderTableOptions = silo.Services.GetOptions<RedisReminderTableOptions>();
                                       redisReminderTableOptions.ConnectionStrings = silo.Services.GetObject<ConnectionStrings>();
                                       silo.UseRedisReminderService(options => options.ConfigurationOptions = ConfigurationOptions.Parse(redisReminderTableOptions.ConnectionStrings[redisReminderTableOptions.ConnectionStringName]));

@@ -9,7 +9,7 @@ public sealed class RedisGrainDirectoryOptions
     /// <summary>
     ///     Gets or sets the name of the connection string.
     /// </summary>
-    public string ConnectionStringName { get; set; } = "RedisGrainDirectory";
+    public string ConnectionStringName { get; set; } = "GrainDirectory";
 
     /// <summary>
     ///     Gets the connection strings.
