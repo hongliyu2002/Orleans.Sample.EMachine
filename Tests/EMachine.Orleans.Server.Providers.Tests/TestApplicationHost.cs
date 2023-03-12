@@ -50,9 +50,6 @@ internal sealed class TestApplicationHost : WebApplicationHost<TestHostingModule
                                   {
                                       loggerConfig.ReadFrom.Configuration(context.Configuration);
                                   });
-        builder.AddOrleansRedisClustering();
-        builder.AddOrleansRedisReminder();
-        builder.AddOrleansRedisStorage();
     }
 
     /// <inheritdoc />

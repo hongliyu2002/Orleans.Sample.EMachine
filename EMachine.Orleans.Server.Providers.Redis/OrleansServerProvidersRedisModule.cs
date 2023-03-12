@@ -23,5 +23,19 @@ public class OrleansServerProvidersRedisModule : ConfigureServicesModule
         context.Services.AddConfigureOptionsContributor<ConfigureRedisGrainDirectoryOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureRedisReminderTableOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureRedisStorageOptionsContributor>();
+        context.Services.AddHealthCheckContributor<RedisClusteringHealthChecksContributor>();
+        context.Services.AddHealthCheckContributor<RedisGrainDirectoryHealthChecksContributor>();
+        context.Services.AddHealthCheckContributor<RedisReminderTableHealthChecksContributor>();
+        context.Services.AddHealthCheckContributor<RedisStorageHealthChecksContributor>();
+        context.Services.AddTracerProviderContributor<TracerProviderContributor>();
+    }
+
+    /// <inheritdoc />
+    public override void PostConfigureServices(IServiceConfigurationContext context)
+    {
+        context.Log("AddOrleansRedisClustering", services => services.AddOrleansRedisClustering());
+        context.Log("AddOrleansRedisGrainDirectory", services => services.AddOrleansRedisGrainDirectory());
+        context.Log("AddOrleansRedisReminder", services => services.AddOrleansRedisReminder());
+        context.Log("AddOrleansRedisStorage", services => services.AddOrleansRedisStorage());
     }
 }
