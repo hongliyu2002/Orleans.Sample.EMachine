@@ -1,28 +1,30 @@
-﻿using EMachine.Sales.EntityFrameworkCore.Contexts;
+﻿using EMachine.Sales.EntityFrameworkCore.Contributors;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
+using Fluxera.Extensions.Hosting.Modules.DataManagement;
+using Fluxera.Extensions.Hosting.Modules.HealthChecks;
+using Fluxera.Extensions.Hosting.Modules.OpenTelemetry;
 using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace EMachine.Sales.EntityFrameworkCore;
 
 [PublicAPI]
+[DependsOn<HealthChecksModule>]
+[DependsOn<DataManagementModule>]
+[DependsOn<OpenTelemetryModule>]
 [DependsOn<ConfigurationModule>]
 public class SalesEntityFrameworkCoreModule : ConfigureServicesModule
 {
     /// <inheritdoc />
-    public override void ConfigureServices(IServiceConfigurationContext context)
+    public override void PreConfigureServices(IServiceConfigurationContext context)
     {
-        context.Services.AddDbContextPool<SalesDbContext>(options =>
-                                                          {
-                                                              var connectionString = context.Configuration.GetConnectionString("SalesDB") ?? "Data Source=Sales.db";
-                                                              options.UseSqlite(connectionString, sqlite =>
-                                                                                                  {
-                                                                                                      sqlite.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                                                                                                  });
-                                                          });
+        context.Services.AddConfigureOptionsContributor<ConfigureEfCoreDatabaseOptionsContributor>();
+    }
+
+    /// <inheritdoc />
+    public override void PostConfigureServices(IServiceConfigurationContext context)
+    {
+        context.Log("AddDbContextPoolForSales", services => services.AddDbContextPoolForSales());
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
+using EMachine.Sales.EntityFrameworkCore.Contexts;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules;
 using Fluxera.Extensions.Hosting.Modules.AspNetCore;
 using Fluxera.Extensions.Hosting.Modules.AspNetCore.HttpApi;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Hosting;
 
 namespace EMachine.Orleans.Server.Providers.Tests;
 
@@ -28,5 +28,11 @@ public class TestHostingModule : ConfigureApplicationModule
         }
         context.UseRouting();
         context.UseEndpoints();
+        
+        var scopeFactory = context.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+        using var scope = scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<SalesDbContext>();
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
     }
 }

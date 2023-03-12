@@ -9,7 +9,7 @@ public sealed class RedisClusteringOptions
     /// <summary>
     ///     Gets or sets the name of the connection string.
     /// </summary>
-    public string ConnectionStringName { get; set; } = "Cluster";
+    public string ConnectionStringName { get; set; } = "RedisCluster";
 
     /// <summary>
     ///     Gets the connection strings.

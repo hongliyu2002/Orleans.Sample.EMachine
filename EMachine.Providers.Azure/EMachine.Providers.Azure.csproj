@@ -14,8 +14,10 @@
         <PackageReference Include="Azure.Storage.Blobs" Version="12.15.0" />
         <PackageReference Include="Azure.Storage.Queues" Version="12.13.0" />
         <PackageReference Include="Fluxera.Extensions.Hosting.Abstractions" Version="7.1.2" />
+        <PackageReference Include="Fluxera.Extensions.Hosting.Modules.Configuration" Version="7.1.4" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
         <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.0" />
-        <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
+        <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />        
     </ItemGroup>
 
     <ItemGroup>
