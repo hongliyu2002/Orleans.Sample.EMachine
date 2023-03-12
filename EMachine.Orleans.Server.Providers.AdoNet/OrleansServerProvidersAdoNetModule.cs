@@ -13,8 +13,8 @@ public class OrleansServerProvidersAdoNetModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void PreConfigureServices(IServiceConfigurationContext context)
     {
-        context.Services.AddConfigureOptionsContributor<ConfigureAdoNetClusteringSiloOptionsContributor>();
-        context.Services.AddConfigureOptionsContributor<ConfigureAdoNetGrainStorageOptionsContributor>();
-        context.Services.AddConfigureOptionsContributor<ConfigureAdoNetReminderTableOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureAdoNetClusteringOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureAdoNetPersistenceOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureAdoNetReminderOptionsContributor>();
     }
 }

@@ -15,18 +15,18 @@ public static class ServiceCollectionExtensions
                                                              {
                                                                  switch (options.DatabaseProvider)
                                                                  {
-                                                                     case EfDatabaseProvider.Sqlite:
+                                                                     case EfCoreDatabaseProvider.Sqlite:
                                                                          UseSqlite(dbContext, connectionString, options);
                                                                          break;
-                                                                     case EfDatabaseProvider.SqlServer:
+                                                                     case EfCoreDatabaseProvider.SqlServer:
                                                                          UseSqlServer(dbContext, connectionString, options);
                                                                          break;
-                                                                     case EfDatabaseProvider.PostgreSql:
+                                                                     case EfCoreDatabaseProvider.PostgreSql:
                                                                          break;
-                                                                     case EfDatabaseProvider.MySql:
+                                                                     case EfCoreDatabaseProvider.MySql:
                                                                          break;
                                                                      default:
-                                                                         throw new ArgumentOutOfRangeException();
+                                                                         throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), "Database provider does not support.");
                                                                  }
                                                              }
                                                          });

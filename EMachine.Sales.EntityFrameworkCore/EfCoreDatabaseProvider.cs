@@ -1,6 +1,6 @@
 ﻿namespace EMachine.Sales.EntityFrameworkCore;
 
-public enum EfDatabaseProvider
+public enum EfCoreDatabaseProvider
 {
     SqlServer,
     PostgreSql,

@@ -10,14 +10,15 @@ internal sealed class ConfigureRedisGrainDirectoryOptionsContributor : Configure
     /// <inheritdoc />
     public override string SectionName => "Orleans:Redis:GrainDirectory";
 
+    /// <inheritdoc />
     protected override void AdditionalConfigure(IServiceConfigurationContext context, RedisGrainDirectoryOptions createdOptions)
     {
         createdOptions.ConnectionStrings = context.Services.GetOptions<ConnectionStrings>();
         context.Log("Configure(RedisGrainDirectoryOptions)", services =>
                                                              {
-                                                                 services.Configure<RedisGrainDirectoryOptions>(options =>
+                                                                 services.Configure<RedisGrainDirectoryOptions>(grainDirectory =>
                                                                                                                 {
-                                                                                                                    options.ConnectionStrings = createdOptions.ConnectionStrings;
+                                                                                                                    grainDirectory.ConnectionStrings = createdOptions.ConnectionStrings;
                                                                                                                 });
                                                              });
     }

@@ -25,7 +25,7 @@ public sealed class EfCoreDatabaseOptions
     ///     Gets or sets the name and database provider type of the connection string.
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public EfDatabaseProvider DatabaseProvider { get; set; } = EfDatabaseProvider.SqlServer;
+    public EfCoreDatabaseProvider DatabaseProvider { get; set; } = EfCoreDatabaseProvider.SqlServer;
 
     /// <summary>
     /// </summary>

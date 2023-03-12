@@ -13,7 +13,10 @@ public static class ServiceCollectionExtensions
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
                                        {
-                                           siloBuilder.UseRedisClustering(clusteringOptions => clusteringOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                           siloBuilder.UseRedisClustering(clustering =>
+                                                                          {
+                                                                              clustering.ConfigurationOptions = ConfigurationOptions.Parse(connectionString);
+                                                                          });
                                        }
                                    });
     }
@@ -24,23 +27,29 @@ public static class ServiceCollectionExtensions
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
                                        {
-                                           siloBuilder.UseRedisGrainDirectoryAsDefault(grainDirectoryOptions => grainDirectoryOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                           siloBuilder.UseRedisGrainDirectoryAsDefault(grainDirectory =>
+                                                                                       {
+                                                                                           grainDirectory.ConfigurationOptions = ConfigurationOptions.Parse(connectionString);
+                                                                                       });
                                        }
                                    });
     }
 
-    public static IServiceCollection AddOrleansRedisReminder(this IServiceCollection services, RedisReminderTableOptions options)
+    public static IServiceCollection AddOrleansRedisReminder(this IServiceCollection services, RedisReminderOptions options)
     {
         return services.AddOrleans(siloBuilder =>
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
                                        {
-                                           siloBuilder.UseRedisReminderService(reminderTableOptions => reminderTableOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                           siloBuilder.UseRedisReminderService(reminder =>
+                                                                               {
+                                                                                   reminder.ConfigurationOptions = ConfigurationOptions.Parse(connectionString);
+                                                                               });
                                        }
                                    });
     }
 
-    public static IServiceCollection AddOrleansRedisStorage(this IServiceCollection services, RedisStorageOptions options)
+    public static IServiceCollection AddOrleansRedisPersistence(this IServiceCollection services, RedisPersistenceOptions options)
     {
         return services.AddOrleans(siloBuilder =>
                                    {
@@ -48,7 +57,10 @@ public static class ServiceCollectionExtensions
                                        {
                                            if (options.ConnectionStrings.TryGetValue(connectionStringName, out var connectionString))
                                            {
-                                               siloBuilder.AddRedisGrainStorage(connectionStringName, storageOptions => storageOptions.ConfigurationOptions = ConfigurationOptions.Parse(connectionString));
+                                               siloBuilder.AddRedisGrainStorage(connectionStringName, persistence =>
+                                                                                                      {
+                                                                                                          persistence.ConfigurationOptions = ConfigurationOptions.Parse(connectionString);
+                                                                                                      });
                                            }
                                        }
                                    });

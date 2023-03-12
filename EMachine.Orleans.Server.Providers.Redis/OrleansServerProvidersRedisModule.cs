@@ -23,12 +23,12 @@ public class OrleansServerProvidersRedisModule : ConfigureServicesModule
     {
         context.Services.AddConfigureOptionsContributor<ConfigureRedisClusteringOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureRedisGrainDirectoryOptionsContributor>();
-        context.Services.AddConfigureOptionsContributor<ConfigureRedisReminderTableOptionsContributor>();
-        context.Services.AddConfigureOptionsContributor<ConfigureRedisStorageOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureRedisReminderOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureRedisPersistenceOptionsContributor>();
         context.Services.AddHealthCheckContributor<RedisClusteringHealthChecksContributor>();
         context.Services.AddHealthCheckContributor<RedisGrainDirectoryHealthChecksContributor>();
-        context.Services.AddHealthCheckContributor<RedisReminderTableHealthChecksContributor>();
-        context.Services.AddHealthCheckContributor<RedisStorageHealthChecksContributor>();
+        context.Services.AddHealthCheckContributor<RedisReminderHealthChecksContributor>();
+        context.Services.AddHealthCheckContributor<RedisPersistenceHealthChecksContributor>();
         context.Services.AddTracerProviderContributor<TracerProviderContributor>();
     }
 
@@ -42,11 +42,11 @@ public class OrleansServerProvidersRedisModule : ConfigureServicesModule
         var grainDirectoryOptions = context.Services.GetOptions<RedisGrainDirectoryOptions>();
         grainDirectoryOptions.ConnectionStrings = connectionStrings;
         context.Log("AddOrleansRedisGrainDirectory", services => services.AddOrleansRedisGrainDirectory(grainDirectoryOptions));
-        var reminderTableOptions = context.Services.GetOptions<RedisReminderTableOptions>();
-        reminderTableOptions.ConnectionStrings = connectionStrings;
-        context.Log("AddOrleansRedisReminder", services => services.AddOrleansRedisReminder(reminderTableOptions));
-        var storageOptions = context.Services.GetOptions<RedisStorageOptions>();
-        storageOptions.ConnectionStrings = connectionStrings;
-        context.Log("AddOrleansRedisStorage", services => services.AddOrleansRedisStorage(storageOptions));
+        var reminderOptions = context.Services.GetOptions<RedisReminderOptions>();
+        reminderOptions.ConnectionStrings = connectionStrings;
+        context.Log("AddOrleansRedisReminder", services => services.AddOrleansRedisReminder(reminderOptions));
+        var persistenceOptions = context.Services.GetOptions<RedisPersistenceOptions>();
+        persistenceOptions.ConnectionStrings = connectionStrings;
+        context.Log("AddOrleansRedisPersistence", services => services.AddOrleansRedisPersistence(persistenceOptions));
     }
 }

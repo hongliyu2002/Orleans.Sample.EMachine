@@ -10,14 +10,15 @@ internal sealed class ConfigureRedisClusteringOptionsContributor : ConfigureOpti
     /// <inheritdoc />
     public override string SectionName => "Orleans:Redis:Clustering";
 
+    /// <inheritdoc />
     protected override void AdditionalConfigure(IServiceConfigurationContext context, RedisClusteringOptions createdOptions)
     {
         createdOptions.ConnectionStrings = context.Services.GetOptions<ConnectionStrings>();
         context.Log("Configure(RedisClusteringOptions)", services =>
                                                          {
-                                                             services.Configure<RedisClusteringOptions>(options =>
+                                                             services.Configure<RedisClusteringOptions>(clustering =>
                                                                                                         {
-                                                                                                            options.ConnectionStrings = createdOptions.ConnectionStrings;
+                                                                                                            clustering.ConnectionStrings = createdOptions.ConnectionStrings;
                                                                                                         });
                                                          });
     }

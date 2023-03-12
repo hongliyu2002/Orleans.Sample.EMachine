@@ -8,19 +8,19 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace EMachine.Orleans.Server.Providers.Redis.Contributors;
 
-internal sealed class RedisStorageHealthChecksContributor : IHealthChecksContributor
+internal sealed class RedisPersistenceHealthChecksContributor : IHealthChecksContributor
 {
 
     /// <inheritdoc />
     public void ConfigureHealthChecks(IHealthChecksBuilder builder, IServiceConfigurationContext context)
     {
-        var options = context.Services.GetOptions<RedisStorageOptions>();
+        var options = context.Services.GetOptions<RedisPersistenceOptions>();
         options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
         foreach (var connectionStringName in options.ConnectionStringNames)
         {
             if (options.ConnectionStrings.TryGetValue(connectionStringName, out var connectionString))
             {
-                builder.AddRedis(connectionString, $"RedisStorage-{connectionStringName}", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
+                builder.AddRedis(connectionString, $"RedisPersistence-{connectionStringName}", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
             }
         }
     }

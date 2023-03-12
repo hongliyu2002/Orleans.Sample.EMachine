@@ -16,6 +16,7 @@
         <PackageReference Include="Microsoft.Orleans.GrainDirectory.Redis" Version="7.1.0-beta1" />
         <PackageReference Include="Microsoft.Orleans.Persistence.Redis" Version="7.1.0-beta1" />
         <PackageReference Include="Microsoft.Orleans.Reminders.Redis" Version="7.1.0-beta1" />
+        <PackageReference Include="Microsoft.Orleans.Server" Version="7.1.0" />
         <PackageReference Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.0.0-rc9.8" />
     </ItemGroup>
 
