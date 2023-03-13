@@ -6,5 +6,5 @@ namespace EMachine.Orleans.Server.Contributors;
 internal sealed class ConfigureSchedulingOptionsContributor : ConfigureOptionsContributorBase<SchedulingOptions>
 {
     /// <inheritdoc />
-    public override string SectionName => "Orleans:Server:Runtime:Scheduling";
+    public override string SectionName => "Orleans:Server:Scheduling";
 }

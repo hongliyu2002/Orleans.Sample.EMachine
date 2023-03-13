@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Providers.Azure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Server.Providers.Tests", "Tests\EMachine.Orleans.Server.Providers.Tests\EMachine.Orleans.Server.Providers.Tests.csproj", "{1541AAF2-3C27-4504-9CBA-B2B9835125A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Orleans.Client.Providers.AdoNet", "EMachine.Orleans.Client.Providers.AdoNet\EMachine.Orleans.Client.Providers.AdoNet.csproj", "{9677F629-B29A-4050-8715-1182E8477664}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +130,10 @@ Global
 		{1541AAF2-3C27-4504-9CBA-B2B9835125A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1541AAF2-3C27-4504-9CBA-B2B9835125A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1541AAF2-3C27-4504-9CBA-B2B9835125A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9677F629-B29A-4050-8715-1182E8477664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9677F629-B29A-4050-8715-1182E8477664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9677F629-B29A-4050-8715-1182E8477664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9677F629-B29A-4050-8715-1182E8477664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A5CF66D3-3633-4CE8-A147-49434DC99F83} = {823B0948-3D76-4C0F-A0CF-35E7EC66FB87}
@@ -153,5 +159,6 @@ Global
 		{A82FD7CC-7D1D-4E0D-A93A-E349B597380D} = {959D928E-D148-47DB-83C8-9D5966631859}
 		{1A84D940-4D2A-4793-9D52-E3068BA153A8} = {959D928E-D148-47DB-83C8-9D5966631859}
 		{1541AAF2-3C27-4504-9CBA-B2B9835125A3} = {1F67E33D-3051-41E5-A69C-11FB76696842}
+		{9677F629-B29A-4050-8715-1182E8477664} = {959D928E-D148-47DB-83C8-9D5966631859}
 	EndGlobalSection
 EndGlobal

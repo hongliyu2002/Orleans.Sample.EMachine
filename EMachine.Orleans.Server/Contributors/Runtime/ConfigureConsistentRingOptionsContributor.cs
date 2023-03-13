@@ -6,5 +6,5 @@ namespace EMachine.Orleans.Server.Contributors;
 internal sealed class ConfigureConsistentRingOptionsContributor : ConfigureOptionsContributorBase<ConsistentRingOptions>
 {
     /// <inheritdoc />
-    public override string SectionName => "Orleans:Server:Runtime:ConsistentRing";
+    public override string SectionName => "Orleans:Server:ConsistentRing";
 }

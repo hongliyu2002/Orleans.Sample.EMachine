@@ -6,5 +6,5 @@ namespace EMachine.Orleans.Server.Contributors;
 internal sealed class ConfigureEndpointOptionsContributor : ConfigureOptionsContributorBase<EndpointOptions>
 {
     /// <inheritdoc />
-    public override string SectionName => "Orleans:Server:Runtime:Endpoint";
+    public override string SectionName => "Orleans:Server:Endpoint";
 }

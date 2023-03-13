@@ -13,6 +13,14 @@ public class OrleansServerModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void PreConfigureServices(IServiceConfigurationContext context)
     {
+        // Configure core options
+        context.Services.AddConfigureOptionsContributor<ConfigureClusterOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureConnectionOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureGrainTypeOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureGrainVersioningOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureLoadSheddingOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureTypeManagementOptionsContributor>();
+
         // Configure runtime options. 
         context.Services.AddConfigureOptionsContributor<ConfigureActivationCountBasedPlacementOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureConsistentRingOptionsContributor>();
@@ -25,8 +33,16 @@ public class OrleansServerModule : ConfigureServicesModule
         context.Services.AddConfigureOptionsContributor<ConfigureSiloMessagingOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureSiloOptionsContributor>();
         
-        context.Services.AddConfigureOptionsContributor<ConfigureClusterOptionsContributor>();
-        context.Services.AddConfigureOptionsContributor<ConfigureConnectionOptionsContributor>();
+        // Configure Stream options. 
+        context.Services.AddConfigureOptionsContributor<ConfigureDeploymentBasedQueueBalancerOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureHashRingStreamQueueMapperOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureLeaseBasedQueueBalancerOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureSimpleQueueCacheOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureStreamCacheEvictionOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureStreamLifecycleOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureStreamPubSubOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureStreamPullingAgentOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureStreamStatisticOptionsContributor>();
     }
 
     /// <inheritdoc />

@@ -6,5 +6,5 @@ namespace EMachine.Orleans.Server.Contributors;
 internal sealed class ConfigureGrainCollectionOptionsContributor : ConfigureOptionsContributorBase<GrainCollectionOptions>
 {
     /// <inheritdoc />
-    public override string SectionName => "Orleans:Server:Runtime:GrainCollection";
+    public override string SectionName => "Orleans:Server:GrainCollection";
 }

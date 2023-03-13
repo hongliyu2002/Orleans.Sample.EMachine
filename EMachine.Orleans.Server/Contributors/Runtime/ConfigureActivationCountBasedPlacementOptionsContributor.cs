@@ -9,5 +9,5 @@ namespace EMachine.Orleans.Server.Contributors;
 internal sealed class ConfigureActivationCountBasedPlacementOptionsContributor : ConfigureOptionsContributorBase<ActivationCountBasedPlacementOptions>
 {
     /// <inheritdoc />
-    public override string SectionName => "Orleans:Server:Runtime:ActivationCountBasedPlacement";
+    public override string SectionName => "Orleans:Server:ActivationCountBasedPlacement";
 }
