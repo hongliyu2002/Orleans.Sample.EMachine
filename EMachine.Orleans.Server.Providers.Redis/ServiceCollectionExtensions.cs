@@ -6,7 +6,6 @@ namespace EMachine.Orleans.Server.Providers.Redis;
 
 public static class ServiceCollectionExtensions
 {
-
     public static IServiceCollection AddOrleansRedisClustering(this IServiceCollection services, RedisClusteringOptions options)
     {
         return services.AddOrleans(builder =>
