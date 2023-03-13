@@ -6,7 +6,7 @@ using Machine.Orleans.Server.Providers.AdoNet;
 namespace EMachine.Orleans.Server.Providers.AdoNet;
 
 [PublicAPI]
-public class AdoNetClusteringOptions
+public sealed class AdoNetClusteringOptions
 {
     /// <summary>
     ///     Gets or sets the name of the connection string.

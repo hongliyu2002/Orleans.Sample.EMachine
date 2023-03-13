@@ -1,8 +1,10 @@
 ﻿using Fluxera.Extensions.DataManagement;
+using JetBrains.Annotations;
 
 namespace EMachine.Orleans.Server.Providers.Redis;
 
-public class RedisReminderOptions
+[PublicAPI]
+public sealed class RedisReminderOptions
 {
     /// <summary>
     ///     Gets or sets the name of the connection string.

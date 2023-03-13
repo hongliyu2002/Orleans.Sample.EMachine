@@ -7,15 +7,15 @@ namespace EMachine.Sales.Orleans.Tests.Fixtures;
 
 public class TestSiloConfigurator : ISiloConfigurator
 {
-    public void Configure(ISiloBuilder siloBuilder)
+    public void Configure(ISiloBuilder silo)
     {
-        siloBuilder.AddMemoryGrainStorage(Constants.PubSubStoreName)
+        silo.AddMemoryGrainStorage(Constants.PubSubStoreName)
                    .AddMemoryGrainStorage(Constants.SalesStoreName)
                    .AddMemoryGrainStorage(Constants.ManagementStoreName)
                    .AddMemoryGrainStorage(Constants.BankingStoreName)
                    .AddLogStorageBasedLogConsistencyProvider(Constants.LogConsistencyStoreName)
                    .AddStreaming()
                    .AddMemoryStreams(Constants.StreamProviderName);
-        siloBuilder.Services.AddDbContextPool<SalesDbContext>(options => options.UseSqlite("Data Source=Sales.db"));
+        silo.Services.AddDbContextPool<SalesDbContext>(options => options.UseSqlite("Data Source=Sales.db"));
     }
 }

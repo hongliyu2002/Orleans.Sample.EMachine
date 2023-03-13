@@ -11,7 +11,6 @@ namespace EMachine.Orleans.Server.Providers.AdoNet.Contributors;
 
 internal sealed class AdoNetPersistenceHealthChecksContributor : IHealthChecksContributor
 {
-
     /// <inheritdoc />
     public void ConfigureHealthChecks(IHealthChecksBuilder builder, IServiceConfigurationContext context)
     {
