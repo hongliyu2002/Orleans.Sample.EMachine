@@ -32,44 +32,44 @@ public static class ServiceCollectionExtensions
                                                          });
     }
 
-    private static void UseSqlite(DbContextOptionsBuilder dbContextBuilder, string connectionString, EfCoreDatabaseOptions databaseOptions)
+    private static void UseSqlite(DbContextOptionsBuilder builder, string connectionString, EfCoreDatabaseOptions options)
     {
-        dbContextBuilder.UseSqlite(connectionString, options =>
-                                                     {
-                                                         if (databaseOptions.MigrationsHistoryTable.IsNotNullOrEmpty())
-                                                         {
-                                                             var schemaAndName = databaseOptions.MigrationsHistoryTable!.Trim().Split(".");
-                                                             if (schemaAndName.Length >= 1)
-                                                             {
-                                                                 options.MigrationsHistoryTable(schemaAndName[1], schemaAndName[0]);
-                                                             }
-                                                             else
-                                                             {
-                                                                 options.MigrationsHistoryTable(schemaAndName[0]);
-                                                             }
-                                                         }
-                                                         options.UseQuerySplittingBehavior(databaseOptions.QuerySplittingBehavior);
-                                                     });
+        builder.UseSqlite(connectionString, dbContext =>
+                                            {
+                                                if (options.MigrationsHistoryTable.IsNotNullOrEmpty())
+                                                {
+                                                    var schemaAndName = options.MigrationsHistoryTable!.Trim().Split(".");
+                                                    if (schemaAndName.Length >= 1)
+                                                    {
+                                                        dbContext.MigrationsHistoryTable(schemaAndName[1], schemaAndName[0]);
+                                                    }
+                                                    else
+                                                    {
+                                                        dbContext.MigrationsHistoryTable(schemaAndName[0]);
+                                                    }
+                                                }
+                                                dbContext.UseQuerySplittingBehavior(options.QuerySplittingBehavior);
+                                            });
     }
 
-    private static void UseSqlServer(DbContextOptionsBuilder dbContextBuilder, string connectionString, EfCoreDatabaseOptions efOptions)
+    private static void UseSqlServer(DbContextOptionsBuilder builder, string connectionString, EfCoreDatabaseOptions options)
     {
-        dbContextBuilder.UseSqlServer(connectionString, options =>
-                                                        {
-                                                            if (efOptions.MigrationsHistoryTable.IsNotNullOrEmpty())
-                                                            {
-                                                                var schemaAndName = efOptions.MigrationsHistoryTable!.Trim().Split(".");
-                                                                if (schemaAndName.Length >= 1)
-                                                                {
-                                                                    options.MigrationsHistoryTable(schemaAndName[1], schemaAndName[0]);
-                                                                }
-                                                                else
-                                                                {
-                                                                    options.MigrationsHistoryTable(schemaAndName[0]);
-                                                                }
-                                                            }
-                                                            options.EnableRetryOnFailure(efOptions.MaxRetry, TimeSpan.FromMilliseconds(efOptions.MaxRetryDelay), new[] { -1000 });
-                                                            options.UseQuerySplittingBehavior(efOptions.QuerySplittingBehavior);
-                                                        });
+        builder.UseSqlServer(connectionString, dbContext =>
+                                               {
+                                                   if (options.MigrationsHistoryTable.IsNotNullOrEmpty())
+                                                   {
+                                                       var schemaAndName = options.MigrationsHistoryTable!.Trim().Split(".");
+                                                       if (schemaAndName.Length >= 1)
+                                                       {
+                                                           dbContext.MigrationsHistoryTable(schemaAndName[1], schemaAndName[0]);
+                                                       }
+                                                       else
+                                                       {
+                                                           dbContext.MigrationsHistoryTable(schemaAndName[0]);
+                                                       }
+                                                   }
+                                                   dbContext.EnableRetryOnFailure(options.MaxRetry, TimeSpan.FromMilliseconds(options.MaxRetryDelay), new[] { -1000 });
+                                                   dbContext.UseQuerySplittingBehavior(options.QuerySplittingBehavior);
+                                               });
     }
 }

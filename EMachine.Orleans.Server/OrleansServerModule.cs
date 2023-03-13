@@ -13,13 +13,25 @@ public class OrleansServerModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void PreConfigureServices(IServiceConfigurationContext context)
     {
-        context.Services.AddConfigureOptionsContributor<ConfigureServerOptionsContributor>();
+        // Configure runtime options. 
+        context.Services.AddConfigureOptionsContributor<ConfigureActivationCountBasedPlacementOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureConsistentRingOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureDeploymentLoadPublisherOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureDevelopmentClusterMembershipOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureEndpointOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureGrainCollectionOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureGrainDirectoryOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureSchedulingOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureSiloMessagingOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureSiloOptionsContributor>();
+        
+        context.Services.AddConfigureOptionsContributor<ConfigureClusterOptionsContributor>();
+        context.Services.AddConfigureOptionsContributor<ConfigureConnectionOptionsContributor>();
     }
 
     /// <inheritdoc />
     public override void ConfigureServices(IServiceConfigurationContext context)
     {
-        var serverOptions = context.Services.GetOptions<ServerOptions>();
-        context.Log("AddOrleansServer", services => services.AddOrleansServer(serverOptions));
+        context.Log("AddOrleansServer", services => services.AddOrleansServer());
     }
 }

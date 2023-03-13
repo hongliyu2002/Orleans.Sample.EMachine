@@ -19,6 +19,10 @@
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\stackexchange.redis\2.6.96\lib\net5.0\StackExchange.Redis.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\fluxera.extensions.hosting.modules.datamanagement\7.1.4\lib\net7.0\Fluxera.Extensions.Hosting.Modules.DataManagement.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.persistence.adonet\7.1.0\lib\net7.0\Orleans.Persistence.AdoNet.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.core\7.1.0\lib\net7.0\Orleans.Core.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.eventsourcing\7.1.0\lib\net7.0\Orleans.EventSourcing.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.broadcastchannel\7.1.0\lib\net7.0\Orleans.BroadcastChannel.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\hongl\.nuget\packages\microsoft.orleans.runtime\7.1.0\lib\net7.0\Orleans.Runtime.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=16f034ec_002Dc74d_002D4a56_002Db0cc_002D3db89fd48ea8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SalesModuleTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
