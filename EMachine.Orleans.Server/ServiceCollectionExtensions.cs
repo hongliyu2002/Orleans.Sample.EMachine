@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Orleans.Configuration;
 
 namespace EMachine.Orleans.Server;
 
@@ -10,6 +9,10 @@ public static class ServiceCollectionExtensions
     {
         return services.AddOrleans(builder =>
                                    {
+                                       foreach (var name in options.BroadcastChannelNames)
+                                       {
+                                           builder.AddBroadcastChannel(name);
+                                       }
                                    });
     }
 }

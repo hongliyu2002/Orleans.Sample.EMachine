@@ -9,6 +9,10 @@ public static class ServiceCollectionExtensions
     {
         return services.AddOrleansClient(builder =>
                                          {
+                                             foreach (var name in options.BroadcastChannelNames)
+                                             {
+                                                 builder.AddBroadcastChannel(name);
+                                             }
                                          });
     }
 }
