@@ -6,11 +6,10 @@ namespace EMachine.Orleans.Server;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddOrleansServer(this IServiceCollection services)
+    public static IServiceCollection AddOrleansServer(this IServiceCollection services, ServerOptions options)
     {
         return services.AddOrleans(builder =>
                                    {
-                                       
                                    });
     }
 }

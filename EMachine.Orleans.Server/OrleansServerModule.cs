@@ -13,6 +13,8 @@ public class OrleansServerModule : ConfigureServicesModule
     /// <inheritdoc />
     public override void PreConfigureServices(IServiceConfigurationContext context)
     {
+        context.Services.AddConfigureOptionsContributor<ConfigureServerOptionsContributor>();
+
         // Configure core options
         context.Services.AddConfigureOptionsContributor<ConfigureClusterOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureConnectionOptionsContributor>();
@@ -32,8 +34,8 @@ public class OrleansServerModule : ConfigureServicesModule
         context.Services.AddConfigureOptionsContributor<ConfigureSchedulingOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureSiloMessagingOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureSiloOptionsContributor>();
-        
-        // Configure Stream options. 
+
+        // Configure stream options. 
         context.Services.AddConfigureOptionsContributor<ConfigureDeploymentBasedQueueBalancerOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureHashRingStreamQueueMapperOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureLeaseBasedQueueBalancerOptionsContributor>();
@@ -43,11 +45,15 @@ public class OrleansServerModule : ConfigureServicesModule
         context.Services.AddConfigureOptionsContributor<ConfigureStreamPubSubOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureStreamPullingAgentOptionsContributor>();
         context.Services.AddConfigureOptionsContributor<ConfigureStreamStatisticOptionsContributor>();
+
+        // Configure broadcast options. 
+        context.Services.AddConfigureOptionsContributor<ConfigureBroadcastChannelOptionsContributor>();
     }
 
     /// <inheritdoc />
     public override void ConfigureServices(IServiceConfigurationContext context)
     {
-        context.Log("AddOrleansServer", services => services.AddOrleansServer());
+        var serverOptions = context.Services.GetOptions<ServerOptions>();
+        context.Log("AddOrleansServer", services => services.AddOrleansServer(serverOptions));
     }
 }

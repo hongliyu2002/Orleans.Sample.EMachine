@@ -6,5 +6,4 @@ namespace EMachine.Orleans.Shared;
 [PublicAPI]
 public class OrleansSharedModule : ConfigureServicesModule
 {
-
 }
