@@ -36,7 +36,7 @@ public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
     /// <inheritdoc />
     public Task<Result<bool>> AddAsync(Money money)
     {
-        return PublishAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo", 1));
+        return PublishPersistedAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo", 1));
     }
 }
 

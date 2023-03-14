@@ -31,7 +31,7 @@ public abstract class EventSourcingGrain<TState> : JournaledGrain<TState, Domain
         _stream = _streamProvider.GetStream<DomainEvent>(StreamId.Create(_nameSpace, this.GetPrimaryKey()));
     }
 
-    protected Task<Result<bool>> PublishAsync(DomainEvent evt)
+    protected Task<Result<bool>> PublishPersistedAsync(DomainEvent evt)
     {
         return Result.Ok()
                      .MapTryAsync(() => RaiseConditionalEvent(evt))

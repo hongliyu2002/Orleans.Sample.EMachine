@@ -4,20 +4,21 @@ using EMachine.Orleans.Shared;
 using EMachine.Orleans.Shared.Extensions;
 using EMachine.Sales.EntityFrameworkCore.Contexts;
 using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.Events;
 using EMachine.Sales.Orleans.Queries;
+using EMachine.Sales.Orleans.States;
 using EMachine.Sales.Orleans.Views;
 using Fluxera.Guards;
 using Fluxera.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Orleans.Concurrency;
 using Orleans.FluentResults;
 
 namespace EMachine.Sales.Orleans;
 
-[StatelessWorker]
-public class SnackRepoGrain : RepoGrain, ISnackRepoGrain
+// [StatelessWorker]
+public class SnackRepoGrain : EventSourcingRepoGrain<SnackRepo>, ISnackRepoGrain
 {
     private readonly ILogger<SnackRepoGrain> _logger;
     private SalesDbContext _dbContext = null!;
@@ -73,13 +74,15 @@ public class SnackRepoGrain : RepoGrain, ISnackRepoGrain
     /// <inheritdoc />
     public Task<Result<ISnackGrain>> GetAsync(SnackRepoGetCommand cmd)
     {
-        return Task.FromResult(Result.Ok(GrainFactory.GetGrain<ISnackGrain>(cmd.Id)));
+        return Task.FromResult(Result.Ok()
+                                     .Ensure(State.Ids.Contains(cmd.Id), $"Snack {cmd.Id} does not exist or has been deleted.")
+                                     .MapTry(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id)));
     }
 
     /// <inheritdoc />
     public Task<Result<ImmutableList<ISnackGrain>>> GetMultipleAsync(SnackRepoGetManyCommand cmd)
     {
-        var snacks = cmd.Ids.Select(id => GrainFactory.GetGrain<ISnackGrain>(id));
+        var snacks = State.Ids.Intersect(cmd.Ids).Select(id => GrainFactory.GetGrain<ISnackGrain>(id));
         return Task.FromResult(Result.Ok(snacks.ToImmutableList()));
     }
 
@@ -87,18 +90,22 @@ public class SnackRepoGrain : RepoGrain, ISnackRepoGrain
     public Task<Result<bool>> CreateAsync(SnackRepoCreateCommand cmd)
     {
         return Result.Ok()
+                     .Ensure(State.Ids.Contains(cmd.Id) == false, $"Snack {cmd.Id} already exists.")
                      .MapTry(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id))
-                     .EnsureAsync(grain => grain.CanInitializeAsync(), $"Snack {cmd.Id} already exists or has been deleted.")
-                     .BindTryAsync(grain => grain.InitializeAsync(new SnackInitializeCommand(cmd.Name, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
+                     .EnsureAsync(grain => grain.CanInitializeAsync(), $"Snack {cmd.Id} cannot be initialized.")
+                     .BindTryAsync(grain => grain.InitializeAsync(new SnackInitializeCommand(cmd.Name, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)))
+                     .MapTryIfAsync(initialized => initialized, _ => RaiseConditionalEvent(new SnackRepoCreatedEvent(cmd.Id, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)));
     }
 
     /// <inheritdoc />
     public Task<Result<bool>> DeleteAsync(SnackRepoDeleteCommand cmd)
     {
         return Result.Ok()
+                     .Ensure(State.Ids.Contains(cmd.Id), $"Snack {cmd.Id} does not exist or has been deleted.")
                      .MapTry(() => GrainFactory.GetGrain<ISnackGrain>(cmd.Id))
-                     .EnsureAsync(grain => grain.CanRemoveAsync(), $"Snack {cmd.Id} does not exists or has been deleted.")
-                     .BindTryAsync(grain => grain.RemoveAsync(new SnackRemoveCommand(cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)));
+                     .EnsureAsync(grain => grain.CanRemoveAsync(), $"Snack {cmd.Id} cannot be removed.")
+                     .BindTryAsync(grain => grain.RemoveAsync(new SnackRemoveCommand(cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy)))
+                     .MapTryIfAsync(removed => removed, _ => RaiseConditionalEvent(new SnackRepoDeletedEvent(cmd.Id, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)));
     }
 
     #endregion

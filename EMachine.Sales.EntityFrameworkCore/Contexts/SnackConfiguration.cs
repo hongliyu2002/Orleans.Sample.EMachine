@@ -21,7 +21,7 @@ public sealed class SnackConfiguration : IEntityTypeConfiguration<Snack>
         builder.Property(x => x.Name).HasMaxLength(100);
         builder.Property(x => x.CreatedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
-        builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
+        builder.Property(x => x.DeletedBy).HasMaxLength(100);
         // builder.Property(x => x.Version).IsConcurrencyToken();
         _callback?.Invoke(builder);
     }

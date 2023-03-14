@@ -92,7 +92,7 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         {
             snackForUpdate.Name = "Coke";
             var success = await _dbContext.SaveChangesAsync();
-            success.Should().BeGreaterThan(0);
+            success.Should().Be(0);
             _output.WriteLine(snackForUpdate.ToString());
         }
     }

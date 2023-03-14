@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMachine.Sales.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(SalesDbContext))]
-    [Migration("20230314013105_Init")]
+    [Migration("20230314052839_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -55,7 +55,8 @@ namespace EMachine.Sales.EntityFrameworkCore.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -112,7 +113,8 @@ namespace EMachine.Sales.EntityFrameworkCore.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
