@@ -9,6 +9,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOrleansClientAdoNetClustering(this IServiceCollection services, AdoNetClusteringOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleansClient(builder =>
                                          {
                                              if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
@@ -16,13 +20,13 @@ public static class ServiceCollectionExtensions
                                                  builder.UseAdoNetClustering(clustering =>
                                                                              {
                                                                                  clustering.ConnectionString = connectionString;
-                                                                                 clustering.Invariant = options.DatabaseProvider switch
+                                                                                 clustering.Invariant = options.DbProvider switch
                                                                                                         {
-                                                                                                            AdoNetDatabaseProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                            AdoNetDatabaseProvider.PostgreSql => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                            AdoNetDatabaseProvider.MySql => AdoNetInvariants.InvariantNameMySql,
-                                                                                                            AdoNetDatabaseProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                            _ => throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), NotSupportsMessage)
+                                                                                                            AdoNetDbProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
+                                                                                                            AdoNetDbProvider.PostgreSQL => AdoNetInvariants.InvariantNamePostgreSql,
+                                                                                                            AdoNetDbProvider.MySQL => AdoNetInvariants.InvariantNameMySql,
+                                                                                                            AdoNetDbProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
+                                                                                                            _ => throw new ArgumentOutOfRangeException(nameof(options.DbProvider), NotSupportsMessage)
                                                                                                         };
                                                                              });
                                              }

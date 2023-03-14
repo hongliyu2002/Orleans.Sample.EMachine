@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
                                                          {
                                                              if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
                                                              {
-                                                                 switch (options.DatabaseProvider)
+                                                                 switch (options.DbProvider)
                                                                  {
                                                                      case SalesDbProvider.SqlServer:
                                                                          UseSqlServer(dbContext, connectionString, options);
@@ -25,7 +25,7 @@ public static class ServiceCollectionExtensions
                                                                          UseSqlite(dbContext, connectionString, options);
                                                                          break;
                                                                      default:
-                                                                         throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), "Database provider does not support.");
+                                                                         throw new ArgumentOutOfRangeException(nameof(options.DbProvider), "Database provider does not support.");
                                                                  }
                                                              }
                                                          });

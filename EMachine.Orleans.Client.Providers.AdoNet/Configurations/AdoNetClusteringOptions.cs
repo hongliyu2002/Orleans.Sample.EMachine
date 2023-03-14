@@ -8,6 +8,11 @@ namespace EMachine.Orleans.Client.Providers.AdoNet;
 public sealed class AdoNetClusteringOptions
 {
     /// <summary>
+    ///     Indicates if the feature is enabled or not.
+    /// </summary>
+    public bool FeatureEnabled { get; set; }
+
+    /// <summary>
     ///     The name of the connection string.
     /// </summary>
     public string ConnectionStringName { get; set; } = "AdoNetCluster";
@@ -16,7 +21,7 @@ public sealed class AdoNetClusteringOptions
     ///     The name and database provider type of the connection string.
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public AdoNetDatabaseProvider DatabaseProvider { get; set; } = AdoNetDatabaseProvider.SqlServer;
+    public AdoNetDbProvider DbProvider { get; set; } = AdoNetDbProvider.SqlServer;
 
     /// <summary>
     ///     Gets the connection strings.

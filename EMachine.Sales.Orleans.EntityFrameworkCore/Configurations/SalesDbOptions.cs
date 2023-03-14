@@ -25,7 +25,7 @@ public sealed class SalesDbOptions
     ///     The name and database provider type of the connection string.
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public SalesDbProvider DatabaseProvider { get; set; } = SalesDbProvider.SqlServer;
+    public SalesDbProvider DbProvider { get; set; } = SalesDbProvider.SqlServer;
 
     /// <summary>
     /// </summary>

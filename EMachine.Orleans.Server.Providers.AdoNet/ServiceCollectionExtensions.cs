@@ -67,22 +67,22 @@ public static class ServiceCollectionExtensions
         }
         return services.AddOrleans(builder =>
                                    {
-                                       foreach (var name in options.ConnectionStringNames)
+                                       foreach (var description in options.ConnectionStringDescriptions)
                                        {
-                                           if (options.ConnectionStrings.TryGetValue(name, out var connectionString))
+                                           if (options.ConnectionStrings.TryGetValue(description.ConnectionStringName, out var connectionString))
                                            {
-                                               builder.AddAdoNetGrainStorage(name, persistence =>
-                                                                                   {
-                                                                                       persistence.ConnectionString = connectionString;
-                                                                                       persistence.Invariant = options.DbProvider switch
+                                               builder.AddAdoNetGrainStorage(description.ConnectionStringName, persistence =>
                                                                                                                {
-                                                                                                                   AdoNetDbProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                                   AdoNetDbProvider.PostgreSQL => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                                   AdoNetDbProvider.MySQL => AdoNetInvariants.InvariantNameMySql,
-                                                                                                                   AdoNetDbProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                                   _ => throw new ArgumentOutOfRangeException(nameof(options.DbProvider), NotSupportsMessage)
-                                                                                                               };
-                                                                                   });
+                                                                                                                   persistence.ConnectionString = connectionString;
+                                                                                                                   persistence.Invariant = description.DbProvider switch
+                                                                                                                                           {
+                                                                                                                                               AdoNetDbProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
+                                                                                                                                               AdoNetDbProvider.PostgreSQL => AdoNetInvariants.InvariantNamePostgreSql,
+                                                                                                                                               AdoNetDbProvider.MySQL => AdoNetInvariants.InvariantNameMySql,
+                                                                                                                                               AdoNetDbProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
+                                                                                                                                               _ => throw new ArgumentOutOfRangeException(nameof(description.DbProvider), NotSupportsMessage)
+                                                                                                                                           };
+                                                                                                               });
                                            }
                                        }
                                    });
