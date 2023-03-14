@@ -1,10 +1,24 @@
 ﻿using EMachine.Sales.Orleans.Events;
+using Fluxera.Guards;
 
 namespace EMachine.Sales.Orleans.States;
 
 [GenerateSerializer]
 public sealed class SnackMachine
 {
+    public SnackMachine()
+    {
+    }
+
+    public SnackMachine(Guid id, Money moneyInside, decimal amountInTransaction, IList<Slot> slots)
+        : this()
+    {
+        Id = Guard.Against.Empty(id, nameof(id));
+        MoneyInside = Guard.Against.Null(moneyInside, nameof(moneyInside));
+        AmountInTransaction = Guard.Against.Negative(amountInTransaction, nameof(amountInTransaction));
+        Slots = Guard.Against.Null(slots, nameof(slots));
+    }
+
     [Id(0)]
     public Guid Id { get; set; }
 

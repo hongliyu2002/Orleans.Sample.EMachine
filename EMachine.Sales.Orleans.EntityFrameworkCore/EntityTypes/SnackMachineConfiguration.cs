@@ -18,11 +18,11 @@ public sealed class SnackMachineConfiguration : IEntityTypeConfiguration<SnackMa
     {
         builder.ToTable("SnackMachines");
         builder.HasKey(x => x.Id);
-        builder.OwnsOne(x => x.MoneyInside);
-        builder.Property(x => x.AmountInTransaction).HasPrecision(10, 2);
         builder.Property(x => x.CreatedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
         builder.Property(x => x.DeletedBy).HasMaxLength(100);
+        builder.OwnsOne(x => x.MoneyInside);
+        builder.Property(x => x.AmountInTransaction).HasPrecision(10, 2);
         // builder.Property(x => x.Version).IsConcurrencyToken();
         _callback?.Invoke(builder);
     }

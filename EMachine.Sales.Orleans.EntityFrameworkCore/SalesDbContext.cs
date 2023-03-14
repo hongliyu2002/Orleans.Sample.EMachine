@@ -18,8 +18,6 @@ public sealed class SalesDbContext : DbContext
 
     public DbSet<Snack> Snacks { get; set; } = null!;
 
-    public DbSet<Slot> Slots { get; set; } = null!;
-
     public DbSet<SnackMachine> SnackMachines { get; set; } = null!;
 
     /// <inheritdoc />

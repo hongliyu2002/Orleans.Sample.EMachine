@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Orleans.Tests", "Tests\EMachine.Sales.Orleans.Tests\EMachine.Sales.Orleans.Tests.csproj", "{C1473A8F-BD43-4A04-80E0-A69C7BB52F52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.EntityFrameworkCore.Tests", "Tests\EMachine.Sales.EntityFrameworkCore.Tests\EMachine.Sales.EntityFrameworkCore.Tests.csproj", "{BEAFC322-4059-4000-970D-71746D195BE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Orleans.EntityFrameworkCore.Tests", "Tests\EMachine.Sales.Orleans.EntityFrameworkCore.Tests\EMachine.Sales.Orleans.EntityFrameworkCore.Tests.csproj", "{BEAFC322-4059-4000-970D-71746D195BE9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMachine.Sales.Hosting", "EMachine.Sales.Hosting\EMachine.Sales.Hosting.csproj", "{A9A1B974-57F5-440D-9A57-A5987C4EA8B8}"
 EndProject
