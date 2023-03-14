@@ -8,6 +8,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddOrleansRedisClustering(this IServiceCollection services, RedisClusteringOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleans(builder =>
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
@@ -22,6 +26,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOrleansRedisGrainDirectory(this IServiceCollection services, RedisGrainDirectoryOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleans(builder =>
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
@@ -36,6 +44,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOrleansRedisReminder(this IServiceCollection services, RedisReminderOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleans(builder =>
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
@@ -50,6 +62,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOrleansRedisPersistence(this IServiceCollection services, RedisPersistenceOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleans(builder =>
                                    {
                                        foreach (var name in options.ConnectionStringNames)

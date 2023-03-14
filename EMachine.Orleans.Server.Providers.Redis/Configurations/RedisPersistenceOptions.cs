@@ -7,6 +7,11 @@ namespace EMachine.Orleans.Server.Providers.Redis;
 public sealed class RedisPersistenceOptions
 {
     /// <summary>
+    ///     Indicates if the feature is enabled or not.
+    /// </summary>
+    public bool FeatureEnabled { get; set; }
+
+    /// <summary>
     ///     The name of the connection string.
     /// </summary>
     public string[] ConnectionStringNames { get; set; } = Array.Empty<string>();

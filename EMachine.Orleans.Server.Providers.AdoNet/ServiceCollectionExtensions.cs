@@ -1,5 +1,4 @@
-﻿using Machine.Orleans.Server.Providers.AdoNet;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace EMachine.Orleans.Server.Providers.AdoNet;
@@ -10,6 +9,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOrleansAdoNetClustering(this IServiceCollection services, AdoNetClusteringOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleans(builder =>
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
@@ -32,6 +35,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOrleansAdoNetReminder(this IServiceCollection services, AdoNetReminderOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleans(builder =>
                                    {
                                        if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
@@ -54,6 +61,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOrleansAdoNetPersistence(this IServiceCollection services, AdoNetPersistenceOptions options)
     {
+        if (!options.FeatureEnabled)
+        {
+            return services;
+        }
         return services.AddOrleans(builder =>
                                    {
                                        foreach (var name in options.ConnectionStringNames)

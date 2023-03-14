@@ -1,4 +1,4 @@
-﻿namespace Machine.Orleans.Server.Providers.AdoNet;
+﻿namespace EMachine.Orleans.Server.Providers.AdoNet;
 
 public enum AdoNetDbProvider
 {

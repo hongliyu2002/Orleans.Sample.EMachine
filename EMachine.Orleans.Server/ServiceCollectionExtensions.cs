@@ -41,6 +41,7 @@ public static class ServiceCollectionExtensions
                                                builder.AddBroadcastChannel("eMachine");
                                                break;
                                        }
+                                       builder.AddActivityPropagation();
                                    });
     }
 }

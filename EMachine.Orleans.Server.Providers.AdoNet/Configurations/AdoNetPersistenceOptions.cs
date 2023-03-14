@@ -1,13 +1,17 @@
 ﻿using System.Text.Json.Serialization;
 using Fluxera.Extensions.DataManagement;
 using JetBrains.Annotations;
-using Machine.Orleans.Server.Providers.AdoNet;
 
 namespace EMachine.Orleans.Server.Providers.AdoNet;
 
 [PublicAPI]
 public sealed class AdoNetPersistenceOptions
 {
+    /// <summary>
+    ///     Indicates if the feature is enabled or not.
+    /// </summary>
+    public bool FeatureEnabled { get; set; }
+
     /// <summary>
     ///     The name of the connection string.
     /// </summary>

@@ -3,7 +3,6 @@ using Fluxera.Extensions.DependencyInjection;
 using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
 using Fluxera.Extensions.Hosting.Modules.HealthChecks;
-using Machine.Orleans.Server.Providers.AdoNet;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 

@@ -1,7 +1,6 @@
 ﻿using Fluxera.Extensions.Hosting;
 using Fluxera.Extensions.Hosting.Modules.Configuration;
 using Fluxera.Extensions.Hosting.Modules.OpenTelemetry;
-using Machine.Orleans.Server.Providers.AdoNet;
 using OpenTelemetry.Trace;
 
 namespace EMachine.Orleans.Server.Providers.AdoNet.Contributors;
