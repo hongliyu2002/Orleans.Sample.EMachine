@@ -44,19 +44,6 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
     }
 
     /// <inheritdoc />
-    public Task<Result<string>> GetNameAsync()
-    {
-        var id = this.GetPrimaryKey();
-        return Task.FromResult(Result.Ok().Ensure(State.IsCreated, $"Snack {id} is not initialized.").Map(() => State.Name));
-    }
-
-    /// <inheritdoc />
-    public Task<Result<long>> GetVersionAsync()
-    {
-        return Task.FromResult(Result.Ok((long)Version));
-    }
-
-    /// <inheritdoc />
     public Task<bool> CanInitializeAsync()
     {
         return Task.FromResult(State.IsDeleted == false && State.IsCreated == false);

@@ -17,13 +17,13 @@ public static class ServiceCollectionExtensions
                                            builder.UseAdoNetClustering(clustering =>
                                                                        {
                                                                            clustering.ConnectionString = connectionString;
-                                                                           clustering.Invariant = options.DatabaseProvider switch
+                                                                           clustering.Invariant = options.DbProvider switch
                                                                                                   {
-                                                                                                      AdoNetDatabaseProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                      AdoNetDatabaseProvider.PostgreSql => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                      AdoNetDatabaseProvider.MySql => AdoNetInvariants.InvariantNameMySql,
-                                                                                                      AdoNetDatabaseProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                      _ => throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), NotSupportsMessage)
+                                                                                                      AdoNetDbProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
+                                                                                                      AdoNetDbProvider.PostgreSQL => AdoNetInvariants.InvariantNamePostgreSql,
+                                                                                                      AdoNetDbProvider.MySQL => AdoNetInvariants.InvariantNameMySql,
+                                                                                                      AdoNetDbProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
+                                                                                                      _ => throw new ArgumentOutOfRangeException(nameof(options.DbProvider), NotSupportsMessage)
                                                                                                   };
                                                                        });
                                        }
@@ -39,13 +39,13 @@ public static class ServiceCollectionExtensions
                                            builder.UseAdoNetReminderService(reminder =>
                                                                             {
                                                                                 reminder.ConnectionString = connectionString;
-                                                                                reminder.Invariant = options.DatabaseProvider switch
+                                                                                reminder.Invariant = options.DbProvider switch
                                                                                                      {
-                                                                                                         AdoNetDatabaseProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                         AdoNetDatabaseProvider.PostgreSql => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                         AdoNetDatabaseProvider.MySql => AdoNetInvariants.InvariantNameMySql,
-                                                                                                         AdoNetDatabaseProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                         _ => throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), NotSupportsMessage)
+                                                                                                         AdoNetDbProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
+                                                                                                         AdoNetDbProvider.PostgreSQL => AdoNetInvariants.InvariantNamePostgreSql,
+                                                                                                         AdoNetDbProvider.MySQL => AdoNetInvariants.InvariantNameMySql,
+                                                                                                         AdoNetDbProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
+                                                                                                         _ => throw new ArgumentOutOfRangeException(nameof(options.DbProvider), NotSupportsMessage)
                                                                                                      };
                                                                             });
                                        }
@@ -63,13 +63,13 @@ public static class ServiceCollectionExtensions
                                                builder.AddAdoNetGrainStorage(name, persistence =>
                                                                                    {
                                                                                        persistence.ConnectionString = connectionString;
-                                                                                       persistence.Invariant = options.DatabaseProvider switch
+                                                                                       persistence.Invariant = options.DbProvider switch
                                                                                                                {
-                                                                                                                   AdoNetDatabaseProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
-                                                                                                                   AdoNetDatabaseProvider.PostgreSql => AdoNetInvariants.InvariantNamePostgreSql,
-                                                                                                                   AdoNetDatabaseProvider.MySql => AdoNetInvariants.InvariantNameMySql,
-                                                                                                                   AdoNetDatabaseProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
-                                                                                                                   _ => throw new ArgumentOutOfRangeException(nameof(options.DatabaseProvider), NotSupportsMessage)
+                                                                                                                   AdoNetDbProvider.SqlServer => AdoNetInvariants.InvariantNameSqlServer,
+                                                                                                                   AdoNetDbProvider.PostgreSQL => AdoNetInvariants.InvariantNamePostgreSql,
+                                                                                                                   AdoNetDbProvider.MySQL => AdoNetInvariants.InvariantNameMySql,
+                                                                                                                   AdoNetDbProvider.Oracle => AdoNetInvariants.InvariantNameOracleDatabase,
+                                                                                                                   _ => throw new ArgumentOutOfRangeException(nameof(options.DbProvider), NotSupportsMessage)
                                                                                                                };
                                                                                    });
                                            }

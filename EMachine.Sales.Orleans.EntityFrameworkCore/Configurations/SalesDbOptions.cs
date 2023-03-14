@@ -17,12 +17,12 @@ public sealed class SalesDbOptions
     }
 
     /// <summary>
-    ///     Gets or sets the name of the connection string.
+    ///     The name of the connection string.
     /// </summary>
     public string ConnectionStringName { get; set; } = "SalesDb";
 
     /// <summary>
-    ///     Gets or sets the name and database provider type of the connection string.
+    ///     The name and database provider type of the connection string.
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public SalesDbProvider DatabaseProvider { get; set; } = SalesDbProvider.SqlServer;

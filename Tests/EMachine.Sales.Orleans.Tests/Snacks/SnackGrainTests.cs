@@ -1,6 +1,7 @@
 ﻿using EMachine.Sales.Orleans.Commands;
 using EMachine.Sales.Orleans.Tests.Fixtures;
 using FluentAssertions;
+using Fluxera.Extensions.Hosting.Modules.UnitTesting;
 using Orleans.TestingHost;
 using Xunit;
 using Xunit.Abstractions;
@@ -8,7 +9,7 @@ using Xunit.Abstractions;
 namespace EMachine.Sales.Orleans.Tests;
 
 [Collection(TestCollectionFixture.Name)]
-public class SnackGrainTests : IClassFixture<SnackFixture>
+public class SnackGrainTests : StartupModuleTestBase<SalesOrleansModule>
 {
     private readonly TestCluster _cluster;
     private readonly ITestOutputHelper _output;
@@ -24,14 +25,12 @@ public class SnackGrainTests : IClassFixture<SnackFixture>
     {
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(id);
-        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Orange", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Orange", Guid.NewGuid(), DateTimeOffset.UtcNow, "Can_Initialize_And_Get_Snack"));
         initializeResult.IsSuccess.Should().Be(true);
-        await Task.Delay(1000);
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Id.Should().Be(id);
         getResult.Value.Name.Should().Be("Orange");
-        await Task.Delay(1000);
         _output.WriteLine(getResult.ToString());
     }
 
@@ -40,17 +39,15 @@ public class SnackGrainTests : IClassFixture<SnackFixture>
     {
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(id);
-        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Red Tea", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Red Tea", Guid.NewGuid(), DateTimeOffset.UtcNow, "Cannot_Reinitialize_Snack"));
         initializeResult.IsSuccess.Should().Be(true);
-        var reInitializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Green Tea", Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        var reInitializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Green Tea", Guid.NewGuid(), DateTimeOffset.UtcNow, "Cannot_Reinitialize_Snack"));
         reInitializeResult.IsSuccess.Should().Be(false);
         _output.WriteLine(reInitializeResult.ToString());
-        await Task.Delay(1000);
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Id.Should().Be(id);
         getResult.Value.Name.Should().Be("Red Tea");
-        await Task.Delay(1000);
         _output.WriteLine(getResult.ToString());
     }
 
@@ -59,17 +56,15 @@ public class SnackGrainTests : IClassFixture<SnackFixture>
     {
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(id);
-        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("BBQ", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("BBQ", Guid.NewGuid(), DateTimeOffset.UtcNow, "Can_Remove_Snack"));
         initializeResult.IsSuccess.Should().Be(true);
-        var removeResult = await grain.RemoveAsync(new SnackRemoveCommand(id, DateTimeOffset.UtcNow, "Boss"));
+        var removeResult = await grain.RemoveAsync(new SnackRemoveCommand(id, DateTimeOffset.UtcNow, "Can_Remove_Snack"));
         removeResult.IsSuccess.Should().Be(true);
-        await Task.Delay(1000);
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Id.Should().Be(id);
         getResult.Value.Name.Should().Be("BBQ");
         getResult.Value.IsDeleted.Should().Be(true);
-        await Task.Delay(1000);
         _output.WriteLine(getResult.ToString());
     }
 
@@ -78,20 +73,18 @@ public class SnackGrainTests : IClassFixture<SnackFixture>
     {
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(id);
-        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Cookies", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Cookies", Guid.NewGuid(), DateTimeOffset.UtcNow, "Cannot_Reinitialize_Snack_When_Removed"));
         initializeResult.IsSuccess.Should().Be(true);
-        var removeResult = await grain.RemoveAsync(new SnackRemoveCommand(id, DateTimeOffset.UtcNow, "Boss"));
+        var removeResult = await grain.RemoveAsync(new SnackRemoveCommand(id, DateTimeOffset.UtcNow, "Cannot_Reinitialize_Snack_When_Removed"));
         removeResult.IsSuccess.Should().Be(true);
-        var reInitializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Nuts", Guid.NewGuid(), DateTimeOffset.UtcNow, "Janet"));
+        var reInitializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Nuts", Guid.NewGuid(), DateTimeOffset.UtcNow, "Cannot_Reinitialize_Snack_When_Removed"));
         reInitializeResult.IsSuccess.Should().Be(false);
         _output.WriteLine(reInitializeResult.ToString());
-        await Task.Delay(1000);
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Id.Should().Be(id);
         getResult.Value.Name.Should().Be("Cookies");
         getResult.Value.IsDeleted.Should().Be(true);
-        await Task.Delay(1000);
         _output.WriteLine(getResult.ToString());
     }
 
@@ -100,17 +93,14 @@ public class SnackGrainTests : IClassFixture<SnackFixture>
     {
         var id = Guid.NewGuid();
         var grain = _cluster.GrainFactory.GetGrain<ISnackGrain>(id);
-        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Mongo", Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo"));
+        var initializeResult = await grain.InitializeAsync(new SnackInitializeCommand("Mongo", Guid.NewGuid(), DateTimeOffset.UtcNow, "Can_ChangeName_And_Get_Snack"));
         initializeResult.IsSuccess.Should().Be(true);
-        var changeNameResult = await grain.ChangeNameAsync(new SnackChangeNameCommand("Candy", Guid.NewGuid(), DateTimeOffset.UtcNow, "Boss"));
+        var changeNameResult = await grain.ChangeNameAsync(new SnackChangeNameCommand("Candy", Guid.NewGuid(), DateTimeOffset.UtcNow, "Can_ChangeName_And_Get_Snack"));
         changeNameResult.IsSuccess.Should().Be(true);
-        await Task.Delay(1000);
         var getResult = await grain.GetAsync();
         getResult.IsSuccess.Should().Be(true);
         getResult.Value.Id.Should().Be(id);
         getResult.Value.Name.Should().Be("Candy");
-        await Task.Delay(1000);
         _output.WriteLine(getResult.ToString());
     }
-
 }

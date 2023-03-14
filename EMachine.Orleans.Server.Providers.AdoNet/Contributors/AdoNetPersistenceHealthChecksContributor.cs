@@ -20,18 +20,18 @@ internal sealed class AdoNetPersistenceHealthChecksContributor : IHealthChecksCo
         {
             if (options.ConnectionStrings.TryGetValue(connectionStringName, out var connectionString))
             {
-                switch (options.DatabaseProvider)
+                switch (options.DbProvider)
                 {
-                    case AdoNetDatabaseProvider.SqlServer:
+                    case AdoNetDbProvider.SqlServer:
                         builder.AddSqlServer(connectionString, "SELECT 1;", null, $"AdoNetPersistence-{connectionStringName}", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                         break;
-                    case AdoNetDatabaseProvider.PostgreSql:
+                    case AdoNetDbProvider.PostgreSQL:
                         builder.AddNpgSql(connectionString, "SELECT 1;", null, $"AdoNetPersistence-{connectionStringName}", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                         break;
-                    case AdoNetDatabaseProvider.MySql:
+                    case AdoNetDbProvider.MySQL:
                         builder.AddMySql(connectionString, $"AdoNetPersistence-{connectionStringName}", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                         break;
-                    case AdoNetDatabaseProvider.Oracle:
+                    case AdoNetDbProvider.Oracle:
                         builder.AddOracle(connectionString, "select * from v$version", null, $"AdoNetPersistence-{connectionStringName}", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                         break;
                 }

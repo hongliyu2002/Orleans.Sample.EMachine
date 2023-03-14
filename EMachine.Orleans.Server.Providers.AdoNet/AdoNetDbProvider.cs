@@ -1,6 +1,6 @@
-﻿namespace EMachine.Sales.Orleans.EntityFrameworkCore;
+﻿namespace Machine.Orleans.Server.Providers.AdoNet;
 
-public enum SalesDbProvider
+public enum AdoNetDbProvider
 {
     /// <summary>
     /// </summary>
@@ -20,5 +20,5 @@ public enum SalesDbProvider
     
     /// <summary>
     /// </summary>
-    Oracle
+    Oracle,
 }

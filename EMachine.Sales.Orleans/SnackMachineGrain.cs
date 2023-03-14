@@ -66,12 +66,6 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
     }
 
     /// <inheritdoc />
-    public Task<Result<long>> GetVersionAsync()
-    {
-        return Task.FromResult(Result.Ok((long)Version));
-    }
-
-    /// <inheritdoc />
     public Task<bool> CanInitializeAsync()
     {
         return Task.FromResult(State.IsDeleted == false && State.IsCreated == false);

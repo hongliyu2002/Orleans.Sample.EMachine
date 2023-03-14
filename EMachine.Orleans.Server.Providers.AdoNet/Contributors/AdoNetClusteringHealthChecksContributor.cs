@@ -18,19 +18,19 @@ internal sealed class AdoNetClusteringHealthChecksContributor : IHealthChecksCon
         options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
         if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
         {
-            switch (options.DatabaseProvider)
+            switch (options.DbProvider)
             {
-                case AdoNetDatabaseProvider.SqlServer:
+                case AdoNetDbProvider.SqlServer:
                     builder.AddSqlServer(connectionString, "SELECT 1;", null, "AdoNetClustering", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
-                case AdoNetDatabaseProvider.PostgreSql:
-                    builder.AddNpgSql(connectionString, "SELECT 1;", null,"AdoNetClustering", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
+                case AdoNetDbProvider.PostgreSQL:
+                    builder.AddNpgSql(connectionString, "SELECT 1;", null, "AdoNetClustering", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
-                case AdoNetDatabaseProvider.MySql:
+                case AdoNetDbProvider.MySQL:
                     builder.AddMySql(connectionString, "AdoNetClustering", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
-                case AdoNetDatabaseProvider.Oracle:
-                    builder.AddOracle(connectionString,  "select * from v$version", null, "AdoNetClustering", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
+                case AdoNetDbProvider.Oracle:
+                    builder.AddOracle(connectionString, "select * from v$version", null, "AdoNetClustering", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
             }
         }

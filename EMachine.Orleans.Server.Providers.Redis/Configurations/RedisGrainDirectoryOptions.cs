@@ -7,7 +7,7 @@ namespace EMachine.Orleans.Server.Providers.Redis;
 public sealed class RedisGrainDirectoryOptions
 {
     /// <summary>
-    ///     Gets or sets the name of the connection string.
+    ///     The name of the connection string.
     /// </summary>
     public string ConnectionStringName { get; set; } = "RedisGrainDirectory";
 

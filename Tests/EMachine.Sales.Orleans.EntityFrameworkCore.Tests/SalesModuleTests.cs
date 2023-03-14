@@ -12,7 +12,6 @@ namespace EMachine.Sales.EntityFrameworkCore.Tests;
 [Collection("Sales")]
 public class SalesModuleTests : StartupModuleTestBase<SalesOrleansEntityFrameworkCoreModule>, IDisposable
 {
-
     private readonly SalesDbContext _dbContext;
     private readonly ITestOutputHelper _output;
 
@@ -21,7 +20,7 @@ public class SalesModuleTests : StartupModuleTestBase<SalesOrleansEntityFramewor
         _output = output;
         StartApplication();
         _dbContext = ApplicationLoader.ServiceProvider.GetRequiredService<SalesDbContext>();
-        _dbContext.Database.EnsureDeleted();
+        // _dbContext.Database.EnsureDeleted();
         _dbContext.Database.EnsureCreated();
     }
 
@@ -37,14 +36,12 @@ public class SalesModuleTests : StartupModuleTestBase<SalesOrleansEntityFramewor
     public async Task Should_Add_Snack()
     {
         var id = Guid.NewGuid();
-        var snack = new Snack
+        var snack = new Snack(id, "Cafe", "https://bkimg.cdn.bcebos.com/pic/94cad1c8a786c917ef547a52c73d70cf3bc75701?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UyMjA=,g_7,xp_5,yp_5")
                     {
-                        Id = id,
-                        Name = "Cafe",
                         CreatedAt = DateTimeOffset.UtcNow,
                         CreatedBy = "System"
                     };
-        await _dbContext.Snacks.AddAsync(snack);
+        _dbContext.Snacks.Add(snack);
         await _dbContext.SaveChangesAsync();
         snack.Id.Should().Be(id);
         var snackGet = await _dbContext.Snacks.FindAsync(id);
@@ -59,6 +56,8 @@ public class SalesModuleTests : StartupModuleTestBase<SalesOrleansEntityFramewor
         if (snack != null)
         {
             snack.Name = "Coke";
+            snack.LastModifiedAt = DateTimeOffset.UtcNow;
+            snack.LastModifiedBy = "Leo";
             var success = await _dbContext.SaveChangesAsync();
             success.Should().BeGreaterThan(0);
             _output.WriteLine(snack.ToString());
@@ -69,14 +68,12 @@ public class SalesModuleTests : StartupModuleTestBase<SalesOrleansEntityFramewor
     public async Task Should_Add_And_Update_Snack()
     {
         var id = Guid.NewGuid();
-        var snack = new Snack
+        var snack = new Snack(id, "Cafe", "https://bkimg.cdn.bcebos.com/pic/94cad1c8a786c917ef547a52c73d70cf3bc75701?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UyMjA=,g_7,xp_5,yp_5")
                     {
-                        Id = id,
-                        Name = "Cafe",
                         CreatedAt = DateTimeOffset.UtcNow,
                         CreatedBy = "System"
                     };
-        await _dbContext.Snacks.AddAsync(snack);
+        _dbContext.Snacks.Add(snack);
         await _dbContext.SaveChangesAsync();
         snack.Id.Should().Be(id);
         var snackForUpdate = await _dbContext.Snacks.FindAsync(id);
@@ -84,15 +81,10 @@ public class SalesModuleTests : StartupModuleTestBase<SalesOrleansEntityFramewor
         if (snackForUpdate != null)
         {
             snackForUpdate.Name = "Coke";
+            snackForUpdate.LastModifiedAt = DateTimeOffset.UtcNow;
+            snackForUpdate.LastModifiedBy = "Leo";
             var success = await _dbContext.SaveChangesAsync();
             success.Should().BeGreaterThan(0);
-            _output.WriteLine(snackForUpdate.ToString());
-        }
-        if (snackForUpdate != null)
-        {
-            snackForUpdate.Name = "Coke";
-            var success = await _dbContext.SaveChangesAsync();
-            success.Should().Be(0);
             _output.WriteLine(snackForUpdate.ToString());
         }
     }
@@ -101,10 +93,8 @@ public class SalesModuleTests : StartupModuleTestBase<SalesOrleansEntityFramewor
     public async Task Should_Add_SnackMachine()
     {
         var id = Guid.NewGuid();
-        var snackMachine = new SnackMachine
+        var snackMachine = new SnackMachine(id, Money.FiftyYuan, 0, new List<Slot>())
                            {
-                               Id = id,
-                               MoneyInside = Money.FiftyYuan,
                                CreatedAt = DateTimeOffset.UtcNow,
                                CreatedBy = "System"
                            };

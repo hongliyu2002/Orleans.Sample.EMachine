@@ -11,12 +11,6 @@ public interface ISnackGrain : IGrainWithGuidKey
     Task<Result<Snack>> GetAsync();
 
     [AlwaysInterleave]
-    Task<Result<string>> GetNameAsync();
-
-    [AlwaysInterleave]
-    Task<Result<long>> GetVersionAsync();
-
-    [AlwaysInterleave]
     Task<bool> CanInitializeAsync();
 
     Task<Result<bool>> InitializeAsync(SnackInitializeCommand cmd);

@@ -12,17 +12,17 @@ internal sealed class TracerProviderContributor : ITracerProviderContributor
     public void Configure(TracerProviderBuilder builder, IServiceConfigurationContext context)
     {
         var options = context.Services.GetOptions<AdoNetClusteringOptions>();
-        switch (options.DatabaseProvider)
+        switch (options.DbProvider)
         {
-            case AdoNetDatabaseProvider.SqlServer:
+            case AdoNetDbProvider.SqlServer:
                 builder.AddSqlClientInstrumentation();
                 break;
-            case AdoNetDatabaseProvider.PostgreSql:
+            case AdoNetDbProvider.PostgreSQL:
                 break;
-            case AdoNetDatabaseProvider.MySql:
+            case AdoNetDbProvider.MySQL:
                 builder.AddMySqlDataInstrumentation();
                 break;
-            case AdoNetDatabaseProvider.Oracle:
+            case AdoNetDbProvider.Oracle:
                 break;
         }
     }

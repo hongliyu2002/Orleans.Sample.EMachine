@@ -7,7 +7,7 @@ namespace EMachine.Orleans.Server.Providers.Redis;
 public sealed class RedisPersistenceOptions
 {
     /// <summary>
-    ///     Gets or sets the name of the connection string.
+    ///     The name of the connection string.
     /// </summary>
     public string[] ConnectionStringNames { get; set; } = Array.Empty<string>();
 

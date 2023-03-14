@@ -9,15 +9,15 @@ namespace EMachine.Orleans.Server.Providers.AdoNet;
 public sealed class AdoNetClusteringOptions
 {
     /// <summary>
-    ///     Gets or sets the name of the connection string.
+    ///     The name of the connection string.
     /// </summary>
     public string ConnectionStringName { get; set; } = "AdoNetCluster";
 
     /// <summary>
-    ///     Gets or sets the name and database provider type of the connection string.
+    ///     The name and database provider type of the connection string.
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public AdoNetDatabaseProvider DatabaseProvider { get; set; } = AdoNetDatabaseProvider.SqlServer;
+    public AdoNetDbProvider DbProvider { get; set; } = AdoNetDbProvider.SqlServer;
 
     /// <summary>
     ///     Gets the connection strings.

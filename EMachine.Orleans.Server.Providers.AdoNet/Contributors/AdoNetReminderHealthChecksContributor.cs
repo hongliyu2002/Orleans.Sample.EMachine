@@ -18,18 +18,18 @@ internal sealed class AdoNetReminderHealthChecksContributor : IHealthChecksContr
         options.ConnectionStrings = context.Services.GetObject<ConnectionStrings>();
         if (options.ConnectionStrings.TryGetValue(options.ConnectionStringName, out var connectionString))
         {
-            switch (options.DatabaseProvider)
+            switch (options.DbProvider)
             {
-                case AdoNetDatabaseProvider.SqlServer:
+                case AdoNetDbProvider.SqlServer:
                     builder.AddSqlServer(connectionString, "SELECT 1;", null, "AdoNetReminder", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
-                case AdoNetDatabaseProvider.PostgreSql:
+                case AdoNetDbProvider.PostgreSQL:
                     builder.AddNpgSql(connectionString, "SELECT 1;", null, "AdoNetReminder", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
-                case AdoNetDatabaseProvider.MySql:
+                case AdoNetDbProvider.MySQL:
                     builder.AddMySql(connectionString, "AdoNetReminder", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
-                case AdoNetDatabaseProvider.Oracle:
+                case AdoNetDbProvider.Oracle:
                     builder.AddOracle(connectionString, "select * from v$version", null, "AdoNetReminder", HealthStatus.Unhealthy, new[] { HealthCheckTags.Ready });
                     break;
             }
