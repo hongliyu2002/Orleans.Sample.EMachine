@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 namespace EMachine.Sales.Orleans.Tests;
 
 [Collection(TestCollectionFixture.Name)]
-public class SnackQueryRepoGrainTests : IClassFixture<SnackQueryRepoFixture>
+public sealed class SnackQueryRepoGrainTests : IClassFixture<SnackQueryRepoFixture>
 {
     private readonly TestCluster _cluster;
     private readonly ITestOutputHelper _output;

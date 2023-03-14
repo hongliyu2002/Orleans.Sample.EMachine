@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using EMachine.Orleans.Shared.Commands;
+using EMachine.Orleans.Abstractions.Commands;
 using EMachine.Sales.Orleans.States;
 
 namespace EMachine.Sales.Orleans.Commands;

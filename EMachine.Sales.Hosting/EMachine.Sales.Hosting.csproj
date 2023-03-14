@@ -18,7 +18,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\EMachine.Orleans.Server\EMachine.Orleans.Server.csproj" />
-        <ProjectReference Include="..\EMachine.Sales.Orleans.Projection\EMachine.Sales.Orleans.Projection.csproj" />
         <ProjectReference Include="..\EMachine.Sales.Orleans\EMachine.Sales.Orleans.csproj" />
     </ItemGroup>
 

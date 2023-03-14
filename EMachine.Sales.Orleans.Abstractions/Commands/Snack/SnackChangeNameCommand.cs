@@ -1,4 +1,4 @@
-﻿using EMachine.Orleans.Shared.Commands;
+﻿using EMachine.Orleans.Abstractions.Commands;
 
 namespace EMachine.Sales.Orleans.Commands;
 

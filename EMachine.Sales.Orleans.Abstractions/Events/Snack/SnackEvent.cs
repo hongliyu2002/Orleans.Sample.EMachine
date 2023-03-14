@@ -1,4 +1,4 @@
-﻿using EMachine.Orleans.Shared.Events;
+﻿using EMachine.Orleans.Abstractions.Events;
 
 namespace EMachine.Sales.Orleans.Events;
 

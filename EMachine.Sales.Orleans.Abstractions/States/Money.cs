@@ -5,7 +5,7 @@ namespace EMachine.Sales.Orleans.States;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record Money
+public sealed record Money(int Yuan1, int Yuan2, int Yuan5, int Yuan10, int Yuan20, int Yuan50, int Yuan100)
 {
     public static readonly Money Zero = new(0, 0, 0, 0, 0, 0, 0);
     public static readonly Money OneYuan = new(1, 0, 0, 0, 0, 0, 0);
@@ -26,32 +26,6 @@ public sealed record Money
         OneHundredYuan
     };
 
-    public Money(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
-    {
-        Yuan1 = Guard.Against.Negative(yuan1, nameof(yuan1));
-        Yuan2 = Guard.Against.Negative(yuan2, nameof(yuan2));
-        Yuan5 = Guard.Against.Negative(yuan5, nameof(yuan5));
-        Yuan10 = Guard.Against.Negative(yuan10, nameof(yuan10));
-        Yuan20 = Guard.Against.Negative(yuan20, nameof(yuan20));
-        Yuan50 = Guard.Against.Negative(yuan50, nameof(yuan50));
-        Yuan100 = Guard.Against.Negative(yuan100, nameof(yuan100));
-    }
-
-    [Id(0)]
-    public int Yuan1 { get; }
-    [Id(1)]
-    public int Yuan2 { get; }
-    [Id(2)]
-    public int Yuan5 { get; }
-    [Id(3)]
-    public int Yuan10 { get; }
-    [Id(4)]
-    public int Yuan20 { get; }
-    [Id(5)]
-    public int Yuan50 { get; }
-    [Id(6)]
-    public int Yuan100 { get; }
-
     public decimal Amount => Yuan1 * 1m + Yuan2 * 2m + Yuan5 * 5m + Yuan10 * 10m + Yuan20 * 20m + Yuan50 * 50m + Yuan100 * 100m;
 
     /// <inheritdoc />
@@ -65,13 +39,13 @@ public sealed record Money
     public static Result<Money> Create(int yuan1, int yuan2, int yuan5, int yuan10, int yuan20, int yuan50, int yuan100)
     {
         return Result.Ok()
-                     .Verify(yuan1 >= 0, "￥1 cannot be negative.")
-                     .Verify(yuan2 >= 0, "￥2 cannot be negative.")
-                     .Verify(yuan5 >= 0, "￥5 cannot be negative.")
-                     .Verify(yuan10 >= 0, "￥10 cannot be negative.")
-                     .Verify(yuan20 >= 0, "￥20 cannot be negative.")
-                     .Verify(yuan50 >= 0, "￥50 cannot be negative.")
-                     .Verify(yuan100 >= 0, "￥100 cannot be negative.")
+                     .Verify(yuan1 >= 0, "￥1 should not be negative.")
+                     .Verify(yuan2 >= 0, "￥2 should not be negative.")
+                     .Verify(yuan5 >= 0, "￥5 should not be negative.")
+                     .Verify(yuan10 >= 0, "￥10 should not be negative.")
+                     .Verify(yuan20 >= 0, "￥20 should not be negative.")
+                     .Verify(yuan50 >= 0, "￥50 should not be negative.")
+                     .Verify(yuan100 >= 0, "￥100 should not be negative.")
                      .MapTry(() => new Money(yuan1, yuan2, yuan5, yuan10, yuan20, yuan50, yuan100));
     }
 

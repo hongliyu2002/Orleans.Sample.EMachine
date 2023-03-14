@@ -1,5 +1,5 @@
-﻿using EMachine.Sales.EntityFrameworkCore.Contexts;
-using EMachine.Sales.Orleans.Commands;
+﻿using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.EntityFrameworkCore;
 using EMachine.Sales.Orleans.Tests.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
 using Orleans.TestingHost;

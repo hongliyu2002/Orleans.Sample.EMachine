@@ -1,11 +1,15 @@
 ﻿using System.Collections.Immutable;
-using EMachine.Orleans.Shared;
-using EMachine.Orleans.Shared.Extensions;
+using EMachine.Orleans.Abstractions;
+using EMachine.Orleans.Abstractions.Events;
+using EMachine.Orleans.Abstractions.Extensions;
 using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.EntityFrameworkCore;
 using EMachine.Sales.Orleans.Events;
 using EMachine.Sales.Orleans.Rules;
 using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.FluentResults;
 using Orleans.Providers;
@@ -17,12 +21,20 @@ namespace EMachine.Sales.Orleans;
 public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnackMachineGrain
 {
     private readonly ILogger<SnackMachineGrain> _logger;
+    private SalesDbContext _dbContext = null!;
 
     /// <inheritdoc />
-    public SnackMachineGrain(ILogger<SnackMachineGrain> logger)
-        : base(Constants.StreamProviderName, Constants.SnackMachineNamespace)
+    public SnackMachineGrain(IServiceScopeFactory scopeFactory, ILogger<SnackMachineGrain> logger)
+        : base(Constants.StreamProviderName, Constants.SnackMachineNamespace, scopeFactory)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
+    }
+
+    /// <inheritdoc />
+    public override async Task OnActivateAsync(CancellationToken cancellationToken)
+    {
+        await base.OnActivateAsync(cancellationToken);
+        _dbContext = _scope.ServiceProvider.GetRequiredService<SalesDbContext>();
     }
 
     /// <inheritdoc />
@@ -151,7 +163,8 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
                      .EnsureAsync(State.IsCreated, $"Snack machine {id} is not initialized.")
                      .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotInitialized.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
                      .EnsureAsync(Money.CoinsAndNotes.Contains(cmd.Money), $"Only single coin or note should be inserted into the snack machine {id}.")
-                     .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSingleCoinOrNoteRequired.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
+                     .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSingleCoinOrNoteRequired.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy,
+                                                                                                      Version)))
                      .BindTryAsync(() => PublishPersistedAsync(new SnackMachineMoneyInsertedEvent(id, cmd.Money, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)));
     }
 
@@ -215,13 +228,76 @@ public sealed class SnackMachineGrain : EventSourcingGrain<SnackMachine>, ISnack
                      .EnsureAsync(State.TryGetSlot(cmd.Position, out var slot), $"Slot at position {cmd.Position} in the snack machine {id} does not exist.")
                      .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotNotExists.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
                      .EnsureAsync(slot!.SnackPile is not null, $"Snack pile of the slot at position {cmd.Position} in the snack machine {id} does not exist.")
-                     .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotSnackPileNotExists.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
+                     .TapErrorTryAsync(errors =>
+                                           PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotSnackPileNotExists.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
                      .EnsureAsync(slot.SnackPile!.TryPopOne(out _), $"Not enough snack in the snack pile of the slot at position {cmd.Position} in the snack machine {id}.")
-                     .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotSnackPileNotEnoughSnack.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
+                     .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineSlotSnackPileNotEnoughSnack.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy,
+                                                                                                      Version)))
                      .EnsureAsync(State.AmountInTransaction < slot.SnackPile.Price, $"Not enough money (￥{State.AmountInTransaction}) to buy the snack {slot.SnackPile.SnackId} (￥{slot.SnackPile.Price}) in the snack machine {id}.")
                      .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotEnoughMoney.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
                      .EnsureAsync(State.MoneyInside.TryAllocate(State.AmountInTransaction - slot.SnackPile.Price, out _), $"Not enough change in the snack machine {id} after purchase.")
                      .TapErrorTryAsync(errors => PublishErrorAsync(new SnackMachineErrorOccurredEvent(id, ErrorCodes.SnackMachineNotEnoughChange.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
                      .BindTryAsync(() => PublishPersistedAsync(new SnackMachineSnackBoughtEvent(id, cmd.Position, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)));
+    }
+
+    /// <inheritdoc />
+    protected override async Task<bool> PersistAsync(DomainEvent evt)
+    {
+        if (evt is not SnackMachineEvent snackMachineEvent)
+        {
+            return false;
+        }
+        var attempts = 0;
+        bool retryNeeded;
+        do
+        {
+            try
+            {
+                var snackMachineInGrain = State;
+                var snackMachineInDb = await _dbContext.SnackMachines.FindAsync(snackMachineEvent.Id);
+                if (snackMachineInGrain == null)
+                {
+                    if (snackMachineInDb == null)
+                    {
+                        return true;
+                    }
+                    _dbContext.Remove(snackMachineInDb);
+                    return await _dbContext.SaveChangesAsync() > 0;
+                }
+                if (snackMachineInDb == null)
+                {
+                    snackMachineInDb = new SnackMachine();
+                    _dbContext.SnackMachines.Add(snackMachineInDb);
+                }
+                snackMachineInDb.Id = snackMachineInGrain.Id;
+                snackMachineInDb.CreatedAt = snackMachineInGrain.CreatedAt;
+                snackMachineInDb.CreatedBy = snackMachineInGrain.CreatedBy;
+                snackMachineInDb.LastModifiedAt = snackMachineInGrain.LastModifiedAt;
+                snackMachineInDb.LastModifiedBy = snackMachineInGrain.LastModifiedBy;
+                snackMachineInDb.DeletedAt = snackMachineInGrain.DeletedAt;
+                snackMachineInDb.DeletedBy = snackMachineInGrain.DeletedBy;
+                snackMachineInDb.IsDeleted = snackMachineInGrain.IsDeleted;
+                snackMachineInDb.MoneyInside = snackMachineInGrain.MoneyInside;
+                snackMachineInDb.AmountInTransaction = snackMachineInGrain.AmountInTransaction;
+                snackMachineInDb.Slots = snackMachineInGrain.Slots;
+                return await _dbContext.SaveChangesAsync() > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                retryNeeded = ++attempts <= 3;
+                if (retryNeeded)
+                {
+                    _logger.LogWarning($"DbUpdateConcurrencyException is occurred when try to write snack machine {snackMachineEvent.Id} data to the database. Retrying {attempts}...");
+                    await Task.Delay(TimeSpan.FromSeconds(attempts));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception is occurred when try to write snack machine {snackMachineEvent.Id} data to the database.");
+                retryNeeded = false;
+            }
+        }
+        while (retryNeeded);
+        return false;
     }
 }

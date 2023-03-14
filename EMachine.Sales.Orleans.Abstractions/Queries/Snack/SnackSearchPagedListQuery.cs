@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using EMachine.Orleans.Shared.Queries;
+using EMachine.Orleans.Abstractions.Queries;
 
 namespace EMachine.Sales.Orleans.Queries;
 

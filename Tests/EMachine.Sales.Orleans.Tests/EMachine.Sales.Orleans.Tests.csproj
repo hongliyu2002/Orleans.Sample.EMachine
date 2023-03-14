@@ -43,9 +43,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\EMachine.Orleans.Shared\EMachine.Orleans.Shared.csproj" />
+        <ProjectReference Include="..\..\EMachine.Orleans.Abstractions\EMachine.Orleans.Abstractions.csproj" />
         <ProjectReference Include="..\..\EMachine.Sales.Orleans.Abstractions\EMachine.Sales.Orleans.Abstractions.csproj" />
-        <ProjectReference Include="..\..\EMachine.Sales.Orleans.Projection\EMachine.Sales.Orleans.Projection.csproj" />
         <ProjectReference Include="..\..\EMachine.Sales.Orleans\EMachine.Sales.Orleans.csproj" />
     </ItemGroup>
 
@@ -53,6 +52,10 @@
       <None Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Projections" />
     </ItemGroup>
 
 </Project>

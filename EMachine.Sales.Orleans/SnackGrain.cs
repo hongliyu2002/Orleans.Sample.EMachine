@@ -1,10 +1,14 @@
-﻿using EMachine.Orleans.Shared;
-using EMachine.Orleans.Shared.Extensions;
+﻿using EMachine.Orleans.Abstractions;
+using EMachine.Orleans.Abstractions.Events;
+using EMachine.Orleans.Abstractions.Extensions;
 using EMachine.Sales.Orleans.Commands;
+using EMachine.Sales.Orleans.EntityFrameworkCore;
 using EMachine.Sales.Orleans.Events;
 using EMachine.Sales.Orleans.Rules;
 using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Orleans.FluentResults;
 using Orleans.Providers;
@@ -16,12 +20,20 @@ namespace EMachine.Sales.Orleans;
 public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
 {
     private readonly ILogger<SnackGrain> _logger;
+    private SalesDbContext _dbContext = null!;
 
     /// <inheritdoc />
-    public SnackGrain(ILogger<SnackGrain> logger)
-        : base(Constants.StreamProviderName, Constants.SnackNamespace)
+    public SnackGrain(IServiceScopeFactory scopeFactory, ILogger<SnackGrain> logger)
+        : base(Constants.StreamProviderName, Constants.SnackNamespace, scopeFactory)
     {
         _logger = Guard.Against.Null(logger, nameof(logger));
+    }
+
+    /// <inheritdoc />
+    public override async Task OnActivateAsync(CancellationToken cancellationToken)
+    {
+        await base.OnActivateAsync(cancellationToken);
+        _dbContext = _scope.ServiceProvider.GetRequiredService<SalesDbContext>();
     }
 
     /// <inheritdoc />
@@ -100,5 +112,65 @@ public sealed class SnackGrain : EventSourcingGrain<Snack>, ISnackGrain
                      .EnsureAsync(State.Name.Length <= 100, $"The name of snack {id} is too long.")
                      .TapErrorTryAsync(errors => PublishErrorAsync(new SnackErrorOccurredEvent(id, ErrorCodes.SnackNameTooLong.Value, errors.ToReasons(), cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)))
                      .BindTryAsync(() => PublishPersistedAsync(new SnackNameChangedEvent(id, cmd.Name, cmd.TraceId, DateTimeOffset.UtcNow, cmd.OperatedBy, Version)));
+    }
+
+    /// <inheritdoc />
+    protected override async Task<bool> PersistAsync(DomainEvent evt)
+    {
+        if (evt is not SnackEvent snackEvent)
+        {
+            return false;
+        }
+        var attempts = 0;
+        bool retryNeeded;
+        do
+        {
+            try
+            {
+                var snackInGrain = State;
+                var snackInDb = await _dbContext.Snacks.FindAsync(snackEvent.Id);
+                if (snackInGrain == null)
+                {
+                    if (snackInDb == null)
+                    {
+                        return true;
+                    }
+                    _dbContext.Remove(snackInDb);
+                    return await _dbContext.SaveChangesAsync() > 0;
+                }
+                if (snackInDb == null)
+                {
+                    snackInDb = new Snack();
+                    _dbContext.Snacks.Add(snackInDb);
+                }
+                snackInDb.Id = snackInGrain.Id;
+                snackInDb.CreatedAt = snackInGrain.CreatedAt;
+                snackInDb.CreatedBy = snackInGrain.CreatedBy;
+                snackInDb.LastModifiedAt = snackInGrain.LastModifiedAt;
+                snackInDb.LastModifiedBy = snackInGrain.LastModifiedBy;
+                snackInDb.DeletedAt = snackInGrain.DeletedAt;
+                snackInDb.DeletedBy = snackInGrain.DeletedBy;
+                snackInDb.IsDeleted = snackInGrain.IsDeleted;
+                snackInDb.Name = snackInGrain.Name;
+                snackInDb.PictureUrl = snackInGrain.PictureUrl;
+                return await _dbContext.SaveChangesAsync() > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                retryNeeded = ++attempts <= 3;
+                if (retryNeeded)
+                {
+                    _logger.LogWarning($"DbUpdateConcurrencyException is occurred when try to write snack {snackEvent.Id} data to the database. Retrying {attempts}...");
+                    await Task.Delay(TimeSpan.FromSeconds(attempts));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception is occurred when try to write snack {snackEvent.Id} data to the database.");
+                retryNeeded = false;
+            }
+        }
+        while (retryNeeded);
+        return false;
     }
 }

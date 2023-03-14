@@ -9,30 +9,33 @@ public sealed class Snack
     public Guid Id { get; set; }
 
     [Id(1)]
-    public string Name { get; set; } = string.Empty;
-
-    public bool IsCreated => CreatedAt != null;
+    public DateTimeOffset? CreatedAt { get; set; }
 
     [Id(2)]
-    public DateTimeOffset? CreatedAt { get; set; }
+    public string? CreatedBy { get; set; }
+
+    public bool IsCreated => CreatedAt != null;
 
     [Id(3)]
     public DateTimeOffset? LastModifiedAt { get; set; }
 
     [Id(4)]
-    public DateTimeOffset? DeletedAt { get; set; }
+    public string? LastModifiedBy { get; set; }
 
     [Id(5)]
-    public string CreatedBy { get; set; } = string.Empty;
+    public DateTimeOffset? DeletedAt { get; set; }
 
     [Id(6)]
-    public string LastModifiedBy { get; set; } = string.Empty;
+    public string? DeletedBy { get; set; }
 
     [Id(7)]
-    public string DeletedBy { get; set; } = string.Empty;
+    public bool IsDeleted { get; set; }
 
     [Id(8)]
-    public bool IsDeleted { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    [Id(9)]
+    public string? PictureUrl { get; set; }
 
     public override string ToString()
     {

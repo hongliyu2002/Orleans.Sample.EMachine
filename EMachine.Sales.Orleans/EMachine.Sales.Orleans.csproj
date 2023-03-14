@@ -11,13 +11,12 @@
         <PackageReference Include="Microsoft.Orleans.Sdk" Version="7.1.0" />
         <PackageReference Include="Fluxera.Extensions.Hosting.Abstractions" Version="7.1.2" />
         <PackageReference Include="Fluxera.Extensions.Hosting.Modules.Configuration" Version="7.1.4" />
-        <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EMachine.Sales.EntityFrameworkCore\EMachine.Sales.EntityFrameworkCore.csproj" />
         <ProjectReference Include="..\EMachine.Sales.Orleans.Abstractions\EMachine.Sales.Orleans.Abstractions.csproj" />
-        <ProjectReference Include="..\EMachine.Orleans.Shared\EMachine.Orleans.Shared.csproj" />
+        <ProjectReference Include="..\EMachine.Orleans.Abstractions\EMachine.Orleans.Abstractions.csproj" />
+        <ProjectReference Include="..\EMachine.Sales.Orleans.EntityFrameworkCore\EMachine.Sales.Orleans.EntityFrameworkCore.csproj" />
     </ItemGroup>
 
 </Project>

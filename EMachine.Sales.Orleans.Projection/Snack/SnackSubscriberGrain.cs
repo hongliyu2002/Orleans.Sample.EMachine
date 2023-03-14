@@ -1,5 +1,5 @@
-﻿using EMachine.Orleans.Shared;
-using EMachine.Orleans.Shared.Events;
+﻿using EMachine.Orleans.Abstractions;
+using EMachine.Orleans.Abstractions.Events;
 using EMachine.Sales.Domain;
 using EMachine.Sales.EntityFrameworkCore.Contexts;
 using EMachine.Sales.Orleans.Events;

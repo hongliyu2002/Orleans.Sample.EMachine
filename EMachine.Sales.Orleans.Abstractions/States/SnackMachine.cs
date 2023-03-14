@@ -9,40 +9,40 @@ public sealed class SnackMachine
     public Guid Id { get; set; }
 
     [Id(1)]
-    public Money MoneyInside { get; set; } = Money.Zero;
+    public DateTimeOffset? CreatedAt { get; set; }
 
     [Id(2)]
-    public decimal AmountInTransaction { get; set; }
+    public string? CreatedBy { get; set; }
+
+    public bool IsCreated => CreatedAt != null;
 
     [Id(3)]
+    public DateTimeOffset? LastModifiedAt { get; set; }
+
+    [Id(4)]
+    public string? LastModifiedBy { get; set; }
+
+    [Id(5)]
+    public DateTimeOffset? DeletedAt { get; set; }
+
+    [Id(6)]
+    public string? DeletedBy { get; set; }
+
+    [Id(7)]
+    public bool IsDeleted { get; set; }
+
+    [Id(8)]
+    public Money MoneyInside { get; set; } = Money.Zero;
+
+    [Id(9)]
+    public decimal AmountInTransaction { get; set; }
+
+    [Id(10)]
     public IList<Slot> Slots { get; set; } = new List<Slot>();
 
     public int SlotsCount => Slots.Count;
 
     public decimal TotalPrice => Slots.Where(s => s.SnackPile != null).Select(s => s.SnackPile!).Sum(sp => sp.TotalPrice);
-
-    public bool IsCreated => CreatedAt != null;
-
-    [Id(4)]
-    public DateTimeOffset? CreatedAt { get; set; }
-
-    [Id(5)]
-    public DateTimeOffset? LastModifiedAt { get; set; }
-
-    [Id(6)]
-    public DateTimeOffset? DeletedAt { get; set; }
-
-    [Id(7)]
-    public string CreatedBy { get; set; } = string.Empty;
-
-    [Id(8)]
-    public string LastModifiedBy { get; set; } = string.Empty;
-
-    [Id(9)]
-    public string DeletedBy { get; set; } = string.Empty;
-
-    [Id(10)]
-    public bool IsDeleted { get; set; }
 
     public override string ToString()
     {

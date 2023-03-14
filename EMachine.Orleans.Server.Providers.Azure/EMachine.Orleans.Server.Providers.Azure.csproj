@@ -19,7 +19,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\EMachine.Providers.Azure\EMachine.Providers.Azure.csproj" />
-        <ProjectReference Include="..\EMachine.Orleans.Shared\EMachine.Orleans.Shared.csproj" />
+        <ProjectReference Include="..\EMachine.Orleans.Abstractions\EMachine.Orleans.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

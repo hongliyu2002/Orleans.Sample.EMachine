@@ -1,29 +1,11 @@
-﻿using Fluxera.Guards;
-using Orleans.FluentResults;
+﻿using Orleans.FluentResults;
 
 namespace EMachine.Sales.Orleans.States;
 
 [Immutable]
 [GenerateSerializer]
-public sealed record SnackPile
+public sealed record SnackPile(Guid SnackId, int Quantity, decimal Price)
 {
-    public SnackPile(Guid snackId, int quantity, decimal price)
-    {
-        SnackId = Guard.Against.Empty(snackId, nameof(snackId));
-        Quantity = Guard.Against.Negative(quantity, nameof(quantity));
-        Price = Guard.Against.Negative(price, nameof(price));
-        Price = Guard.Against.InvalidInput(price, x => x % 0.01m == 0, nameof(price));
-    }
-
-    [Id(0)]
-    public Guid SnackId { get; }
-
-    [Id(1)]
-    public int Quantity { get; }
-
-    [Id(2)]
-    public decimal Price { get; }
-
     public decimal TotalPrice => Quantity * Price;
 
     /// <inheritdoc />
@@ -55,7 +37,7 @@ public sealed record SnackPile
             snackPile = null;
             return false;
         }
-        snackPile = new SnackPile(SnackId, Quantity - 1, Price);
+        snackPile = this with { Quantity = Quantity - 1 };
         return true;
     }
 

@@ -1,8 +1,8 @@
-﻿using EMachine.Orleans.Shared;
-using EMachine.Orleans.Shared.Events;
+﻿using EMachine.Orleans.Abstractions;
+using EMachine.Orleans.Abstractions.Events;
 using EMachine.Sales.Orleans.States;
 using Fluxera.Guards;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Orleans.Concurrency;
 using Orleans.FluentResults;
 using Orleans.Providers;
@@ -22,11 +22,10 @@ public interface IMoneyEsGrain : IGrainWithGuidKey
 public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
 {
     /// <inheritdoc />
-    public MoneyEsGrain()
-        : base(Constants.StreamProviderName, "Tests")
+    public MoneyEsGrain(IServiceScopeFactory scopeFactory)
+        : base(Constants.StreamProviderName, "Tests", scopeFactory)
     {
     }
-
     /// <inheritdoc />
     public Task<Result<Money>> GetAsync()
     {
@@ -37,6 +36,12 @@ public class MoneyEsGrain : EventSourcingGrain<MoneyEsState>, IMoneyEsGrain
     public Task<Result<bool>> AddAsync(Money money)
     {
         return PublishPersistedAsync(new MoneyEsAddedEvent(Money.FiftyYuan, Guid.NewGuid(), DateTimeOffset.UtcNow, "Leo", 1));
+    }
+
+    /// <inheritdoc />
+    protected override Task<bool> PersistAsync(DomainEvent evt)
+    {
+        return Task.FromResult(true);
     }
 }
 

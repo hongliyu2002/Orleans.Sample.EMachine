@@ -5,16 +5,25 @@ namespace EMachine.Sales.Orleans.States;
 [GenerateSerializer]
 public sealed class Slot
 {
-    public Slot(int position, SnackPile? snackPile = null)
+    public Slot()
     {
+    }
+
+    public Slot(Guid machineId, int position, SnackPile? snackPile = null)
+        : this()
+    {
+        MachineId = Guard.Against.Empty(machineId, nameof(machineId));
         Position = Guard.Against.Negative(position, nameof(position));
         SnackPile = snackPile;
     }
 
     [Id(0)]
-    public int Position { get; set; }
+    public Guid MachineId { get; set; }
 
     [Id(1)]
+    public int Position { get; set; }
+
+    [Id(2)]
     public SnackPile? SnackPile { get; set; }
 
     /// <inheritdoc />
