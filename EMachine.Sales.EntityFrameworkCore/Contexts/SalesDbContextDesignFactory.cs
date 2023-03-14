@@ -9,10 +9,10 @@ public class SalesDbContextDesignFactory : IDesignTimeDbContextFactory<SalesDbCo
     /// <inheritdoc />
     public SalesDbContext CreateDbContext(string[] args)
     {
-        var connectionString = "Data Source=Sales.db";
-        var builder = new DbContextOptionsBuilder<SalesDbContext>().UseSqlite(connectionString);
-        // var connectionString = "Server=localhost;Integrated Security=False;User Id=sa;Password=Bosshong2010;TrustServerCertificate=True;Database=EMachineSalesDB";
-        // var builder = new DbContextOptionsBuilder<SalesDbContext>().UseSqlServer(connectionString);
+        // var connectionString = "Data Source=Sales.db";
+        // var builder = new DbContextOptionsBuilder<SalesDbContext>().UseSqlite(connectionString);
+        var connectionString = "Server=123.60.184.85;Integrated Security=False;User Id=sa;Password=Bosshong2010;TrustServerCertificate=True;Database=Sales";
+        var builder = new DbContextOptionsBuilder<SalesDbContext>().UseSqlServer(connectionString);
         return new SalesDbContext(builder.Options);
     }
 }

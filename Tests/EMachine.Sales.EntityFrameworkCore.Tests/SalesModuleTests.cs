@@ -51,7 +51,7 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         snackGet.Should().NotBeNull();
         _output.WriteLine(snackGet?.ToString());
     }
-    
+
     [Fact]
     public async Task Should_Update_Snack()
     {
@@ -59,14 +59,12 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         if (snack != null)
         {
             snack.Name = "Coke";
-            snack.ETag = Guid.NewGuid().ToByteArray();
             var success = await _dbContext.SaveChangesAsync();
             success.Should().BeGreaterThan(0);
             _output.WriteLine(snack.ToString());
         }
     }
-    
-        
+
     [Fact]
     public async Task Should_Add_And_Update_Snack()
     {
@@ -86,7 +84,6 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         if (snackForUpdate != null)
         {
             snackForUpdate.Name = "Coke";
-            snackForUpdate.ETag = Guid.NewGuid().ToByteArray();
             var success = await _dbContext.SaveChangesAsync();
             success.Should().BeGreaterThan(0);
             _output.WriteLine(snackForUpdate.ToString());
@@ -94,7 +91,6 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
         if (snackForUpdate != null)
         {
             snackForUpdate.Name = "Coke";
-            snackForUpdate.ETag = Guid.NewGuid().ToByteArray();
             var success = await _dbContext.SaveChangesAsync();
             success.Should().BeGreaterThan(0);
             _output.WriteLine(snackForUpdate.ToString());
@@ -121,8 +117,8 @@ public class SalesModuleTests : StartupModuleTestBase<SalesEntityFrameworkCoreMo
                                CreatedAt = DateTimeOffset.UtcNow,
                                CreatedBy = "System"
                            };
-        snackMachine.MoneyInside.Amount = snackMachine.MoneyInside.Yuan1 * 1m + snackMachine.MoneyInside.Yuan2 * 2m + snackMachine.MoneyInside.Yuan5 * 5m + snackMachine.MoneyInside.Yuan10 * 10m + snackMachine.MoneyInside.Yuan20 * 20m
-                                        + snackMachine.MoneyInside.Yuan50 * 50m + snackMachine.MoneyInside.Yuan100 * 100m;
+        snackMachine.MoneyInside.Amount = snackMachine.MoneyInside.Yuan1 * 1m + snackMachine.MoneyInside.Yuan2 * 2m + snackMachine.MoneyInside.Yuan5 * 5m + snackMachine.MoneyInside.Yuan10 * 10m
+                                        + snackMachine.MoneyInside.Yuan20 * 20m + snackMachine.MoneyInside.Yuan50 * 50m + snackMachine.MoneyInside.Yuan100 * 100m;
         await _dbContext.SnackMachines.AddAsync(snackMachine);
         await _dbContext.SaveChangesAsync();
         var snacks = await _dbContext.Snacks.Take(3).ToListAsync();

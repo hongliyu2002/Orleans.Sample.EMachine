@@ -24,6 +24,4 @@ public sealed class Snack
     public bool IsDeleted { get; set; }
 
     public long Version { get; set; }
-
-    public byte[] ETag { get; set; } = Guid.Empty.ToByteArray();
 }

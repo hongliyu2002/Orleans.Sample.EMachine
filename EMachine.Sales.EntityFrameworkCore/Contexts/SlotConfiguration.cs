@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EMachine.Sales.EntityFrameworkCore.Contexts;
 
-public sealed class SlotEntityConfiguration : IEntityTypeConfiguration<Slot>
+public sealed class SlotConfiguration : IEntityTypeConfiguration<Slot>
 {
     private readonly Action<EntityTypeBuilder<Slot>>? _callback;
 
-    public SlotEntityConfiguration(Action<EntityTypeBuilder<Slot>>? callback = null)
+    public SlotConfiguration(Action<EntityTypeBuilder<Slot>>? callback = null)
     {
         _callback = callback;
     }
@@ -26,6 +26,8 @@ public sealed class SlotEntityConfiguration : IEntityTypeConfiguration<Slot>
         builder.OwnsOne<SnackPile>(x => x.SnackPile, nav =>
                                                      {
                                                          nav.HasOne<Snack>(x => x.Snack).WithMany().HasForeignKey(x => x.SnackId).OnDelete(DeleteBehavior.Cascade);
+                                                         nav.Property(n => n.Price).HasPrecision(10, 2);
+                                                         nav.Property(n => n.TotalPrice).HasPrecision(10, 2);
                                                      });
         _callback?.Invoke(builder);
     }
